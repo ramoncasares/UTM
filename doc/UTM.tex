@@ -1,0 +1,3428 @@
+% UTM.tex (RMCG20260406)
+
+\input TM
+
+%%% arXiv
+%\let\dvips=\relax %% comment if using dvipdfm; uncomment for arXiv
+%
+% ACM cs.LO
+% F.1.1 Models of Computation
+% A.1   Introductory and survey
+% MSC math.LO
+% 03D10: Turing machines and related notions
+% 68-01: Instructional exposition (in "Computer science")
+%%% arXiv
+
+\title{A Universal Turing Machine}
+\author{Ramón Casares}
+\contact{{\sc orcid:}
+\URL 0000-0003-4973-3128<https://orcid.org/0000-0003-4973-3128>}
+\subject{Computing}
+\keywords{Turing completeness, universal Turing machine}
+
+\maketitle
+
+\beginabstract
+We reconstruct the didactic universal Turing machine
+by Marvin Minsky, MMo-UTM.
+We test it on a Turing machine interpreter coded in Lua,
+we comment on its limitations,
+and we enhance it twice:
+MMr-UTM,
+ which can emulate any binary Turing machine; and
+MMc-UTM,
+ which can emulate any Turing machine.
+The table of MMc-UTM is listed completely,
+with comments and an example of emulation.
+Since it has not any limitation
+and it uses a straightforward encoding,
+MMc-UTM makes a good constructive proof of
+the theorem of Turing completeness.
+
+\endabstract
+
+\beginnote
+This is \DOI{10.6084/m9.figshare.32261133},
+version {\tt\version}.\\
+\copyright\ 2026 Ramón Casares; licensed as {\tt cc-by}.\\
+Any comments on it to
+{\tt\URL papa@ramoncasares.com<mailto:papa@ramoncasares.com>}
+are welcome.
+\endnote
+
+
+
+\section{Introduction}
+
+Marvin \cite[\1 (\2  §7)] Minsky (1967) presented a UTM*,
+that is, a Universal Turing machine with a disclaimer.
+We will call it MMo-UTM.
+Disclaimer: MMo-UTM can only emulate
+ Turing machines using two symbols, {\em blank} and another one,
+ that work on a singly infinite tape, that is,
+ MMo-UTM can only emulate binary and singly infinite Turing machines.
+In particular, MMo-UTM cannot emulate itself.
+
+We will discuss all MMo-UTM limitations
+and we will proceed to eliminate them,
+presenting two universal Turing machines in complete detail.
+\beginpoints
+\point Firstly, MMr-UTM, a revised version of MMo-UTM,
+ which can emulate any binary Turing machine, but not itself.
+\point And finally, MMc-UTM, which can emulate any Turing machine,
+ so it can emulate itself.
+ MMc-UTM is a universal Turing machine without disclaimers.
+\endpoints
+
+\break
+
+In this paper, section \refsc{Computing},
+we firstly introduce the Turing machine.
+We start the section with an overview,
+ in subsection \refsc{Turing machine},
+and a more detailed definition, in subsection \refsc{Processor}.
+Then we will see some examples, in subsection \refsc{Examples},
+with the help of a Turing machine interpreter coded in Lua,
+which we have developed for testing.
+The section finishes, in subsection \refsc{Turing completeness},
+ defining {\em Turing completeness} and {\em universal Turing machine}.
+
+Next, in section \refsc{MMo-UTM}, we reconstruct MMo-UTM.
+We start the section explaining its tape,
+in subsection \refsc{MMo-Tape}, and,
+in subsection \refsc{MMo-Table}, we recreate
+ the \refx{diagram by Minsky that defines MMo-UTM}{MMoDiagram},
+from which we obtain its table, which is listed in full.
+Then, in subsection \refsc{MMo-Testing},
+we test it using the Turing machine interpreter.
+After doing some tests, we finish the section,
+ in subsection \refsc{MMo-Limitations},
+analyzing its limitations.
+
+Then, in section \refsc{MMr-UTM},
+we present its first enhancement, MMr-UTM,
+a Turing machine that can emulate any binary Turing machine.
+The first subsection, \refsc{MMr-Tape}, describes its tape,
+compared with MMo-UTM's tape.
+Then, in subsection \refsc{MMr-Table}, we present its
+three new sub-machines, each one solving a limitation of MMo-UTM,
+the patch that transforms MMo-UTM into MMr-UTM,
+and the complete \refx{diagram of MMr-UTM}{MMrDiagram}.
+In subsection \refsc{MMr-Testing}, we finish the section
+testing MMr-UTM.
+
+Section \refsc{Binary Turing completeness theorem}
+is devoted to the theorem of binary Turing completeness,
+which states that there is a Turing machine
+that can emulate any binary Turing machine.
+MMr-UTM is a constructive proof of the theorem.
+This theorem together with another one by Shannon
+imply that there is a universal Turing machine.
+
+Therefore, in section \refsc{MMc-UTM},
+we present a universal Turing machine.
+Since it was designed on top of MMo-UTM
+and it completely eliminates its limitations,
+we call it MMc-UTM.
+We start the section explaining its tape,
+in subsection \refsc{MMc-Tape},
+and then, in subsection \refsc{MMc-Table},
+we present the whole table and
+\refx{diagram of MMc-UTM}{MMcDiagram},
+a comment about each of its sub-machines,
+and a complete example of MMc-UTM emulating
+a Turing machine. In subsection \refsc{MMc-Testing},
+we finish the section testing MMc-UTM.
+
+Section \refsc{Turing completeness theorem}
+is devoted to the theorem of Turing completeness,
+which says that there is a universal Turing machine,
+which is a Turing machine that can emulate any Turing machine.
+MMc-UTM is a constructive proof of the theorem.
+
+In section \refsc{Discussion}, we comment
+on the definition of universal Turing machine,
+and on the merit of an independent and concrete
+proof of the theorem of Turing completeness.
+The first universal computing machine
+was defined and designed by Turing,
+and its limitations are reviewed in subsection \refsc{Turing}.
+Then, in subsection \refsc{Encoding},
+we present the problem of encoding,
+raised by Davis and resolved by Minsky,
+who requires to encode program and data separately.
+In subsection \refsc{Definition},
+we explain that Minsky's separation requirement
+was the reason why
+Turing's original definition of universal
+Turing machine has been superseded.
+Finally, in subsection \refsc{Foundations},
+we argue that the proof of the theorem of
+Turing completeness presented in this paper
+is foundational,
+because it is self-contained and constructive,
+since it presents a concrete Turing machine,
+MMc-UTM, which is universal without limitations
+and uses a straightforward encoding.
+
+We conclude, in section \refsc{Conclusion},
+with a short summary.
+
+
+\vfil\break
+
+\section{Computing}
+
+\subsection{Turing machine}
+
+\dest
+The seminal reference of computing is
+its founding paper by \cite Turing (1936),
+where he presents his $a$-machine,
+ now known as Turing machine,
+which is his mathematical model for computing devices.
+A \ndx{Turing machine}D{\em Turing machine}
+ is a tape controlled by a processor.
+
+\dest
+The \definition{tape} is read and write memory,
+and it is divided in squares, where each square can contain
+one symbol out of a finite set of symbols, or none.
+When a square contains no symbol, we say that it is \definition{blank}.
+We will consider that {\em blank} is a symbol,
+ though a {\em special} one.
+Each square has exactly one neighbor square to the left
+and one neighbor square to the right, meaning
+that the tape is infinite and
+that no computation will abort because of a lack of squares,
+though the number of non-{\em blank} squares will
+always be finite. Another way of seeing it is
+that the tape is finite but potentially infinite, and
+that new {\em blank} squares are created
+whenever either end of the tape is going to be overstepped.
+
+\dest
+The \definition{processor} is a finite-state automaton.
+Then, the processor is in
+each moment in exactly one state out of a finite set of states,
+and the next state and the output depend on the current
+state and the input.
+In the case of the Turing machine processor,
+the input is read from the scanned square of the tape, and
+the output is a pair composed of a symbol and a movement,
+where the symbol is written to the scanned square and
+the \definition{movement} is {\em left} or {\em right},
+so the next scanned square will be
+the neighbor one to the left,
+or the neighbor one to the right.
+So a \definition{table} defining the next state and the pair of
+symbol to write and movement to do
+for each possible current state and read symbol
+determines completely the Turing machine behavior.
+We will say that the pair of current state ({\sc c})
+ and read symbol ({\sc r}) is the \definition{index},
+and that the triplet of next state ({\sc n}),
+ symbol to write ({\sc w}) and movement to do ({\sc m})
+ is its corresponding \definition{instruction}. Together,
+the index with its corresponding instruction
+ form a \definition{quintuple},
+which defines a \definition{transition}.
+As the number of states and the number of symbols are both finite,
+the table is finite.
+
+\dest
+The processor state, the tape content and the scanned square
+define the \definition{situation} of the Turing machine.
+A \definition{computation}
+starts from a well-defined situation and
+ is executed in a loop
+ with four stages ---read, transition, write, and move---
+that is exited whenever the transition is a \definition{halt}ing one,
+ and then we say that the Turing machine has halted.
+We will assume without loss of generality that
+in the initial situation the state is the \definition{initial state}
+and the scanned square is the leftmost non-{\em blank} square,
+if any, or another square to its left;
+if all squares are {\em blank}, then any one goes,
+ as any one is as good as any other.
+From that initial situation, the Turing machine
+follows the instructions given in the table
+until the instruction to do is {\em halt},
+thus ending the computation, or else it goes forever.
+Some more details and examples are provided below,
+in subsections \refsc{Processor} and \refsc{Examples}.
+
+\dest
+So the Turing machine transforms the string of symbols that was
+written on the tape when it started into the string of symbols
+that was written on the tape when it {\em halt}ed.
+From this point of view, each Turing machine
+implements a function from the set of strings of symbols
+to the set of strings of symbols,
+where the strings are finite in length and
+its symbols are drawn from a finite set.
+By definition, any function implemented by a Turing machine
+is a \definition{computable function}.
+Note that not all these functions are total functions,
+because there is not any guarantee that
+a Turing machine on an initial string will {\em halt},
+and then the function implemented by the Turing machine
+is not defined for those input strings on which the
+machine never {\em halt}s.
+
+
+\subsection{Processor}
+
+\dest
+A Turing machine $\cal P$ processor has four main components:\\
+the states $\Phi$, the symbols $\Gamma$,
+the movements $\Delta$, and the table $\Pi$.
+\beginpoints
+\point The set of \definition{states} $\Phi$ has to be finite, and
+ the {\em initial} state, let us call it $\M A$, has to be in it,
+ so $\M A \in\Phi$ and $|\Phi| \ge 1$.
+\point The set of ordinary symbols $\bar\Gamma$ has to be finite
+ and not empty. The set of \definition{symbols} $\Gamma$ is
+ set $\bar\Gamma$ plus the {\em blank} special symbol,
+ let us write it \M0, that denotes that a tape square is blank.
+ Then, $\Gamma = \bar\Gamma \cup \{ \M0 \}$,
+ so $\M0\in\Gamma$ and $|\Gamma| \ge 2$.
+ We say that $\Gamma$ is the \definition{alphabet}
+ to say that its symbols are totally ordered.
+\point The set of \definition{movements} $\Delta$ has two elements:
+ {\em left}, let us write it \M<; and
+ {\em right}, let us write it \M>.
+ Then, $\Delta=\{\M<, \M>\}$.
+\point The table $\Pi$ is a total function
+ $\Pi: \Phi\times\Gamma \to
+  (\Phi\times\Gamma\times\Delta) \;\cup\; \{\,\hbox{\it halt}\,\}$,
+ so it can be written as a table
+ of $|\Phi|\times|\Gamma|$ rows and five columns,
+ although we can omit some rows, as will we see soon.
+ Table $\Pi$ is also known as the \definition{transition function}.
+\endpoints
+
+Set $\Gamma^*$ is the infinite set
+ of the {\em finite} strings drawn from $\Gamma$.
+There is a practical problem regarding the {\em blank} special symbol,
+because there are two infinities of them on the tape,
+one to the left and the other to the right.
+We will ignore these two infinities,
+but we should be aware that
+a meaningful finite string of {\em blank} symbols
+concatenated with any of those two infinities could
+cause ambiguities.
+
+The default instruction is {\em halt},
+which halts the Turing machine,
+so it does not change anything, neither the state nor the symbol,
+and it does not move.
+We could make explicit a {\em halt} instruction in the table
+by using, for example, \M= to mean no movement,
+or we can rather omit the corresponding row.
+
+\dest
+We use \define{meta-symbol *}{meta-symbol {\tt *}} $\notin \Gamma$,
+ to denote {\em any other symbol}.
+That is, index \M{C*} applies when, in state \M{C},
+the read symbol is any not explicitly defined.
+And, in that case, the corresponding instruction
+can also use a \M*, then meaning {\em the same symbol},
+which is the read one.
+For example, if index \M{C1} is not in the table,
+then row \M{C*B*<} expands to \M{C1B1<}.
+Meta-symbol \M* is handy when writing tables,
+ but it can always be replaced by symbols;
+meta-symbol \M* is just an abbreviation.
+
+\dest
+We use \define{meta-string infty}{meta-string $\infty$} $\notin \Gamma^*$,
+to denote that a computation does not halt.
+With this notation,
+every Turing machine $\cal P$ implements a function
+$\Gamma^* \rightarrow \Gamma^*  \cup \{ \infty \}$.
+Overloading the Turing machine name, for instance $\cal P$,
+which can refer to the Turing machine, to its processor,
+or to the implemented function,
+we will write $\TM P<d> = \TM<r>$ to express that,
+when we write string ${\frak d}\in\Gamma^*$
+on the tape of Turing machine $\cal P$,
+it computes it and halts
+ with the string ${\frak r}\in\Gamma^*$ on the tape.
+So $\frak d$ is the input string to $\cal P$,
+and $\frak r$ is the corresponding output string.
+Should it no halt, we would write $\TM P<d> = \infty$ instead.
+
+\dest
+There are many versions of the Turing machine,
+and this is only one of them,
+basically the one by \cite Minsky (1967).
+Some use quadruples instead of quintuples,
+so the instruction is a pair composed of
+the next state and the action,
+where the action can either be to write a symbol or to move.
+Others {\em halt} when reaching a halting state;
+we will use them frequently, since for us
+a \definition{halting state} is any from which any transition
+is a halting transition. In other words, a halting state
+can be completely omitted from the {\em index}.
+Some others require two halting states,
+the accepting and the rejecting state,
+which we can also implement,
+and even more, since we are not limited to two halting states.
+
+
+\vfill\break
+
+\subsection{Examples}
+
+For example, this is the table for a Turing machine ${\cal S}_2$
+that implements the successor function in base two without zero.
+In order to avoid ambiguities,
+we will not use the {\em blank} symbol to write the numbers,
+and then we will need a three-symbol alphabet; we will use
+alphabet $\Gamma=\{ \M0, \M1, \M2 \}$, so $|\Gamma| = 3$.
+We have added a header to help in reading each quintuple:
+{\sc c} for the current state,
+{\sc r} for the read symbol,
+{\sc n} for the next state,
+{\sc w} for the written symbol, and
+{\sc m} for the movement.
+Four states and three symbols make a twelve-row table,
+but three are omitted because there are three halting transitions;
+in fact, state \M{H} is a halting state
+because all transtions from state \M{H} are halting ones.
+$${\cal S}_2\quad\Table{
+ A& 0& A& 0& >\cr
+ A& 1& B& 1& >\cr
+ A& 2& B& 2& >\cr
+ B& 0& C& 0& <\cr
+ B& 1& B& 1& >\cr
+ B& 2& B& 2& >\cr
+ C& 0& H& 1& <\cr
+ C& 1& H& 2& <\cr
+ C& 2& C& 1& <\cr
+}$$
+
+To see how this specific Turing machine ${\cal S}_2$ works,
+we can see what happens if we write the string \M{2212} on the tape,
+where the numeral \M{2212} in base two without zero
+is number twenty eight ($\M2.2^3+\M2.2^2+\M1.2^1+\M2.2^0$).
+That is, we will write the four symbols \M2, \M2, \M1, and \M2
+from left to right in four consecutive squares.
+Then, the initial situation will be as follows.
+\T{0~0~0~A2~2~1~2~0~0~0}\\
+There are two infinities of {\em blank}s,
+one to the left and one to the right, which can be omitted,
+though we have kept three {\em blank}s
+on each side for didactic purposes.
+The scanned square is the one that has attached to it
+the current state, which is \M{A} at the start.
+Now, \M{A2} is the index of the third row in the table,
+so the instruction to do is \M{B2>},
+and therefore the next situation,
+after going to state \M{B}, rewriting the \M2, and moving to the right,
+is as follows.
+\T{0~0~0~2~B2~1~2~0~0~0}\qquad
+For index \M{B2}, the instruction is also \M{B2>}.
+\T{0~0~0~2~2~B1~2~0~0~0}\qquad
+Now the index is \M{B1}, so the instruction is \M{B1>}.
+\T{0~0~0~2~2~1~B2~0~0~0}\qquad
+And, again, the instruction for index \M{B2} is \M{B2>}.
+\T{0~0~0~2~2~1~2~B0~0~0}\qquad
+For \M{B0}, it is \M{C0<},
+so the machine changes the state.
+\T{0~0~0~2~2~1~C2~0~0~0}\qquad
+And, for index \M{C2}, the instruction is \M{C1<}.
+\T{0~0~0~2~2~C1~1~0~0~0}\qquad
+Now, the instruction for \M{C1} is \M{H2<}.
+\T{0~0~0~2~H2~2~1~0~0~0}\qquad\dest
+Since index \M{H2} is not in the table,
+the instruction to do is {\em halt}, so
+we have reached the final situation.
+Then the result of the computation,
+from which the two infinities of {\em blank} symbols are omitted,
+is the string \M{2221}, which is twenty nine in base two without zero.
+We summarize it, thus:
+$\RS S_{\rm 2}<2212> = \RS<2221>$.
+Defining \definition{step} as
+a transition from a computing situation to the next one,
+this computation takes seven steps.
+Now you should try yourself
+$\RS S_{\rm 2}<22> = \RS<111>$,
+and others.
+
+\vfil\break
+
+And, after having tried yourself some computations,
+you can verify whether you are doing it rigthly or wrongly
+using the Turing machine interpreter in GitHub.
+Clone the repository
+{\tt\URL github.com/ramoncasares/UTM<https://github.com/ramoncasares/UTM.git>},
+go to its dir "lua",
+and execute the Lua interpreter in inter\-active mode,
+which uses \M> as prompt.
+Firstly, we will ask the interpreter to redo
+the previous computations.
+\begincode
+...$ git clone git://github.com/ramoncasares/UTM.git
+...$ cd UTM/lua/
+.../UTM/lua$ lua -i
+Lua 5.4.7  Copyright (C) 1994-2024 Lua.org, PUC-Rio
+> mac = require("machine")
+> TMS2t = "A0A0> A1B1> A2B2> B0C0< B1B1> B2B2> C0H1< C1H2< C2C1<"
+> TMS2 = mac:new(TMS2t)
+> TMS2:tape("2212")
+2212
+> TMS2:compute(true)
+2221	 |A2212|->|2B212|->|22B12|->|221B2|->|2212B0|->|221C20|->|22C110|->|2H2210|
+> TMS2:tape("22")
+22
+> TMS2:compute(true)
+111	  |A22|->|2B2|->|22B0|->|2C20|->|C210|->|C0110|->|H01110|
+\endcode
+And we can continue.
+Calling "compute" without arguments, it returns the tape
+and, instead of the steps, the number of steps.
+For more details on these and other functions,
+you can examine the source code,
+which is in directory ".../UTM/lua".
+\begincode
+> TMS2:compute()
+112	5
+> TMS2:compute()
+121	6
+> TMS2:compute()
+122	5
+> TMS2:compute()
+211	7
+> TMS2:compute()
+212	5
+> TMS2:compute()
+221	6
+> TMS2:compute()
+222	5
+> TMS2:compute()
+1111	8
+> TMS2:compute()
+1112	6
+> TMS2:compute()
+1121	7
+> os.exit()
+\endcode
+
+\vfil\break
+
+We could have saved some ink using the meta-symbol \M*.
+Both represent the very same table of Turing machine ${\cal S}_2$,
+although the following one requires less typing.
+$${\cal S}_2\quad\Table{
+ A& 0& A& 0& >\cr
+ A& *& B& *& >\cr
+ B& 0& C& 0& <\cr
+ B& *& B& *& >\cr
+ C& 0& H& 1& <\cr
+ C& 1& H& 2& <\cr
+ C& 2& C& 1& <\cr
+}$$
+
+It is perhaps a bit easier for us to read this reduced form.
+It makes clearer that, when ${\cal S}_2$ is in state \M{A},
+it will keep moving right while reading {\em blank} symbols,
+and that it will change to state \M{B}
+ when it finds a non-{\em blank} symbol.
+This is the standard way to implement the convention that,
+ in the initial situation, the scanned square is
+the leftmost one where a non-{\em blank} symbol is written,
+ or any to its left. \dest
+This convention makes convenient to interpret the
+state of the index of the first row of the table
+ to be the {\em initial} state,
+the symbol of the index of the first row of the table
+ to be the {\em blank} symbol, and
+the movement of the instruction of the first row of the table
+ to be the {\em right} movement.
+Whenever possible, we will take advantage of this
+\definition{first row rule},
+by which the table contains all the information
+that defines a Turing machine.
+
+We can use the interpreter to verify that it is the same Turing machine.
+\begincode
+.../UTM/lua$ lua -i
+Lua 5.4.7  Copyright (C) 1994-2024 Lua.org, PUC-Rio
+> mac = require("machine")
+> TMS2xt = "A0A0>A*B*>B0C0<B*B*>C0H1<C1H2<C2C1<"
+> TMS2x = mac:new(TMS2xt)
+> TMS2x:tape("2212")
+2212
+> TMS2x:compute(true)
+2221   |A2212|->|2B212|->|22B12|->|221B2|->|2212B0|->|221C20|->|22C110|->|2H2210|
+> TMS2x:tape("22")
+22
+> TMS2x:compute(true)
+111    |A22|->|2B2|->|22B0|->|2C20|->|C210|->|C0110|->|H01110|
+> TMS2x:compute()
+112	5
+> Ctrl-D
+\endcode
+
+\vfil\break
+
+Another simple Turing machine,
+which we will use later, is "TM1022".
+$$\M{TM1022}\quad\Table{
+ A& 0& B& 1& >\cr
+ A& 1& A& 1& <\cr
+ B& 0& C& 2& >\cr
+ B& 1& H& 0& <\cr
+ B& 2& A& 2& <\cr
+ C& 0& B& 2& <\cr
+}$$
+This table of Turing machine "TM1022"
+honors the first row rule,
+and then
+the {\em initial} state is "A",
+{\em blank} is "0",
+and {\em right} is ">".
+
+When we run \M{TM1022} on an empty tape we get \M{1022},
+where we have omitted the infinities of blanks.
+We can verify it using the interpreter.
+\begincode
+.../UTM/lua$ lua -i
+Lua 5.4.7  Copyright (C) 1994-2024 Lua.org, PUC-Rio
+> mac = require("machine")
+> TM1022 = mac:new"A0B1> A1A1< B0C2> B1H0< B2A2< C0B2<"
+> TM1022:compute(true)
+1022    |A0|->|1B0|->|12C0|->|1B22|->|A122|->|A0122|->|1B122|->|H1022|
+> os.exit()
+\endcode
+All these examples and other ones are in file "test/machine.lua",
+which is in directory "test".
+To see them, you should go to "test", set "LUA_PATH",
+and read from "machine.lua".
+\begincode
+.../UTM/lua$ cd ../test/
+.../UTM/test$ export LUA_PATH="../lua/?.lua"
+.../UTM/test$ cat machine.lua - | lua -i
+Lua 5.4.7  Copyright (C) 1994-2024 Lua.org, PUC-Rio
+> -- test/machine.lua (RMCG20260116)
+>
+> mac = require("machine")
+>
+> -- TM1022 on an empty tape returns 1022
+> TM1022 = mac:new"A0B1> A1A1< B0C2> B1H0< B2A2< C0B2<"
+> TM1022:compute(true)
+1022    |A0|->|1B0|->|12C0|->|1B22|->|A122|->|A0122|->|1B122|->|H1022|
+> TM1022:compute(true)
+10022   |A1022|->|A01022|->|1B1022|->|H10022|
+> TM1022:compute(true)
+100022  |A10022|->|A010022|->|1B10022|->|H100022|
+.
+.
+.
+> -- end test/machine.lua
+> TM1022:compute(true)
+1000022  |A100022|->|A0100022|->|1B100022|->|H1000022|
+> TM1022:compute(true)
+10000022 |A1000022|->|A01000022|->|1B1000022|->|H10000022|
+\endcode
+
+\vfil\break
+
+\label{TM1022b}
+The set of states and the alphabet of Turing machine "TM1022" are:
+$\Phi = \{ \M{A}, \M{B}, \M{C}, \M{H} \}$ and
+$\Gamma = \{ \M{0}, \M{1}, \M{2} \}$,
+meaning that, in fixed length binary,
+two bits are needed to encode the states and
+two bits are needed to encode the symbols.
+Applying the finite map
+$$\{ \M{A}\rightarrow\M{00}, \M{B}\rightarrow\M{01},
+     \M{C}\rightarrow\M{10}, \M{H}\rightarrow\M{11};\;
+     \M{0}\rightarrow\M{00},
+     \M{1}\rightarrow\M{10}, \M{2}\rightarrow\M{11};\;
+     \M{<}\rightarrow\M{0},  \M{>}\rightarrow\M{1}\}$$
+we get the binary encoded Turing machine "TM1022b".
+$$\M{TM1022b}\quad\Table{
+ 00& 00& 01& 10& 1\cr
+ 00& 10& 00& 10& 0\cr
+ 01& 00& 10& 11& 1\cr
+ 01& 10& 11& 00& 0\cr
+ 01& 11& 00& 11& 0\cr
+ 10& 00& 01& 11& 0\cr
+}$$
+Running \M{TM1022b} on an empty tape we get \M{10 00 11 11},
+where we have omitted the infinities of blanks and
+each symbol is coded by two bits.
+Applying the map for the alphabet in reverse
+$$\{  \M{0}\leftarrow\M{00},
+     \M{1}\leftarrow\M{10}, \M{2}\leftarrow\M{11} \}$$
+we get "1022", which is what "TM1022" computed.
+We can verify it using the interpreter.
+\begincode
+> code = require("code")
+> TM1022b = code.tobinary(TM1022)
+> TM1022b:tape("")
+00
+> TM1022b:compute({prest = "[", postst = "]"})
+10 00 11 11        |[00] 00|->|10 [01] 00|->|10 11 [10] 00|->|10 [01] 11 11|->\
+   |[00] 10 11 11|->|[00] 00 10 11 11|->|10 [01] 10 11 11|->|[11] 10 00 11 11|
+> Ctrl-D
+\endcode
+
+
+\subsection{Turing completeness}
+
+\ndx{Turing completeness}D{\em Turing completeness}
+ is a property of computing, namely,
+that {\em computing can express computing completely}.
+The original formulation is in \cite Turing (1936), page 241,
+in the first sentence of section §6,
+titled {\sl The universal computing machine}:
+“It is possible to invent a single machine
+which can be used to compute any computable sequence.”
+
+In modern terms, a \definition{universal Turing machine} $\cal U$
+is a Turing machine that can emulate any Turing machine $\cal P$.
+The emulation has to be such that,
+if a computation by $\cal P$ halts and computes a string,
+then the emulation by $\cal U$ also halts and computes the same string,
+and if a computation by $\cal P$ does not halt,
+then the emulation by $\cal U$ does not halt either.
+
+Near the end of this paper, in \refsc{Discussion},
+we will see why the modern formulation superseded
+the original one by Turing. But, before that,
+ in order to understand Turing completeness better,
+we will see three universal Turing machines in complete detail.
+So, next, we will present and reconstruct
+the didactic universal Turing machine
+designed by \cite Minsky (1967), §7.
+Here we will call it MMo-UTM.
+
+
+\vfill\break
+
+\section{MMo-UTM}
+
+\labeled{MMo-Tape}\subsection{Tape}
+
+In order to emulate a binary Turing machine ${\cal P}_2$,
+MMo-UTM uses the eight-symbol alphabet
+$\Gamma_{\!\rm o} = \{ \M0, \M1, \M A, \M B, \M M, \M S, \M X, \M Y \}$,
+where "0" is the {\em blank} symbol.
+The initial tape only contains symbol "M" once,
+symbol "Y" twice, symbol "X" as many times as quintuples in ${\cal P}_2$,
+symbol "1" a finite number of times, and any number of blanks, "0".
+MMo-UTM's tape has three areas:
+\beginpoints
+\point {\em tape}: leftly infinite emulated tape of ${\cal P}_2$,
+ where the symbol "M" marks the emulated scanned square;
+\point {\em index}: current/next state and
+ read/write symbol of ${\cal P}_2$;
+\point {\em program}: description of ${\cal P}_2$,
+ that is, its table coded in fixed length binary,
+ so each state is a different binary string of length "s",
+ and linearized, which is done by prefixing each quintuple with an "X".
+ The {\em blank} of ${\cal P}_2$ is coded \M0,
+ its other symbol is coded \M1;
+ {\em left} is coded \M0, and {\em right} is coded \M1.
+\endpoints
+
+A valid initial tape is as follows,
+where value of the bit in the "M" square
+ is the value of rightmost bit in the {\em index},
+and the {\em initial} state is the one written
+ in the  {\em state} area of {\em index}.
+$$\catcode`\<=1 \catcode`\>=2 \catcode`\{=12 \catcode`\}=12 \tt
+\hbox<0*[01]*M[01]*Y[01]{s}[01](X[01]{s}[01][01]{s}[01][01])+Y0*>
+$$
+Our regular expressions use the following meta-symbols:
+\beginpoints
+\point postfix "*", which means zero or more times;
+\point postfix "+", which means one or more times;
+\point postfix "?", which means optional, that is, either once or none;
+\point postfix "{n}", which means "n" times;
+\point the square brackets "[" and "]", which mean
+ any of the symbols between them,\\
+ so "[01]" means either "0" or "1"
+ and "[01]{s}" stands for any binary string of length "s",
+ where "s" is the number of bits that encode
+ each state of ${\cal P}_2$; and
+\point  the parentheses "(" and ")", which enclose regular expressions.
+\endpoints
+
+\MT:
+\MTbeginfig(15cm,3cm,0pt);
+\MT: pickup medpen;
+%\MT: draw (0,0) -- (w,0) -- (w,h) -- (0,h) -- cycle;
+\MT: numeric cn; cn = 64; numeric ch; ch = 20pt;
+\MT: draw (0,h) .. (w,h);
+\MT: draw (0,h-ch) .. (w,h-ch);
+\MT:
+\MT: for n := 1 step 2 until cn:
+\MT:  draw (n*w/cn,h) .. (n*w/cn,h-ch); endfor
+\MT: string tape;
+\MT: tape = "00M11000Y010X0101110X0110110Y00";
+\MT: string sy;
+\MT: defaultfont:="cmtt12";
+\MT: for n := 0 step 1 until (length tape):
+\MT:  sy := substring (n,n+1) of tape;
+\MT:  z[n].lbl = ( 2*(n+1)*w/cn, h-ch/2 );
+\MT:  label(sy,z[n].lbl);
+\MT: endfor
+\MT: pickup thinpen;
+\MT: defaultfont:="cmti12";
+\MT: labeloffset:=3pt;
+
+\MT: draw (17w/cn,h-ch) .. (17w/cn,0);
+\MT: drawarrow  (17w/cn,8pt) .. (0,8pt);
+\MT: label.top("tape",(8.5w/cn,8pt));
+
+\MT: draw (19w/cn,h-ch) .. (19w/cn,0);
+\MT: draw (25w/cn,h-ch) .. (25w/cn,0);
+\MT: drawdblarrow  (19w/cn,8pt) .. (25w/cn,8pt);
+\MT: label.top("index",(22w/cn,8pt));
+
+\MT: draw (23w/cn,h-ch) .. (23w/cn,(h-ch)/2);
+\MT: drawdblarrow  (19w/cn,(h-ch)/2+8pt) .. (23w/cn,(h-ch)/2+8pt);
+\MT: label.top("state",(21w/cn,(h-ch)/2+8pt));
+
+\MT: draw (27w/cn,h-ch) .. (27w/cn,(h-ch)/2);
+\MT: draw (41w/cn,h-ch) .. (41w/cn,(h-ch)/2);
+\MT: drawdblarrow  (27w/cn,(h-ch)/2+8pt) .. (41w/cn,(h-ch)/2+8pt);
+\MT: label.top("quintuple",(34w/cn,(h-ch)/2+8pt));
+
+\MT: draw (43w/cn,h-ch) .. (43w/cn,(h-ch)/2);
+\MT: draw (57w/cn,h-ch) .. (57w/cn,0pt);
+\MT: drawdblarrow  (43w/cn,(h-ch)/2+8pt) .. (57w/cn,(h-ch)/2+8pt);
+\MT: label.top("quintuple",(50w/cn,(h-ch)/2+8pt));
+
+\MT: drawdblarrow  (25w/cn,8pt) .. (57w/cn,8pt);
+\MT: label.top("program",(41w/cn,8pt));
+
+\MTendfig;
+
+\bigskip
+\centerline{\box\MTbox}
+\bigskip
+
+
+\labeled{MMo-Table}\subsection{Table}
+
+In the next page, you can find a recreation of
+Fig.~7.2-9, page 142, in \cite Minsky (1967).
+We have named the states \M{qmn},
+where \M{m} is a sub-machine number, and \M{n} a state number.
+We use \M{<} for the left movement, instead of Minsky's \M{L},
+and \M{>} for the right movement, instead of his \M{R}.
+
+\vfill\break
+
+\MT:
+\MTbeginfig(15.5cm,23.5cm,0pt); %% MMo-UTM Diagram
+\MTresetpa;
+\MT: pickup medpen;
+\MT: defaultfont:="cmtt12";
+\MT: draw (0,0)--(w,0)--(w,h)--(0,h)--cycle withcolor green;
+\MTcode
+ z99 = (6w/8, 9h/11);
+ z11 = (6w/8, 6.5h/11);
+ z12 = (2w/8, 8h/11);
+ z13 = (3w/8, 9.5h/11);
+ z14 = (3w/8, 6.5h/11);
+ z15 = (4w/8, 8h/11);
+ z16 = (6w/8, 8h/11);
+ z21 = (2w/8, 6h/11);
+ z22 = (3w/8, 5h/11);
+ z23 = (1w/8, 5h/11);
+ z24 = (3w/8, 4h/11);
+ z25 = (1w/8, 4h/11);
+ z26 = (2w/8, 3h/11);
+ z31 = (3w/8, 2h/11);
+ z32 = (1w/8, 2h/11);
+ z33 = (2w/8, 1h/11);
+ z34 = (4w/8, 1h/11);
+ z35 = (6w/8, 1h/11);
+ z41 = (5w/8, 3h/11);
+ z42 = (7w/8, 3h/11);
+ z43 = (5w/8, 4h/11);
+ z44 = (7w/8, 4h/11);
+ z45 = (5w/8, 5h/11);
+ z46 = (7w/8, 5h/11);
+
+\MTline{ label("HALT",(z99+(0,24pt))) withcolor red;}
+\MTstate(99)"q99"">";
+\MTline{ label("START",(z11+(-24pt,24pt))) withcolor blue;}
+\MTstate(11)"q11""<";
+\MTstate(12)"q12"">";
+\MTstate(13)"q13"">";
+\MTstate(14)"q14"">";
+\MTstate(15)"q15""<";
+\MTstate(16)"q16"">";
+
+\MTstate(21)"q21"">";
+\MTstate(22)"q22""<";
+\MTstate(23)"q23""<";
+\MTstate(24)"q24"">";
+\MTstate(25)"q25"">";
+\MTstate(26)"q26"">";
+
+\MTstate(31)"q31""<";
+\MTstate(32)"q32""<";
+\MTstate(33)"q33"">";
+\MTstate(34)"q34"">";
+\MTstate(35)"q35""<";
+
+\MTstate(41)"q41""<";
+\MTstate(42)"q42""<";
+\MTstate(43)"q43""<";
+\MTstate(44)"q44"">";
+\MTstate(45)"q45"">";
+\MTstate(46)"q46"">";
+
+\MT: pickup thinpen;
+
+\MTauto(11)(viii,x)"0""A";
+\MTauto(11)(iv,ii)"1""B";
+\MTline{ z11.Y.p = (7w/8,9h/11);}
+\MTline{ z11.Y.q = (6w/8,10h/11);}
+\MTline{ z11.Y.t = (1w/8,9h/11);}
+\MTinput(11.i)(12.x)"Y""Y";
+\MTinput(12.i)(13.vii)"A""0";
+\MTinput(12.v)(14.xi)"B""1";
+\MTinput(12.vi)(21.xii)"X""X";
+\MTinput(13.v)(15.xi)"0""A";
+\MTinput(13.iv)(16.x)"1""B";
+\MTinput(14.i)(15.vii)"1""B";
+\MTinput(14.ii)(16.viii)"0""A";
+\MTinput(15.ix)(12.iii)"Y""Y";
+\MTinput(16.vi)(11.xii)"X""X";
+\MTinput(16.xii)(99.vi)"Y""Y";
+
+\MTinput(21.v)(22.xi)"0""A";
+\MTinput(21.vii)(23.i)"1""B";
+\MTinput(22.vi)(24.xii)"Y""Y";
+\MTinput(23.vi)(25.xii)"Y""Y";
+\MTinput(24.viii)(26.i)"0""A";
+\MTinput(24.vii)(26.ii)"1""A";
+\MTinput(24.vi)(31.xii)"X""X";
+\MTinput(25.iv)(26.xi)"1""B";
+\MTinput(25.v)(26.x)"0""B";
+\MTinput(25.vi)(32.xii)"X""X";
+\MTinput(26.xii)(21.vi)"X""X";
+
+\MTinput(31.vii)(33.i)"M""A";
+\MTinput(32.v)(33.xi)"M""B";
+\MTauto(33)(ix,vii)"B""1";
+\MTauto(33)(v,vii)"A""0";
+\MTinput(33.iii)(34.ix)"X""X";
+\MTinput(34.ii)(35.x)"0""0";
+\MTinput(34.iv)(35.viii)"1""1";
+\MTauto(35)(iii,v)"B""1";
+\MTauto(35)(vii,v)"A""0";
+\MTinput(35.xi)(41.v)"0""S";
+\MTinput(35.i)(42.vii)"1""S";
+
+\MTinput(41.xii)(43.vi)"A""0";
+\MTinput(41.ii)(44.viii)"B""0";
+\MTinput(42.x)(43.iv)"A""1";
+\MTinput(42.xii)(44.vi)"B""1";
+\MTinput(43.xii)(45.vi)"0""M";
+\MTinput(43.ii)(46.viii)"1""M";
+\MTinput(44.x)(45.iv)"0""M";
+\MTinput(44.xii)(46.vi)"1""M";
+\MTinput(45.i)(11.vii)"S""A";
+\MTinput(46.xi)(11.v)"S""B";
+
+\MTline{ label("MMo-UTM",(4w/8,12pt));}
+
+\MTendfig;
+
+\dest
+\centerline{\lbl{MMoDiagram}{MMoDiagram}\ndx{MMo-UTM}{D}\box\MTbox}
+\vfill\break
+
+This is the comma-separated values table of MMo-UTM,
+as read from the diagram.
+\doublecolumns
+\file{../csv/MMo-UTM.csv}
+\singlecolumn
+
+MMo-UTM is a 8-symbol 24-state Turing machine.
+One of the 24 states is the halting state \M{q99}.
+
+This table does not obey the first row rule completely,
+so we have to specify that the {\em right} movement is \M>,
+and not the movement of the first row.
+Since, in the {\em index} of the first row,
+the state is the {\em initial} state \M{q11},
+and the symbol is the {\em blank} symbol \M0,
+these two do not need to be specified.
+
+Sub-machines Locate and Copy implement the {\em transition} stage
+of the computing loop, seen in \refsc{Turing machine}.
+The other two sub-machines implement
+the other stages of the computing loop, but somehow mixed.
+Since the initial state is \M{q11}, then MMo-UTM starts
+when the {\em read} stage was already done.
+
+\vfil\break
+
+
+\labeled{MMo-Testing}\subsection{Testing}
+
+Now, let us see MMo-UTM emulating "TM101",
+which is a simple Turing machine that,
+when it starts on an empty tape,
+it halts with string "101" on the tape.
+$$\hbox{\tt TM101}\quad\Table{
+ A& 0& B& 1& >\cr
+ B& 0& C& 0& >\cr
+ C& 0& H& 1& <\cr
+}$$
+These are the first commands of "test/MMo.lua", a Lua session.
+Do not forget setting \verb|LUA_PATH|
+when working from a different directory.
+\begincode
+.../UTM/test$ export LUA_PATH="../lua/?.lua"
+.../UTM/test$ lua -i < MMo.lua
+Lua 5.4.7  Copyright (C) 1994-2024 Lua.org, PUC-Rio
+> -- test/MMo.lua (RMCG20260409)
+>
+> mac = require("machine")
+> MM = require("MM")
+> test = require("test")
+>
+> -- The 101 machine
+> TM101 = mac:new"A0B1> B0C0> C0H1<"
+> TM101po = MM.TM2MMo(TM101)
+> TM101:compute(true)
+101    |A0|->|1B0|->|10C0|->|1H01|
+\endcode
+As said, when "TM101" starts on an empty tape,
+it computes string "101".
+We use function
+"MM.TM2MMo(tm)" to encode Turing machine "tm",
+ including its tape,
+into a string that makes a valid initial tape for MMo-UTM.
+So "TM101po" is the string that codes
+"TM101" with an empty tape for MMo-UTM.
+\begincode
+> MM.UTMo:tape(TM101po)
+MY000X0000111X0101001X1001110Y
+> MM.UTMo:steps(900)
+1YA1SXM000111X0101001X1001110Y000000000[q45]0	900
+\endcode
+Function "tm:steps(n)" runs Turing machine "tm" until
+it computes "n" steps or until it {\em halt}s,
+and returns the situation and the number of steps executed.
+Notice that MMo-UTM will not {\em halt},
+because in state "q45" and reading a "0" ({\em blank}),
+it will move to the right without changing the state.
+This happens because the emulation has stepped out
+the {\em tape} area. However, it works
+if we reserve two blank squares to the right of the scanned square.
+\begincode
+> TM101xo = string.gsub(TM101po, "M", "M00")
+> MM.UTMo:tape(TM101xo)
+M00Y000X0000111X0101001X1001110Y
+> MM.UTMo:compute()
+1M1Y11AXAAAABBBXABABAABXBA01110Y	1103
+\endcode
+Since the rightmost symbol in the {\em index} is an "A",
+then the "M" should be interpreted to be a "0", and
+then the emulated {\em tape} is read "101".
+
+\vfil\break
+
+File "test/MMo.lua" also runs
+the example in \cite Minsky (1967), §7.3, pages 143--144.
+The emulated Turing machine is called "MM73".
+Below we show the situations selected by Minsky.
+For each situation we show the current state and the tape,
+where the scanned square is marked with a bar on top.
+
+The first seven lines reproduce the seven lines
+of the unnamed table in page 144,
+where the first line is the initial situation,
+and the seventh line is the situation after
+emulating one step.
+The seventh line and the following ones
+reproduce Table 7.3-1, in page 143,
+which shows the result
+after emulating some more steps.
+
+\medskip
+\begingroup
+\hsize= 10cm
+\input ../test/MM73.out
+\endgroup
+
+%\vfil\break
+
+\labeled{MMo-Limitations}\subsection{Limitations}
+
+\subsubsection{Unidirectionality}
+
+MMo-UTM only emulates Turing machines with singly left-infinite tapes,
+so it will fail to emulate computations that require
+more tape to the right than it is available,
+as seen when emulating \M{TM101}.
+
+Regarding unidirectionality,
+\cite Minsky (1967) writes, §6.3.2 in page 129:
+\begincitation
+It can also be shown that Turing machines which have tapes
+infinite in both directions have no advantage or disadvantage
+over machines with singly infinite tapes.
+\endcitation
+He leaves the way of implementing universal Turing machines
+without this limitation as an exercise to the reader;
+it is problem 7.4-1. In the solution to that problem,
+which is in page 286, he makes two proposals:
+\beginpoints
+\point To {\em fold} the emulated tape, that is,
+ to use the squares of the emulated tape alternatively so,
+ for example, to emulate the squares to the left we use the odd ones
+ and to emulate the squares to the right we use the even ones.
+\point To “replace the symbol "M" by a copy of
+ the whole instruction region”. Then all the tape would be used
+ but, instead of moving one symbol "M",
+ all symbols between the two symbols "Y", including them,
+ would have to be moved.
+\endpoints
+
+His arguments are convincing,
+since they help us to see how it could be done,
+though they are complex to implement.
+Our solution will be easier:
+\refx{MMr-UTM}{MMr-UTM} will fulfill the
+requirement of bidirectionality by
+shifting all the {\em tape} when needed,
+see \refsc{MMr-Shift}.
+
+
+\subsubsection{Binarity}
+
+The other important limitation of MMo-UTM is
+that it can only emulate binary Turing machines,
+which are those that use a two-symbol alphabet.
+\cite Minsky (1967), §6.3 in page 129,
+using Shannon's binary theorem, see \refsc{Binary theorem},
+writes that
+\begincitation
+{\em we can restrict our machines to the use of two symbols},
+without loss of generality.
+\endcitation
+In any case, since to eliminate this limitation
+requires more work, MMr-UTM will only
+emulate binary Turing machines, too.
+This limitation will be eliminated later on,
+when designing MMc-UTM, in \refsc{MMc-UTM}.
+
+
+\subsubsection{Dirtiness}
+
+MMo-UTM output string is not clean, it has to be interpreted.
+For example,
+ when emulating \M{TM101} with enough {\em blank}s to the right,
+the output is:
+$$\M{1M1Y11AXAAAABBBXABABAABXBA01110Y},$$
+which is read \M{101}.
+Then the output should rather be \M{101},
+and we will design MMr-UTM with the requirement
+of cleanliness; see \refsc{MMr-Clean}.
+
+
+\subsubsection{Starting}
+
+When MMo-UTM starts, the scanned square is the square
+where the leftmost symbol \M{X} is written.
+Since this is a peculiar requirement,
+in the Lua interpreter we had to implement
+a \M{resettape} function specific for MMo-UTM.
+Then, MMr-UTM will be designed to start from
+the leftmost non-{\em blank} symbol,
+or any to its left, which is the usual convention.
+Although this is not an important requirement,
+it is very easy to fulfill, just one additional state,
+see \refsc{MMr-Start}.
+
+
+\subsubsection{Empty table}
+
+Another minor limitation is that
+MMo-UTM fails to emulate the empty table Turing machine.
+The table is empty when all transitions are {\em halt}ing ones,
+so it corresponds to a Turing machine $\cal I$ that does nothing:
+ $\forall {\frak d}\in \Gamma^*: \TM I<d> = \TM<d>$.
+$\cal I$ is also known as no-operation ("NOP"), and
+it implements the literal identity function.
+This is an edge case, which was probably overlooked by Minsky,
+that is very easy to overcome,
+since it does not require additional states,
+see \refsc{MMr-Clean}.
+
+
+\vfil\break
+
+\section{MMr-UTM}
+
+
+\labeled{MMr-Tape}\subsection{Tape}
+
+A peculiarity of MMo-UTM is that,
+after having read the symbol written
+in the scanned square of the {\em tape},
+it overwrites it with an "M", but taking care of
+saving its value in the rightmost square of the {\em index}.
+For this reason, when it starts,
+ the value of the "M" square should be interpreted
+ to be the value of the rightmost bit in the {\em index}.
+And it happens the same when it {\em halt}s.
+Therefore, after {\em halt}ing,
+ we have to interpret the value of "M" to be "0" or "1"
+ depending on the value of the rightmost symbol of the {\em index}
+ to be "A" or "B".
+To simplify this, we have added another symbol to MMr-UTM,
+so the scanned square will be either
+ "N", for {\em one}, meaning that emulated scanned square is "1",
+ or "M", meaning that emulated scanned square is {\em blank}.
+With the additional symbol "N", the alphabet of MMr-UTM is
+$\Gamma_{\!\rm r} = \{ \M0, \M1, \M A, \M B, \M M, \M N,
+ \M S, \M X, \M Y \}$, where \M0 is the {\em blank} symbol.
+
+An additional requirement is that,
+whenever it halts, MMr-UTM will return the very same tape that
+the emulated binary Turing machine ${\cal P}_2$ computes.
+Therefore, before {\em halt}ing, MMr-UTM has to blank
+the {\em program} and {\em index}, and it has to tidy up
+the {\em tape}, which requires limiting it.
+To this end, MMr-UTM uses another symbol "Y", the third one,
+to mark the leftmost position of the {\em tape} that has been reached.
+This leftmost "Y" on the {\em tape} is a {\em blank} for ${\cal P}_2$,
+and it has to be the leftmost non-blank symbol on the tape of MMr-UTM,
+except temporarily while it is being moved to the left.
+
+A valid initial tape for MMr-UTM is as follows,
+ where the regular expression uses
+ the meta-symbols seen for MMo-UTM, see \refsc{MMo-Tape}.
+$$\catcode`\<=1 \catcode`\>=2 \catcode`\{=12 \catcode`\}=12 \tt
+\hbox<0*Y[01]*[MN][01]*Y[01]{s}0(X([01]{s}[01][01]{s}[01][01])?)+Y0*>$$
+
+\MT:
+\MTbeginfig(15cm,3cm,0pt);
+\MTresetpa;
+\MT: pickup medpen;
+%\MT: draw (0,0) -- (w,0) -- (w,h) -- (0,h) -- cycle;
+\MT: numeric cn; cn = 64; numeric ch; ch = 20pt;
+\MT: draw (0,h) .. (w,h);
+\MT: draw (0,h-ch) .. (w,h-ch);
+\MT:
+\MT: for n := 1 step 2 until cn:
+\MT:  draw (n*w/cn,h) .. (n*w/cn,h-ch); endfor
+\MT: string tape;
+\MT: tape = "0YM11000Y010X0101110X0110110Y00";
+\MT: string sy;
+\MT: defaultfont:="cmtt12";
+\MT: for n := 0 step 1 until (length tape):
+\MT:  sy := substring (n,n+1) of tape;
+\MT:  z[n].lbl = ( 2*(n+1)*w/cn, h-ch/2 );
+\MT:  label(sy,z[n].lbl);
+\MT: endfor
+\MT: pickup thinpen;
+\MT: defaultfont:="cmti12";
+\MT: labeloffset:=3pt;
+
+\MT: draw (17w/cn,h-ch) .. (17w/cn,0);
+\MT: drawarrow  (17w/cn,8pt) .. (0,8pt);
+\MT: label.top("tape",(8.5w/cn,8pt));
+
+\MT: draw (19w/cn,h-ch) .. (19w/cn,0);
+\MT: draw (25w/cn,h-ch) .. (25w/cn,0);
+\MT: drawdblarrow  (19w/cn,8pt) .. (25w/cn,8pt);
+\MT: label.top("index",(22w/cn,8pt));
+
+\MT: draw (23w/cn,h-ch) .. (23w/cn,(h-ch)/2);
+\MT: drawdblarrow  (19w/cn,(h-ch)/2+8pt) .. (23w/cn,(h-ch)/2+8pt);
+\MT: label.top("state",(21w/cn,(h-ch)/2+8pt));
+
+\MT: draw (27w/cn,h-ch) .. (27w/cn,(h-ch)/2);
+\MT: draw (41w/cn,h-ch) .. (41w/cn,(h-ch)/2);
+\MT: drawdblarrow  (27w/cn,(h-ch)/2+8pt) .. (41w/cn,(h-ch)/2+8pt);
+\MT: label.top("quintuple",(34w/cn,(h-ch)/2+8pt));
+
+\MT: draw (43w/cn,h-ch) .. (43w/cn,(h-ch)/2);
+\MT: draw (57w/cn,h-ch) .. (57w/cn,0pt);
+\MT: drawdblarrow  (43w/cn,(h-ch)/2+8pt) .. (57w/cn,(h-ch)/2+8pt);
+\MT: label.top("quintuple",(50w/cn,(h-ch)/2+8pt));
+
+\MT: drawdblarrow  (25w/cn,8pt) .. (57w/cn,8pt);
+\MT: label.top("program",(41w/cn,8pt));
+\MTendfig;
+
+\centerline{\box\MTbox}
+%\bigskip
+
+\sssecno=0
+
+\labeled{MMr-Table}\subsection{Table}
+
+\labeled{MMr-Start}\subsubsection{Start}
+
+\MT:
+\MTbeginfig(8cm,2cm,0pt);
+\MTresetpa;
+\MT: pickup medpen;
+\MT: defaultfont:="cmtt12";
+%\MT: draw (0,0)--(w,0)--(w,h)--(0,h)--cycle;
+\MT:  z01 = (1w/4, 1h/2);
+\MT:  z11 = (3w/4, 1h/2);
+\MTstate(01)"q00"">";
+\MTstate(11)"q11""<";
+\MT: pickup thinpen;
+\MTinput(01.iii)(11.ix)"X""X";
+\MTendfig;
+
+Another peculiarity of MMo-UTM is that
+it does not start from the lefmost non-blank symbol,
+or from a blank at its left, a convention we follow,
+but it starts from the leftmost "X" on the tape,
+which is the "X" separating the {\em index} from the {\em program}.
+MMr-UTM resolves this problem by adding a new {\em initial} state "q00":
+in state "q00", it moves to the right until an "X" is found,
+and then it goes to state "q11".
+These are the first lines of file "MMr-UTM.csv".
+\par\kern-12pt\vbox to0pt{\kern6pt\hbox to 0pt{\kern5cm\box\MTbox\hss}\vss}
+\pfile{../csv/MMr-UTM.csv}
+-- start
+-- clean
+
+
+\labeled{MMr-Clean}\subsubsection{Clean}
+
+Since MMo-UTM {\em halt}s when the whole {\em program}
+has been inspected without finding any instruction,
+then cleaning starts when, in state "q16",
+the righmost symbol "Y" is read.
+States "q13" and "q14" only read a "Y" when
+ the {\em program} is just an "X",
+that is, when all ${\cal P}_2$ transtions are halting ones,
+see \refsc{Empty table}.
+The cleaning task is simple:
+ after state "q16", or "q13" or "q14", has erased the rightmost "Y",
+ state "q01" moves to the left blanking the {\em program}
+and the {\em index}, and then state "q02" tidies up the {\em tape}
+and {\em halt}s after erasing the leftmost~"Y".
+Having added the symbol "N" simplifies this task,
+since now the read symbol has not been overwritten.
+
+\MT:
+\MTbeginfig(13cm,4cm,0pt);
+\MTresetpa;
+\MT: pickup medpen;
+\MT: defaultfont:="cmtt12";
+%\MT: draw (0,0)--(w,0)--(w,h)--(0,h)--cycle;
+\MTcode
+ z13 = (1w/8, 0.5h/4);
+ z14 = (1w/8, 3.5h/4);
+ z16 = (1w/8, 2h/4);
+ z01 = (3w/8, 2h/4);
+ z02 = (5w/8, 2h/4);
+ z99 = (7w/8, 2h/4);
+
+\MTstate(13)"q13"">";
+\MTstate(14)"q14"">";
+\MTstate(16)"q16"">";
+\MTstate(01)"q01""<";
+\MTstate(02)"q02""<";
+\MTstate(99)"q99"">";
+
+\MT: pickup thinpen;
+
+\MTinput(13.iii)(01.viii)"Y""0";
+\MTinput(14.iii)(01.x)"Y""0";
+\MTinput(16.iii)(01.ix)"Y""0";
+\MTinput(01.iii)(02.ix)"Y""0";
+\MTauto(01)(vii,v)"*""0";
+\MTauto(02)(vii,v)"M""0";
+\MTauto(02)(xi,i)"N""1";
+\MTinput(02.iii)(99.ix)"Y""0";
+
+\MTendfig;
+
+\par\kern-12pt\vbox to0pt{\kern12pt\hbox to 0pt{\kern3.5cm\box\MTbox\hss}\vss}
+\pfile{../csv/MMr-UTM.csv}
+-- clean
+-- locate
+\listline{../csv/MMr-UTM.csv}{23}
+\listline{../csv/MMr-UTM.csv}{27}
+\listline{../csv/MMr-UTM.csv}{32}
+
+%%\vfil\break
+
+\labeled{MMr-Shift}\subsubsection{Shift}
+
+Our last requirement for MMr-UTM is to avoid the
+singly infinite tape limitation of MMo-UTM.
+Minsky makes two proposals, see \refsc{Unidirectionality},
+but we will implement a simpler solution in MMr-UTM:
+to shift all the {\em tape} when needed.
+That is, when the emulated movement is going to intrude into
+the {\em index}, MMr-UTM will shift every written square
+on the {\em tape} one position to the left.
+This task also requires the use of the third symbol "Y" that
+marks the leftmost position of the tape that has been reached.
+
+In case the emulation tries to move onto the second "Y",
+that is, if being MMr-UTM in state "q44", it reads a "Y",
+then it keeps moving to the left until finding the lefmost "Y"
+but remembering each bit to write it in the next to the left square.
+Firstly, state "q51" writes the "M" and,
+depending on the symbol overwritten,
+it goes to state "q52" or to state "q53".
+State "q52" remembers to have read a "0",
+and "q53" to have read a "1".
+Finally, state "q54" writes the new "Y" and,
+since it has read a {\em blank}, it goes to state "q45".
+In case the emulation tries to move onto the first "Y",
+that is, if being in state "q43", MMr-UTM reads a symbol "Y",
+then it overwrites it with an "M", moves to the left
+and goes to state "q54", which rewrites the "Y".
+
+\MT:
+\MTbeginfig(14cm,8cm,0pt);
+\MTresetpa;
+\MT: pickup medpen;
+\MT: defaultfont:="cmtt12";
+%\MT: draw (0,0)--(w,0)--(w,h)--(0,h)--cycle;
+\MTcode
+ z43 = (1w/6, 1h/4);
+ z44 = (5w/6, 1h/4);
+ z51 = (4w/6, 2h/4);
+ z52 = (3w/6, 3h/4);
+ z53 = (3w/6, 1h/4);
+ z54 = (2w/6, 2h/4);
+ z45 = (1w/6, 3h/4);
+
+\MTstate(43)"q43""<";
+\MTstate(44)"q44"">";
+\MTstate(51)"q51""<";
+\MTstate(52)"q52""<";
+\MTstate(53)"q53""<";
+\MTstate(54)"q54""<";
+\MTstate(45)"q45"">";
+
+\MT: pickup thinpen;
+
+\MTinput(43.ii)(54.vii)"Y""M";
+\MTinput(44.x)(51.v)"Y""Y";
+
+\MTinput(51.xi)(52.iv)"0""M";
+\MTinput(51.vii)(53.ii)"1""M";
+\MTinput(52.vii)(53.xi)"1""0";
+\MTinput(52.viii)(54.i)"Y""0";
+%\MTauto(52)(i,xi)"0""0";
+\MTinput(53.i)(52.v)"0""1";
+\MTinput(53.x)(54.v)"Y""1";
+%\MTauto(53)(v,vii)"1""1";
+\MTinput(54.xi)(45.iv)"0""Y";
+
+\MTendfig;
+
+\par\kern-12pt\vbox to0pt{\kern-14.4pt\hbox to 0pt{\kern3cm\box\MTbox\hss}\vss}
+\listline{../csv/MMr-UTM.csv}{78}
+\listline{../csv/MMr-UTM.csv}{82}
+\pfile{../csv/MMr-UTM.csv}
+-- shift
+-- end
+
+
+\vfil\break
+
+\labeled{MMr-Patch}\subsubsection{Patch}
+
+And that is all.
+This is the patch that
+ transforms "MMo-UTM.csv" into "MMr-UTM.csv".
+It was produced this way: "diff MMo-UTM.csv MMr-UTM.csv > MMo2MMr.patch".
+\doublecolumns
+\file{../csv/MMo2MMr.patch}
+\singlecolumn
+
+In the patch we can see the three sections that implement
+\refx{Start}{MMr-Start}, \refx{Clean}{MMr-Clean},
+ and \refx{Shift}{MMr-Shift},
+links to the new sections
+ (going to states "q01", "q54", and "q51"),
+and then those that deal with symbol "N".
+Compared with MMo-UTM, MMr-UTM uses one additional symbol ("N")
+and seven states more ("q00"--"q02" and "q51"--"q54").
+
+MMr-UTM is a 9-symbol 31-state Turing machine.
+One of the 31 states is the halting state \M{q99}.
+In the next page, you can find the complete diagram of MMr-UTM.
+
+
+\labeled{MMr-Testing}\subsection{Testing}
+
+You can use the Turing machine interpreter to test MMr-UTM.
+It could be helpful to run
+\begincode
+.../UTM/test$ export LUA_PATH="../lua/?.lua"
+.../UTM/test$ lua -i < MMr.lua > MMr.out
+\endcode
+and then examining the resulting file ".../UTM/test/MMr.out".
+
+Similarly to MMo-UTM, function "MM.TM2MMr(tm)" encodes
+Turing machine "tm", including its tape,
+into a string that makes a valid initial tape for MMr-UTM.
+And function "MM.MMr2TM(tp)" decodes string "tp", a MMr-UTM tape,
+returning the corresponding Turing machine.
+
+% \medskip
+% \file{../test/MMr.out}
+
+\vfill\break
+
+\MT:
+\MTbeginfig(15.5cm,23.5cm,0pt); %% MMr-UTM Diagram
+\MTresetpa;
+\MT: pickup medpen;
+\MT: defaultfont:="cmtt12";
+\MT: draw (0,0)--(w,0)--(w,h)--(0,h)--cycle withcolor green;
+\MTcode
+ z09 = (4w/8, 10h/11);
+ z01 = (4w/8, 8h/11);
+ z02 = (4w/8, 7h/11);
+ z99 = (4w/8, 6h/11);
+ z11 = (6w/8, 10h/11);
+ z12 = (2w/8, 9h/11);
+ z13 = (1w/8, 10h/11);
+ z14 = (1w/8, 8h/11);
+ z15 = (1w/8, 9h/11);
+ z16 = (4w/8, 9h/11);
+ z21 = (2w/8, 6h/11);
+ z22 = (3w/8, 5h/11);
+ z23 = (1w/8, 5h/11);
+ z24 = (3w/8, 4h/11);
+ z25 = (1w/8, 4h/11);
+ z26 = (2w/8, 5h/11);
+ z31 = (3w/8, 2h/11);
+ z32 = (1w/8, 2h/11);
+ z33 = (2w/8, 1h/11);
+ z34 = (4w/8, 1h/11);
+ z35 = (6w/8, 1h/11);
+ z41 = (5w/8, 3h/11);
+ z42 = (7w/8, 3h/11);
+ z43 = (5w/8, 4h/11);
+ z44 = (7w/8, 4h/11);
+ z45 = (6w/8, 9h/11);
+ z46 = (7w/8, 9h/11);
+ z51 = (6w/8, 5h/11);
+ z52 = (5.4w/8, 6h/11);
+ z53 = (6.6w/8, 6h/11);
+ z54 = (6w/8, 7h/11);
+
+\MTline{ label("START",(z09+(0,24pt))) withcolor blue;}
+\MTstate(09)"q00"">";
+\MTstate(01)"q01""<";
+\MTstate(02)"q02""<";
+\MTstate(99)"q99"">";
+\MTline{ label("HALT",(z99-(0,24pt))) withcolor red;}
+
+\MTstate(11)"q11""<";
+\MTstate(12)"q12"">";
+\MTstate(13)"q13"">";
+\MTstate(14)"q14"">";
+\MTstate(15)"q15""<";
+\MTstate(16)"q16"">";
+
+\MTstate(21)"q21"">";
+\MTstate(22)"q22""<";
+\MTstate(23)"q23""<";
+\MTstate(24)"q24"">";
+\MTstate(25)"q25"">";
+\MTstate(26)"q26"">";
+
+\MTstate(31)"q31""<";
+\MTstate(32)"q32""<";
+\MTstate(33)"q33"">";
+\MTstate(34)"q34"">";
+\MTstate(35)"q35""<";
+
+\MTstate(41)"q41""<";
+\MTstate(42)"q42""<";
+\MTstate(43)"q43""<";
+\MTstate(44)"q44"">";
+\MTstate(45)"q45"">";
+\MTstate(46)"q46"">";
+
+\MTstate(51)"q51""<";
+\MTstate(52)"q52""<";
+\MTstate(53)"q53""<";
+\MTstate(54)"q54""<";
+
+\MT: pickup thinpen;
+
+\MTinput(09.iii)(11.ix)"X""X";
+
+\MTinput(01.vi)(02.xii)"Y""0";
+\MTauto(01)(i,iii)"*""0";
+\MTauto(02)(xi,ix)"M""0";
+\MTauto(02)(vii,ix)"N""1";
+\MTinput(02.vi)(99.xii)"Y""0";
+
+\MTauto(11)(ii,xii)"0""A";
+\MTauto(11)(x,xii)"1""B";
+\MTinput(11.viii)(12.ii)"Y""Y";
+\MTinput(12.xi)(13.v)"A""0";
+\MTinput(12.vii)(14.i)"B""1";
+\MTinput(12.vi)(21.xii)"X""X";
+\MTinput(13.vi)(15.xii)"0""A";
+\MTinput(13.iii)(16.x)"1""B";
+\MTline{ z13.Y.p = (2.7w/8,9.1h/11);}
+\MTinput(13.iv)(01.x)"Y""0";
+\MTinput(14.xii)(15.vi)"1""B";
+\MTinput(14.iii)(16.viii)"0""A";
+\MTinput(14.iv)(01.viii)"Y""0";
+\MTinput(15.iii)(12.ix)"Y""Y";
+\MTinput(16.ii)(11.vii)"X""X";
+\MTinput(16.vi)(01.xii)"Y""0";
+
+\MTinput(21.v)(22.xi)"0""A";
+\MTinput(21.vii)(23.i)"1""B";
+\MTinput(22.vi)(24.xii)"Y""Y";
+\MTinput(23.vi)(25.xii)"Y""Y";
+\MTinput(24.xi)(26.iv)"0""A";
+\MTinput(24.x)(26.v)"1""A";
+\MTinput(24.vi)(31.xii)"X""X";
+\MTinput(25.i)(26.viii)"0""B";
+\MTinput(25.ii)(26.vii)"1""B";
+\MTinput(25.vi)(32.xii)"X""X";
+\MTinput(26.xii)(21.vi)"X""X";
+
+\MTinput(31.vii)(33.i)"M""A";
+\MTinput(31.v)(33.ii)"N""A";
+\MTinput(32.v)(33.xi)"M""B";
+\MTinput(32.vii)(33.x)"N""B";
+\MTauto(33)(ix,vii)"B""1";
+\MTauto(33)(v,vii)"A""0";
+\MTinput(33.iii)(34.ix)"X""X";
+\MTinput(34.ii)(35.x)"0""0";
+\MTinput(34.iv)(35.viii)"1""1";
+\MTauto(35)(iii,v)"B""1";
+\MTauto(35)(vii,v)"A""0";
+\MTinput(35.xi)(41.v)"0""S";
+\MTinput(35.i)(42.vii)"1""S";
+
+\MTinput(41.xii)(43.vi)"A""0";
+\MTinput(41.ii)(44.viii)"B""0";
+\MTinput(42.x)(43.iv)"A""1";
+\MTinput(42.xii)(44.vi)"B""1";
+\MTline{ z43.O.p = (4.7w/8,6h/11);}
+\MTinput(43.xi)(45.vii)"0""M";
+\MTline{ z43.I.p = (4.8w/8,6h/11);}
+\MTinput(43.xii)(46.vii)"1""N";
+\MTline{ z43.Y.p = (4.9w/8,5h/11);}
+\MTline{ z43.Y.q = (4.9w/8,6h/11);}
+\MTinput(43.i)(54.ix)"Y""M";
+\MTline{ z44.O.p = (7.1w/8,6h/11);}
+\MTinput(44.xii)(45.v)"0""M";
+\MTline{ z44.I.p = (7.3w/8,6h/11);}
+\MTinput(44.i)(46.v)"1""N";
+\MTinput(44.xi)(51.v)"Y""Y";
+\MTinput(45.xii)(11.vi)"S""A";
+\MTinput(46.xi)(11.v)"S""B";
+
+\MTinput(51.xi)(52.v)"0""M";
+\MTinput(51.i)(53.vii)"1""M";
+\MTinput(52.iv)(53.viii)"1""0";
+\MTinput(52.i)(54.vii)"Y""0";
+\MTinput(53.x)(52.ii)"0""1";
+\MTinput(53.xi)(54.v)"Y""1";
+\MTinput(54.xii)(45.vi)"0""Y";
+
+\MTline{ label("MMr-UTM",(4w/8,12pt));}
+
+\MTendfig;
+
+\dest
+\centerline{\lbl{MMrDiagram}{MMrDiagram}\ndx{MMr-UTM}{D}\box\MTbox}
+
+\vfil\break
+
+\section{Binary Turing completeness theorem}
+
+\lbl{binary Turing completeness theorem}{binary Turing completeness theorem}%
+Whenever it halts,
+MMr-UTM returns the very same binary string that
+the emulated binary Turing machine ${\cal P}_2$ computes. And,
+if ${\cal P}_2$ does not halt, then MMr-UTM will not halt, either.
+Therefore, MMr-UTM is a perfect emulator of binary Turing machines.
+The \ndx{binary Turing completeness theorem}D{\em theorem of binary Turing completeness} says:\\
+{\sc Theorem}: {\em There is a binary-universal Turing machine}.
+
+{\sc Proof}: In other words,
+$$\exists\,{\cal U}_2\in{\frak T},
+  \forall {\cal P}_2\in{\frak T}_2,
+  \forall {\frak d}_2\in\Gamma_2^* \;:\;
+  {\cal U}_2\langle\,{\frak p}_2| {\frak d}_2\,\rangle
+   =  {\cal P}_2\langle{\frak d}_2\rangle$$
+where:
+\beginpoints
+\point $\frak T$ is the set of Turing machines,
+ so ${\cal U}_2$ is a Turing machine,
+\point ${\frak T}_2$ is the set of binary Turing machines,
+ which are those that use only two symbols,
+ {\em blank}, coded \M0, and another symbol, coded \M1,
+ so their alphabet is
+ $\Gamma_{\!2} = \{ \M0, \M1 \}$,
+ and then ${\cal P}_2$ is a binary Turing machine
+ and ${\frak d}_2$ is a binary string,
+\point ${\cal P}_2\langle{\frak d}_2\rangle \in \Gamma^*_2$
+ is the output string computed by ${\cal P}_2$ when
+ its input is ${\frak d}_2$,\\
+ or $\infty\notin\Gamma^*_2$ if it does not {\em halt},
+\point ${\frak p}_2\in {\cal L}_{{\cal U}_2}$
+ is the program that encodes ${\cal P}_2$\\
+ in the language ${\cal L}_{{\cal U}_2}$ implemented by ${\cal U}_2$,
+ ${\cal L}_{{\cal U}_2} \subset \Gamma^*_{\!{\cal U}_2}$,
+\point ${\frak p}_2| {\frak d}_2 \in  {\cal L}_{{\cal U}_2}$
+ is the string that composes
+ program ${\frak p}_2$ and string ${\frak d}_2$, and
+\point ${\cal U}_2\langle\,{\frak p}_2| {\frak d}_2\,\rangle
+ \in \Gamma^*_2$ is the corresponding output
+ string computed by ${\cal U}_2$,\\
+ or $\infty\notin\Gamma^*_2$ if it does not {\em halt}.
+\endpoints
+
+Since MMr-UTM, in the place of ${\cal U}_2$,
+satisfies the equation,
+we have shown that the theorem is {\sc true}.
+\QED
+
+MMr-UTM is a constructive proof of the theorem.
+Notice that MMo-UTM does not satisfy the equation
+because of its unidirectionality, see \refsc{Unidirectionality},
+because of its dirtiness, see \refsc{Dirtiness},
+and because it fails to emulate $\cal I$, see \refsc{Empty table}.
+
+\label{Binary theorem}
+The only remaining limitation of MMr-UTM is that the emulated
+Turing machine has to be binary, that is, it has to use
+only two symbols, {\em blank} and another one.
+Regarding this limitation \cite Shannon (1956), page 163, wrote:
+\begincitation
+It is also possible, as we will now show,
+to construct a machine, C,
+which will act like any given Turing machine A
+and use only two symbols 1 and 0 on its tape,
+one of which, 0 say, is the symbol for a blank square.
+\endcitation
+Here, we will call it the \definition{binary theorem} by Shannon.
+
+Following Shannon, to emulate an arbitrary
+$m$-symbol $n$-state Turing machine A
+with a universal Turing machine that only emulates
+two-symbol Turing machines, as MMr-UTM,
+we would have to compute the corresponding
+binary Turing machine C, which, by his calculations,
+has at most $3n2^w+n(2w-7)$ states,
+where $w\in{\bb N}$ is such that $2^{w-1} < m \le 2^w$.
+This way, we would be transferring complexity
+from the universal Turing machine to the encoding,
+see \refsc{Discussion}.
+
+Together, the binary Turing completeness theorem and
+Shannon's binary theorem
+show that there is a universal Turing machine.
+So next we will design MMc-UTM, a universal Turing machine,
+that is, one that can emulate any Turing machine,
+without exceptions. We will base MMc-UTM on  MMr-UTM,
+which is MMo-UTM revised.
+
+
+\vfil\break
+
+\section{MMc-UTM}
+
+\labeled{MMc-Tape}\subsection{Tape}
+
+In order to emulate any Turing machine $\cal P$,
+MMc-UTM uses the same encoding for programs and data as MMo-UTM,
+with minor differences, as follows.
+MMo-UTM requires a binary fixed-length encoding
+for the emulated states $\Phi_{\cal P}$, and MMc-UTM too.
+We are denoting the number of bits that encode an emulated state "s".
+MMo-UTM uses a binary fixed-length {\em index}, and MMc-UTM too,
+which thus requires a binary fixed-lengh encoding
+for the emulated alphabet $\Gamma_{\!\cal P}$.
+We will denote the number of bits that encode an emulated symbol "w".
+Another requirement is that
+ the emulated blank is a string of {\em blank}s,
+that is, a string of "w" symbols "0" of MMc-UTM.
+Aditionally, in order to avoid ambiguities,
+all other emulated symbols should start with a "1",
+though this is not a requirement.
+Finally, MMo-UTM encodes emulated {\em left} as \M0
+and emulated {\em right} as \M1, and MMc-UTM too.
+
+The initial tape of Misky's MMo-UTM has exactly one "M" on the tape,
+marking the emulated scanned square.
+The initial tape of MMc-UTM has "w" consecutive "M" or "N" symbols,
+where "w" in the number of bits needed to encode each emulated symbol.
+Save for this, the tape of MMc-UTM is organized the same way that
+the tape of MMr-UTM, see \refsc{MMr-Tape}.
+As MMr-UTM, compared with MMo-UTM,
+MMc-UTM uses an additional symbol "N",
+so the alphabet of MMc-UTM is
+ $\Gamma_{\!\rm c} = \{ \M0, \M1, \M A, \M B, \M M, \M N,
+ \M S, \M X, \M Y \}$, where "0" is the {\em blank} symbol.
+
+The initial tape of MMc-UTM contains
+ symbol "Y" three times,
+ "w" times in total symbols "M" and "N",
+ symbol "X" as many times as quintuples in $\cal P$, and at least one,
+ symbol "1" a finite number of times,
+ and any number of blanks, "0".
+The initial tape of MMc-UTM is any described by the regular expression
+\begincode
+0*Y[01]*[MN]{w}[01]*Y[01]{s}[01]{w}(X([01]{s}[01]{w}[01]{s}[01]{w}[01])?)+Y0*
+\endcode
+which uses the meta-symbols seen for MMo-UTM, see \refsc{MMo-Tape}.
+
+The tape of MMc-UTM has three areas:
+\beginpoints
+\point {\em tape}: emulated tape of $\cal P$,
+ where the consecutive symbols "M" and "N" mark
+ the emulated scanned square and represent its value,
+ "M" for "0" and "N" for "1";
+\point {\em index}: current/next state ({\em st}) and
+ read/write symbol ({\em sy}) of $\cal P$;
+\point {\em program}: description of $\cal P$,
+ that is, its linearized table encoded in fixed length binary,
+ done by prefixing each binary encoded quintuple of $\cal P$
+ with a symbol "X".
+\endpoints
+
+\MT:
+\MTbeginfig(15cm,3cm,0pt);
+\MT: pickup medpen;
+%\MT: draw (0,0) -- (w,0) -- (w,h) -- (0,h) -- cycle;
+\MT: numeric cn; cn = 64; numeric ch; ch = 20pt;
+\MT: draw (0,h) .. (w,h);
+\MT: draw (0,h-ch) .. (w,h-ch);
+\MT:
+\MT: for n := 1 step 2 until cn:
+\MT:  draw (n*w/cn,h) .. (n*w/cn,h-ch); endfor
+\MT: string tape;
+\MT: tape = "YMN10Y0001X000011100X000111010Y";
+\MT: string sy;
+\MT: defaultfont:="cmtt12";
+\MT: for n := 0 step 1 until (length tape):
+\MT:  sy := substring (n,n+1) of tape;
+\MT:  z[n].lbl = ( 2*(n+1)*w/cn, h-ch/2 );
+\MT:  label(sy,z[n].lbl);
+\MT: endfor
+\MT: pickup thinpen;
+\MT: defaultfont:="cmti12";
+\MT: labeloffset:=3pt;
+
+\MT: draw (11w/cn,h-ch) .. (11w/cn,0);
+\MT: drawarrow  (11w/cn,8pt) .. (0,8pt);
+\MT: label.top("tape",(6w/cn,8pt));
+
+\MT: draw (13w/cn,h-ch) .. (13w/cn,0);
+\MT: draw (21w/cn,h-ch) .. (21w/cn,0);
+\MT: drawdblarrow  (13w/cn,8pt) .. (21w/cn,8pt);
+\MT: label.top("index",(17w/cn,8pt));
+
+\MT: draw (17w/cn,h-ch) .. (17w/cn,(h-ch)/2);
+\MT: drawdblarrow  (13w/cn,(h-ch)/2+8pt) .. (17w/cn,(h-ch)/2+8pt);
+\MT: label.top("st",(15w/cn,(h-ch)/2+8pt));
+\MT: drawdblarrow  (17w/cn,(h-ch)/2+8pt) .. (21w/cn,(h-ch)/2+8pt);
+\MT: label.top("sy",(19w/cn,(h-ch)/2+8pt));
+
+\MT: draw (23w/cn,h-ch) .. (23w/cn,(h-ch)/2);
+\MT: draw (41w/cn,h-ch) .. (41w/cn,(h-ch)/2);
+\MT: drawdblarrow  (23w/cn,(h-ch)/2+8pt) .. (41w/cn,(h-ch)/2+8pt);
+\MT: label.top("quintuple",(32w/cn,(h-ch)/2+8pt));
+
+\MT: draw (43w/cn,h-ch) .. (43w/cn,(h-ch)/2);
+\MT: draw (61w/cn,h-ch) .. (61w/cn,0pt);
+\MT: drawdblarrow  (43w/cn,(h-ch)/2+8pt) .. (61w/cn,(h-ch)/2+8pt);
+\MT: label.top("quintuple",(52w/cn,(h-ch)/2+8pt));
+
+\MT: drawdblarrow  (21w/cn,8pt) .. (61w/cn,8pt);
+\MT: label.top("program",(41w/cn,8pt));
+
+\MTendfig;
+
+\bigskip
+\centerline{\box\MTbox}
+\medskip
+
+We will follow the emulation of Turing machine "TM1022b",
+ see \refsc{TM1022b}, by MMc-UTM.
+The initial tape for our "TM1022b" example is shown below,
+where the scanned square is marked with a bar on top, which is,
+initially, the leftmost non-blank square:
+\smallskip\continuepar
+\hbox{\qquad\tt\=YMMY0000X000001101X001000100X010010111X011011000X011100110X100001110Y}
+
+
+\vfill\break
+
+\openin\situations=../test/pr1022.out
+
+\labeled{MMc-Table}\subsection{Table}
+
+\sssecno=-1
+
+\labeled{MMc-Start}\subsubsection{Start}
+
+
+% MMc-UTM has several sub-machines,
+% which we will explain one by one.
+
+\MT:
+\MTbeginfig(8cm,2cm,0pt);
+\MTresetpa;
+\MT: pickup medpen;
+\MT: defaultfont:="cmtt12";
+%\MT: draw (0,0)--(w,0)--(w,h)--(0,h)--cycle;
+\MT:  z01 = (1w/4, 1h/2);
+\MT:  z11 = (3w/4, 1h/2);
+\MTstate(01)"q00"">";
+\MTstate(11)"q11""<";
+\MT: pickup thinpen;
+\MTinput(01.iii)(11.ix)"X""X";
+\MTendfig;
+
+The initial situation of our "TM1022b" example is:
+
+\nextsituation
+%\tape{q00}{\=YMMY0000X000001101X001000100X010010111X011011000X011100110X100001110Y}
+
+This first sub-machine,
+which we take from MMr-UTM, see \refsc{MMr-Start},
+only uses one state, the {\em initial} state "q00",
+which moves to the right until the lefmost "X" is found.
+Once the proper square is pointed to,
+it goes to state "q11" to locate the instruction,
+see \refsc{MMc-Locate}.
+So these are the first lines of file "MMc-UTM.csv".
+\par\kern-12pt\vbox to0pt{\kern14.4pt\hbox to 0pt{\kern5cm\box\MTbox\hss}\vss}
+\pfile{../csv/MMc-UTM.csv}
+-- start
+-- clean
+
+When this sub-machine terminates the first time, the situation is as follows.
+
+\nextsituation
+%\tape{q11}{YMMY000\=0X000001101X001000100X010010111X011011000X011100110X100001110Y}
+
+
+\labeled{MMc-Locate}\subsubsection{Locate}
+
+We take the locate sub-machine of MMo-UTM.
+As \cite Minsky (1967), page 139, explains:
+\begincitation
+It first searches to the right to find the first
+state-symbol pair that matches the one represented in
+the [{\em index}] area. On the path to the desired
+pair, it changes all "0"'s and "1"'s to "A"'s and "B"'s.
+After finding the desired pair,
+and changing it also to "A"'s and "B"'s,
+it runs back to the leftmost "X".
+\endcitation
+
+\MT:
+\MTbeginfig(12cm,8cm,0pt);
+\MTresetpa;
+\MT: pickup medpen;
+\MT: defaultfont:="cmtt12";
+%\MT: draw (0,0)--(w,0)--(w,h)--(0,h)--cycle;
+
+\MTcode
+ z70 = (1w/8, 7h/9);
+ z11 = (3w/8, 7h/9);
+ z12 = (5w/8, 4h/9);
+ z13 = (6w/8, 7h/9);
+ z14 = (6w/8, 1h/9);
+ z15 = (7w/8, 4h/9);
+ z16 = (3w/8, 4h/9);
+ z21 = (3w/8, 1h/9);
+ z71 = (1w/8, 4h/9);
+
+\MTstate(70)"q00"">";
+\MTstate(11)"q11""<";
+\MTstate(12)"q12"">";
+\MTstate(13)"q13"">";
+\MTstate(14)"q14"">";
+\MTstate(15)"q15""<";
+\MTstate(16)"q16"">";
+\MTstate(21)"q21"">";
+\MTstate(71)"q01""<";
+
+\MT: pickup thinpen;
+
+\MTinput(70.iii)(11.ix)"X""X";
+\MTauto(11)(xi,i)"0""A";
+\MTauto(11)(iii,i)"1""B";
+\MTinput(11.v)(12.x)"Y""Y";
+\MTinput(12.i)(13.vii)"A""0";
+\MTinput(12.v)(14.xi)"B""1";
+\MTinput(12.vii)(21.ii)"X""X";
+\MTinput(13.v)(15.xi)"0""A";
+\MTinput(13.viii)(16.ii)"1""B";
+\MTinput(13.x)(71.ii)"Y""0";
+\MTinput(14.i)(15.vii)"1""B";
+\MTinput(14.x)(16.iv)"0""A";
+%\MTline{ z14.Y.p = (3.5w/8, 2h/9); }
+\MTinput(14.viii)(71.iv)"Y""0";
+\MTinput(15.ix)(12.iii)"Y""Y";
+\MTinput(16.xii)(11.vi)"X""X";
+\MTinput(16.ix)(71.iii)"Y""0";
+
+\MTendfig;
+
+If an instruction is found,
+then it goes to state "q21" to copy the instruction
+ from the {\em program} into de {\em index}, see \refsc{MMc-Copy}.
+If no instruction is found,
+then it goes to state "q01" to finish, see \refsc{MMc-Clean};
+ as done also for MMr-UTM, see \refsc{MMr-Clean},
+ we have added two transitions to state "q01",
+one from "q13" and the other form "q14",
+ in order to deal with empty tables.
+\par\kern-12pt\vbox to0pt{\kern24pt\hbox to 0pt{\kern4cm\box\MTbox\hss}\vss}
+\pfile{../csv/MMc-UTM.csv}
+-- locate
+-- copy
+
+When this sub-machine terminates the first time,
+ the situation is as follows.
+
+\nextsituation
+%\tape{q21}{YMMY0000X\=AAAA01101X001000100X010010111X011011000X011100110X100001110Y}
+
+
+\labeled{MMc-Copy}\subsubsection{Copy}
+
+We take without any modification the copy sub-machine of MMo-UTM.
+As \cite Minsky (1967), pages 139 and 140, explains:
+\begincitation \font\tt=cmsltt10 at 12pt
+It starts on the leftmost "X", and from there shifts to the right
+ until it has gone past the last "A" or "B" and
+ sees for the first time some some "0"'s or "1"'s.
+ These "0"'s or "1"'s describe the new state of [$\cal P$],
+ the new symbol which must eventually be printed in location "M"["N"],
+ and the direction of motion.
+ Next the machine copies the "0"'s and "1"'s representing
+ the [new state] and [new symbol] into the [{\em index}] region;
+ it does not print [the direction of motion] but just remembers it.
+\endcitation
+
+
+\MT:
+\MTbeginfig(12cm,7.5cm,0pt);
+\MTresetpa;
+\MT: pickup medpen;
+\MT: defaultfont:="cmtt12";
+%\MT: draw (0,0)--(w,0)--(w,h)--(0,h)--cycle;
+\MTcode
+ z12 = (1w/8, 5h/6);
+ z21 = (4w/8, 5h/6);
+ z22 = (2w/8, 3h/6);
+ z23 = (6w/8, 3h/6);
+ z24 = (3w/8, 1h/6);
+ z25 = (5w/8, 1h/6);
+ z26 = (4w/8, 3h/6);
+ z31 = (1w/8, 1h/6);
+ z35 = (7w/8, 1h/6);
+
+\MTstate(12)"q12"">";
+\MTstate(21)"q21"">";
+\MTstate(22)"q22""<";
+\MTstate(23)"q23""<";
+\MTstate(24)"q24"">";
+\MTstate(25)"q25"">";
+\MTstate(26)"q26"">";
+\MTstate(31)"q31""<";
+\MTstate(35)"q35""<";
+
+\MT: pickup thinpen;
+
+\MTinput(12.iii)(21.ix)"X""X";
+\MTinput(21.vii)(22.i)"0""A";
+\MTinput(21.v)(23.xi)"1""B";
+\MTinput(22.v)(24.xi)"Y""Y";
+\MTinput(23.vii)(25.i)"Y""Y";
+\MTinput(24.i)(26.viii)"0""A";
+\MTinput(24.ii)(26.vii)"1""A";
+\MTinput(24.ix)(31.iii)"X""X";
+\MTinput(25.x)(26.v)"1""B";
+\MTinput(25.xi)(26.iv)"0""B";
+\MTinput(25.iii)(35.ix)"X""X";
+\MTinput(26.xii)(21.vi)"X""X";
+
+\MTendfig;
+
+
+It copies the instruction from the {\em program} to the {\em index},
+both the next state and the symbol to write.
+State "q21" moves to the right till
+ the leftmost unread bit in the {\em program},
+and if its a "0" then it changes it to "A" and goes to state "q22",
+but if its a "1" then it changes it to "B" and goes to state "q23".
+State "q22" (and "q23") moves to the left until the middle "Y",
+and then changes to state "q24" (to "q25").
+State "q24" (and "q25") moves to the right till
+ the leftmost unwritten bit in the {\em index},
+it changes it to "A" (to "B"), and goes to state "q26".
+State "q26" moves to the leftmost "X", which marks the beginning
+of the {\em program}, and goes to state "q21" to copy the next bit.
+If in state "q24" (or "q25") there are not any unwritten bit
+ in the {\em index}, then it is the movement,
+so it goes to state "q31" to emulate the left movement
+(or to "q35" to emulate the right movement), see \refsc{MMc-Move}.
+\par\kern-12pt\vbox to0pt{\kern14.4pt\hbox to 0pt{\kern4cm\box\MTbox\hss}\vss}
+\pfile{../csv/MMc-UTM.csv}
+-- copy
+-- move left
+
+When this sub-machine terminates the first time,
+since the movement is {\em right}, the situation is as follows.
+
+\nextsituation
+%\tape{q35}{YMMYABB\=AXAAAAABBABX001000100X010010111X011011000X011100110X100001110Y}
+
+
+\vfill\break
+
+\labeled{MMc-Move}\subsubsection{Move}
+
+It changes as many "0"'s or "1"'s to "A"'s and "B"'s
+as there are "M"'s and "N"'s. This way later, when reading,
+these marked bits will be found among all the "0"'s and "1"'s
+on the {\em tape}.
+In the process, the "M"'s and "N"'s are changed to "S"'s.
+
+\MT:
+\MTbeginfig(12cm,8cm,0pt);
+\MTresetpa;
+\MT: pickup medpen;
+\MT: defaultfont:="cmtt12";
+%\MT: draw (0,0)--(w,0)--(w,h)--(0,h)--cycle;
+\MTcode
+ z24 = (7w/8, 5h/6);
+ z31 = (5w/8, 5h/6);
+ z32 = (5w/8, 3h/6);
+ z33 = (3w/8, 3h/6);
+ z34 = (3w/8, 5h/6);
+ z51 = (3w/8, 1h/6);
+ z52 = (1w/8, 1h/6);
+
+\MTstate(24)"q24"">";
+\MTstate(31)"q31""<";
+\MTstate(32)"q32""<";
+\MTstate(33)"q33"">";
+\MTstate(34)"q34""<";
+\MTstate(51)"q51"">";
+\MTstate(52)"q52""<";
+
+\MT: pickup thinpen;
+
+\MTinput(24.ix)(31.iii)"X""X";
+\MTinput(31.v)(32.i)"M""S";
+\MTinput(31.vi)(32.xii)"N""S";
+\MTinput(32.x)(33.ii)"0""A";
+\MTinput(32.viii)(33.iv)"1""B";
+\MTinput(32.xi)(34.v)"Y""A";
+\MTinput(33.vii)(51.xi)"0""0";
+\MTinput(33.vi)(51.xii)"1""1";
+\MTinput(33.iii)(32.ix)"M""S";
+\MTline{ z33.N.p = (4.5w/8, 2.2h/6);}
+\MTinput(33.v)(32.vi)"N""S";
+%\MTinput(33.v)(32.vii)"N""S";
+\MTinput(33.viii)(52.ii)"Y""Y";
+\MTinput(34.vi)(33.xii)"0""Y";
+
+\MTendfig;
+
+
+Let us see first the movement to the left.
+In this case, the "A"'s and "B"'s are written to the left
+of the "M"'s and "N"'s by state "q32".
+But firstly, state "q31" has moved from the {\em program},
+ where a left movement was read, through the {\em index},
+ until the rightmost "M" or "N" on the {\em tape},
+ and then another square to the left.
+If state "q32" finds a "Y",
+then the inspected {\em tape} has to be enlarged to the left,
+which is done by state "q34".
+State "q33" determines whether to go back to "q32" to continue marking,
+or go forward to  state "q51", or to "q52", to write, see \refsc{MMc-Write}.
+\par\kern-12pt\vbox to0pt{\kern-15pt\hbox to 0pt{\kern4cm\box\MTbox\hss}\vss}
+\pfile{../csv/MMc-UTM.csv}
+-- move left
+-- move right
+
+\MT:
+\MTbeginfig(12cm,6cm,0pt);
+\MTresetpa;
+\MT: pickup medpen;
+\MT: defaultfont:="cmtt12";
+%\MT: draw (0,0)--(w,0)--(w,h)--(0,h)--cycle;
+\MTcode
+ z25 = (1w/8, 3h/4);
+ z35 = (3w/8, 3h/4);
+ z36 = (5w/8, 3h/4);
+ z37 = (5w/8, 1h/4);
+ z41 = (7w/8, 3h/4);
+ z48 = (7w/8, 1h/4);
+ z51 = (2w/8, 1h/4);
+
+\MTstate(25)"q25"">";
+\MTstate(35)"q35""<";
+\MTstate(36)"q36"">";
+\MTstate(37)"q37""<";
+\MTstate(41)"q41""<";
+\MTstate(48)"q48"">";
+\MTstate(51)"q51"">";
+
+\MT: pickup thinpen;
+
+\MTinput(25.iii)(35.ix)"X""X";
+\MTinput(35.ii)(36.x)"M""S";
+\MTinput(35.iv)(36.viii)"N""S";
+\MTinput(36.vii)(37.xi)"0""A";
+\MTinput(36.v)(37.i)"1""B";
+\MTinput(36.iii)(41.ix)"Y""Y";
+\MTinput(37.x)(51.ii)"0""0";
+\MTinput(37.viii)(51.iv)"1""1";
+\MTinput(37.xii)(36.vi)"M""S";
+\MTline{ z37.N.p = (5.7w/8,2h/4);}
+\MTinput(37.ii)(36.iv)"N""S";
+\MTinput(37.ix)(51.iii)"Y""Y";
+\MTinput(48.ix)(37.iii)"S""S";
+
+\MTendfig;
+
+Lets now see the movement to the right.
+In this case, the "A"'s and "B"'s are written to the right
+of the "M"'s and "N"'s by state "q36".
+But firstly, state "q35" has moved from the {\em program},
+ where a right movement was read,
+through the {\em index}, until the rightmost "M" or "N" on the {\em tape}.
+Then state "q36" marks the bits to be read,
+but, if it finds the "Y" separating the {\em tape} from the {\em index},
+then it goes to state "q41" to make room, see \refsc{MMc-Shift}.
+Finally, state "q37" determines whether to go back to "q36"
+to continue marking,
+or go forward to state "q51" to write, see \refsc{MMc-Write}.
+\par\kern-12pt\vbox to0pt{\kern6pt\hbox to 0pt{\kern4cm\box\MTbox\hss}\vss}
+\pfile{../csv/MMc-UTM.csv}
+-- move right
+-- shift
+
+When this sub-machine terminates the first time,
+since the movement was {\em right} and
+it finds a "Y", the situation is as follows.
+
+\nextsituation
+%\tape{q41}{YM\=TYABBAXAAAAABBABX001000100X010010111X011011000X011100110X100001110Y}
+
+
+\vfill\break
+
+\labeled{MMc-Shift}\subsubsection{Shift}
+
+\MT:
+\MTbeginfig(12cm,15cm,0pt);
+\MTresetpa;
+\MT: pickup medpen;
+\MT: defaultfont:="cmtt12";
+%\MT: draw (0,0)--(w,0)--(w,h)--(0,h)--cycle;
+\MTcode
+ z36 = (1w/8, 7h/8);
+ z37 = (1w/8, 1h/8);
+ z41 = (4w/8, 7h/8);
+ z42 = (7w/8, 7h/8);
+ z43 = (4w/8, 5h/8);
+ z44 = (7w/8, 5h/8);
+ z45 = (4w/8, 3h/8);
+ z46 = (7w/8, 3h/8);
+ z47 = (7w/8, 1h/8);
+ z48 = (4w/8, 1h/8);
+
+\MTstate(36)"q36"">";
+\MTstate(37)"q37""<";
+\MTstate(41)"q41""<";
+\MTstate(42)"q42""<";
+\MTstate(43)"q43""<";
+\MTstate(44)"q44""<";
+\MTstate(45)"q45""<";
+\MTstate(46)"q46""<";
+\MTstate(47)"q47""<";
+\MTstate(48)"q48"">";
+
+\MT: pickup thinpen;
+
+\MTinput(36.iii)(41.ix)"Y""Y";
+\MTinput(41.ii)(42.x)"B""A";
+\MTinput(41.vi)(43.xii)"M""A";
+\MTinput(41.vii)(43.xi)"N""A";
+\MTinput(41.v)(44.xi)"S""A";
+\MTinput(42.ix)(41.iii)"A""B";
+\MTinput(42.vii)(43.ii)"M""B";
+\MTinput(42.viii)(43.i)"N""B";
+\MTinput(42.vi)(44.xii)"S""B";
+\MTinput(43.vi)(45.xii)"0""M";
+\MTinput(43.v)(46.xi)"1""M";
+\MTauto(43)(viii,x)"N""M";
+\MTinput(43.iii)(44.ix)"S""M";
+\MTline{ z43.Y.p = (3w/8,3h/8);}
+\MTline{ z43.Y.q = (4w/8,2h/8);}
+\MTline{ z43.Y.t = (5w/8,1.67h/8);}
+\MTinput(43.vii)(47.x)"Y""M";
+\MTinput(44.vii)(45.i)"0""S";
+\MTinput(44.vi)(46.xii)"1""S";
+\MTinput(44.viii)(43.iv)"M""S";
+\MTinput(44.x)(43.ii)"N""S";
+\MTline{ z44.Y.p = (8w/8,3h/8);}
+\MTinput(44.v)(47.ii)"Y""S";
+
+\MTinput(45.ii)(46.x)"1""0";
+\MTinput(45.v)(47.xi)"Y""0";
+\MTinput(46.viii)(45.iv)"0""1";
+\MTinput(46.vi)(47.xii)"Y""1";
+\MTinput(47.ix)(48.iii)"0""Y";
+\MTinput(48.ix)(37.iii)"S""S";
+
+\MTendfig;
+
+If trying to move to the right, it finds the middle "Y",
+that is, if the emulation is trying to intrude into the {\em index},
+then it has to make room for the symbol,
+so it will shift all the symbols on the tape.
+Conceptually, it is part of the right movement;
+it comes from state "q36" when there is no room,
+and goes back to the state "q37" to complete the movement.
+Though it has many transitions, is simple.
+States "q41"--"q46" do the main shifting,
+each one remembering the symbol read, "A", "B", "M", "S", "0" or "1".
+State "q47" writes the leftmost "Y" one square to the left,
+and state "q48" moves to the leftmost "S" and
+goes back to state "q37" to complete the movement,
+ see \refsc{MMc-Move}.
+\par\kern-12pt\vbox to0pt{\kern-6pt\hbox to 0pt{\kern4cm\box\MTbox\hss}\vss}
+\pfile{../csv/MMc-UTM.csv}
+-- shift
+-- write
+
+When this sub-machine terminates the first time,
+the situation is as follows.
+
+\nextsituation
+%\tape{q37}{Y\=MTAYABBAXAAAAABBABX001000100X010010111X011011000X011100110X100001110Y}
+
+And when the first right movement is completed,
+the situation is as follows.
+
+\nextsituation
+%\tape{q51}{Y\=TTAAYABBAXAAAAABBABX001000100X010010111X011011000X011100110X100001110Y}
+
+
+\vfill\break
+
+\labeled{MMc-Write}\subsubsection{Write}
+
+\MT:
+\MTbeginfig(12cm,9cm,0pt);
+\MTresetpa;
+\MT: pickup medpen;
+\MT: defaultfont:="cmtt12";
+%\MT: draw (0,0)--(w,0)--(w,h)--(0,h)--cycle;
+\MTcode
+ z33 = (1w/8, 7h/8);
+ z37 = (5w/8, 7h/8);
+ z51 = (3w/8, 7h/8);
+ z52 = (1w/8, 5h/8);
+ z53 = (3w/8, 5h/8);
+ z54 = (1w/8, 2h/8);
+ z55 = (3w/8, 3h/8);
+ z56 = (3w/8, 1h/8);
+ z57 = (5w/8, 2h/8);
+ z61 = (7w/8, 2h/8);
+
+\MTstate(33)"q33"">";
+\MTstate(37)"q37""<";
+\MTstate(51)"q51"">";
+\MTstate(52)"q52""<";
+\MTstate(53)"q53"">";
+\MTstate(54)"q54""<";
+\MTstate(55)"q55""<";
+\MTstate(56)"q56""<";
+\MTstate(57)"q57""<";
+\MTstate(61)"q61"">";
+
+\MT: pickup thinpen;
+
+\MTinput(33.ii)(51.x)"0""0";
+\MTinput(33.iv)(51.viii)"1""1";
+\MTinput(33.vi)(52.xii)"Y""Y";
+\MTinput(37.x)(51.ii)"0""0";
+\MTinput(37.viii)(51.iv)"1""1";
+\MTinput(37.ix)(51.iii)"Y""Y";
+
+\MTinput(51.vii)(52.i)"Y""Y";
+\MTinput(52.iii)(53.ix)"S""M";
+\MTinput(53.vii)(54.i)"X""X";
+\MTinput(54.ii)(55.ix)"A""S";
+\MTinput(54.iv)(56.ix)"B""S";
+\MTinput(55.iii)(57.x)"M""0";
+\MTinput(56.iii)(57.viii)"M""1";
+
+\MTinput(57.xi)(53.v)"S""M";
+\MTinput(57.i)(61.xi)"0""0";
+\MTinput(57.ii)(61.x)"1""1";
+\MTinput(57.iii)(61.ix)"A""A";
+\MTinput(57.iv)(61.viii)"B""B";
+\MTinput(57.v)(61.vii)"Y""Y";
+
+\MTendfig;
+
+Every symbol "S" in the {\em tape} is overwritten with
+the symbol that is in the {\em index}.
+State "q51" moves to the "Y" that separates the {\em tape}
+from the {\em index}, and state "q52" moves to the rightmost "S",
+and changes it to an "M". Then
+state "q53" moves to the "X" that separates the {\em index}
+from the {\em program}, and state "q54" moves to the rightmost
+"A" or "B", which overwrites with an "S",
+and it remembers it going to state "q55" or "q56".
+States "q55" and "q56" move to the "M" and overwrites it
+accordingly, that is, "q55" with a "0" and "q56" with a "1".
+Then, state "q57" inspects the square at its left;
+if it is a "S", it overwrites it with an "M" and goes to "q53"
+to write another bit; otherwise it goes to state "q61"
+to read the symbol, see \refsc{MMc-Read}.
+\par\kern-12pt\vbox to0pt{\kern6pt\hbox to 0pt{\kern4cm\box\MTbox\hss}\vss}
+\pfile{../csv/MMc-UTM.csv}
+-- write
+-- read
+
+When this sub-machine terminates the first time,
+the situation is as follows.
+
+\nextsituation
+%\tape{q61}{Y\=10AAYABSSXAAAAABBABX001000100X010010111X011011000X011100110X100001110Y}
+
+
+\vfill\break
+
+\labeled{MMc-Read}\subsubsection{Read}
+
+\MT:
+\MTbeginfig(9cm,8cm,0pt);
+\MTresetpa;
+\MT: pickup medpen;
+\MT: defaultfont:="cmtt12";
+%\MT: draw (0,0)--(w,0)--(w,h)--(0,h)--cycle;
+\MTcode
+ z57 = (5w/6, 5h/6);
+ z61 = (1w/6, 5h/6);
+ z62 = (1w/6, 3h/6);
+ z63 = (3w/6, 3h/6);
+ z64 = (3w/6, 1h/6);
+ z65 = (1w/6, 1h/6);
+ z66 = (5w/6, 1h/6);
+ z69 = (5w/6, 3h/6);
+
+\MTstate(57)"q57""<";
+\MTstate(61)"q61"">";
+\MTstate(62)"q62"">";
+\MTstate(63)"q63""<";
+\MTstate(64)"q64""<";
+\MTstate(65)"q65"">";
+\MTstate(66)"q66"">";
+\MTstate(69)"q00"">";
+
+\MT: pickup thinpen;
+
+\MTinput(57.xi)(61.i)"0""0";
+\MTinput(57.x)(61.ii)"1""1";
+\MTinput(57.ix)(61.iii)"A""A";
+\MTinput(57.viii)(61.iv)"B""B";
+\MTinput(57.vii)(61.v)"Y""Y";
+
+\MTinput(61.vi)(62.xii)"Y""Y";
+\MTinput(62.ii)(63.x)"0""0";
+\MTinput(62.iv)(63.viii)"1""1";
+\MTauto(62)(xi,ix)"A""0";
+\MTauto(62)(vii,ix)"B""1";
+\MTinput(62.iii)(63.ix)"Y""Y";
+\MTinput(63.vi)(64.xii)"S""X";
+\MTinput(63.iii)(69.ix)"Y""Y";
+\MTinput(64.ix)(65.iii)"A""M";
+\MTinput(64.iii)(66.ix)"B""N";
+\MTinput(65.i)(63.vii)"X""0";
+\MTinput(66.xi)(63.v)"X""1";
+
+\MTendfig;
+
+The bits marked on the {\em tape} are
+writen in the symbol part of the {\em index}.
+State "q61" moves to the middle "Y".
+State "q62" moves right through the index and program
+restoring every "A" to "0" and every "B" to "1" until
+finding the first "0" or "1", or the rightmost "Y".
+State "q63" moves to the rightmost "S" that overwrites with an "X"
+and goes to state "q64".
+State "q64" moves to the rightmost "A" or "B",
+and remembers it going to state "q65" or to "q66".
+State "q65" then moves to the "X" and overwrites it with a "0";
+and state "q66" with a "1".
+Both go back to "q63" to read another bit.
+However, if in state "q63" there is not any remaining "S",
+the reading task is completed, the emulated step finishes,
+and MMc-UTM goes back to the initial state "q00",
+see \refsc{MMc-Start}.
+\par\kern-12pt\vbox to0pt{\kern12pt\hbox to 0pt{\kern5cm\box\MTbox\hss}\vss}
+\pfile{../csv/MMc-UTM.csv}
+-- read
+-- end
+
+When this sub-machine terminates the first time,
+the first emulated step is completed, and the situation is as follows.
+
+\nextsituation
+%\tape{q00}{Y10MMY\=0100X000001101X001000100X010010111X011011000X011100110X100001110Y}
+
+\continuepar
+This is a valid initial situation, save for the scanned square,
+which is not the leftmost "Y".
+
+\vfill\break
+
+\labeled{MMc-Clean}\subsubsection{Clean}
+
+We take without any modification the clean sub-machine of MMr-UTM,
+see \refsc{MMr-Clean}.
+When the computation has been completed,
+the only reamining task is to clean the tape,
+by erasing the {\em program} and the {\em index}
+and tidying up the {\em tape}.
+This is the situation.
+
+\skipsituation{7}
+\nextsituation
+%\tape{q01}{YNM001111Y11BAXAAAAABBABXAABAAABAAXABAABABBBXABBABBAAAXABBBAABBAXBA000111\=00}
+
+\MT:
+\MTbeginfig(13cm,4cm,0pt);
+\MTresetpa;
+\MT: pickup medpen;
+\MT: defaultfont:="cmtt12";
+%\MT: draw (0,0)--(w,0)--(w,h)--(0,h)--cycle;
+\MTcode
+ z13 = (1w/8, 0.5h/4);
+ z14 = (1w/8, 3.5h/4);
+ z16 = (1w/8, 2h/4);
+ z01 = (3w/8, 2h/4);
+ z02 = (5w/8, 2h/4);
+ z99 = (7w/8, 2h/4);
+
+\MTstate(13)"q13"">";
+\MTstate(14)"q14"">";
+\MTstate(16)"q16"">";
+\MTstate(01)"q01""<";
+\MTstate(02)"q02""<";
+\MTstate(99)"q99"">";
+
+\MT: pickup thinpen;
+
+\MTinput(13.iii)(01.viii)"Y""0";
+\MTinput(14.iii)(01.x)"Y""0";
+\MTinput(16.iii)(01.ix)"Y""0";
+\MTinput(01.iii)(02.ix)"Y""0";
+\MTauto(01)(vii,v)"*""0";
+\MTauto(02)(vii,v)"M""0";
+\MTauto(02)(xi,i)"N""1";
+\MTinput(02.iii)(99.ix)"Y""0";
+
+\MTendfig;
+
+Since MMc-UTM detects a {\em halt}ing instruction when the whole {\em program}
+has been inspected without finding any instruction,
+then cleaning starts when, in state "q16", or "q13" or "q14",
+the righmost symbol "Y" is read, which is erased.
+Next it goes to state "q01", which erases
+everything until the middle "Y", that is,
+it blanks the {\em program} and the {\em index}.
+And then it goes to state "q02", which tidies up the {\em tape},
+and it finally {\em halt}s after erasing the leftmost "Y".
+\par\kern0pt\vbox to0pt{\kern-15pt\hbox to 0pt{\kern3.75cm\box\MTbox\hss}\vss}
+\pfile{../csv/MMc-UTM.csv}
+-- clean
+-- locate
+
+\bigskip
+
+This is the situation when the halting state is reached.
+
+\skipsituation{1}
+\nextsituation
+%\\tape{q99}{0\=10001111000000000000000000000000000000000000000000000000000000000000000000}
+
+\closein\situations
+
+\continuepar
+Disregarding the infinities of blanks,
+the output is "10001111" which decodes as "1022".
+
+The advantage of coding every non-blank symbol
+with an initial "1", is that then
+the leftmost non-blank bit of the emulation output is
+the leftmost bit of the leftmost symbol.
+On the other hand, if, for example, we would have encoded
+ Turing machine "TM1022" applying the map
+$$\{ \M{0}\leftrightarrow\M{00},
+     \M{1}\leftrightarrow\M{01},
+     \M{2}\leftrightarrow\M{10} \}\;,$$
+then the output of MMc-UTM emulating it on an empty tape
+would have been
+$$\dots\M0\M0\M0\M1\M0\M0\M1\M0\M1\M0\M0\M0\dots\,,$$
+which is ambiguous:
+ either "01-00-10-10" decoded as "1022"
+ or "10-01-01" decoded as "211".
+
+We say that {\em blank} is a {\em special} symbol
+because of these infinities of blanks,
+which are always present on the tapes of Turing machines,
+and which are prone to cause ambiguities when concatenated
+with finite strings, or substrings, of {\em blank} symbols.
+
+\bigskip
+\cleartabs
+MMc-UTM is a 9-symbol 44-state Turing machine.
+In the next page, you can find the complete diagram of MMc-UTM.
+\+ Sub-machines &
+ \refx{Locate}{MMc-Locate} (\M{q1n}) and
+ \refx{Copy}{MMc-Copy} (\M{q2n}),
+ with \refx{Start}{MMc-Start} and \refx{Clean}{MMc-Clean} (\M{q0n}),
+ & use 15 states,\cr
+\+& \refx{Move}{MMc-Move} (\M{q3n}) and
+ \refx{Shift}{MMc-Shift} (\M{q4n}) & use 15 states,\cr
+\+& \refx{Write}{MMc-Write} (\M{q5n}) and
+ \refx{Read}{MMc-Read} (\M{q6n}) & use 13 states,\cr
+\+& which, adding the halting state \M{q99}, make 44 states.\cr
+
+\vfill\break
+
+\MT:
+\MTbeginfig(15.5cm,23.5cm,0pt); %% MMc-UTM Diagram
+\MTresetpa;
+\MT: pickup medpen;
+\MT: defaultfont:="cmtt12";
+\MT: draw (0,0)--(w,0)--(w,h)--(0,h)--cycle withcolor green;
+\MTcode
+ z09 = (4w/8, 10h/11);
+ z01 = (4w/8, 8h/11);
+ z02 = (4w/8, 7h/11);
+ z99 = (4w/8, 6h/11);
+ z11 = (3w/8, 10h/11);
+ z12 = (2w/8, 9h/11);
+ z13 = (1w/8, 10h/11);
+ z14 = (1w/8, 8h/11);
+ z15 = (1w/8, 9h/11);
+ z16 = (4w/8, 9h/11);
+ z21 = (2w/8, 7h/11);
+ z22 = (3w/8, 6h/11);
+ z23 = (1w/8, 6h/11);
+ z24 = (3w/8, 5h/11);
+ z25 = (1w/8, 5h/11);
+ z26 = (2w/8, 6h/11);
+ z31 = (3w/8, 4h/11);
+ z32 = (4w/8, 4h/11);
+ z33 = (6w/8, 4h/11);
+ z34 = (5w/8, 5h/11);
+ z35 = (1w/8, 4h/11);
+ z36 = (1w/8, 3h/11);
+ z37 = (7w/8, 3h/11);
+ z41 = (1w/8, 2h/11);
+ z42 = (1w/8, 1h/11);
+ z43 = (3w/8, 2h/11);
+ z44 = (3w/8, 1h/11);
+ z45 = (5w/8, 2h/11);
+ z46 = (5w/8, 1h/11);
+ z47 = (7w/8, 1h/11);
+ z48 = (7w/8, 2h/11);
+ z51 = (7w/8, 4h/11);
+ z52 = (7w/8, 5h/11);
+ z53 = (6w/8, 5.5h/11);
+ z54 = (5w/8, 7h/11);
+ z55 = (6w/8, 7.5h/11);
+ z56 = (6w/8, 6.5h/11);
+ z57 = (7w/8, 7h/11);
+ z61 = (7w/8, 8h/11);
+ z62 = (7w/8, 9h/11);
+ z63 = (6w/8, 9h/11);
+ z64 = (6w/8, 10h/11);
+ z65 = (5w/8, 10h/11);
+ z66 = (7w/8, 10h/11);
+
+\MTline{ label("START",(z09+(0,24pt))) withcolor blue;}
+\MTstate(09)"q00"">";
+\MTstate(01)"q01""<";
+\MTstate(02)"q02""<";
+\MTstate(99)"q99"">";
+\MTline{ label("HALT",(z99-(0,24pt))) withcolor red;}
+
+\MTstate(11)"q11""<";
+\MTstate(12)"q12"">";
+\MTstate(13)"q13"">";
+\MTstate(14)"q14"">";
+\MTstate(15)"q15""<";
+\MTstate(16)"q16"">";
+
+\MTstate(21)"q21"">";
+\MTstate(22)"q22""<";
+\MTstate(23)"q23""<";
+\MTstate(24)"q24"">";
+\MTstate(25)"q25"">";
+\MTstate(26)"q26"">";
+
+\MTstate(31)"q31""<";
+\MTstate(32)"q32""<";
+\MTstate(33)"q33"">";
+\MTstate(34)"q34""<";
+\MTstate(35)"q35""<";
+\MTstate(36)"q36"">";
+\MTstate(37)"q37""<";
+
+\MTstate(41)"q41""<";
+\MTstate(42)"q42""<";
+\MTstate(43)"q43""<";
+\MTstate(44)"q44""<";
+\MTstate(45)"q45""<";
+\MTstate(46)"q46""<";
+\MTstate(47)"q47""<";
+\MTstate(48)"q48"">";
+
+\MTstate(51)"q51"">";
+\MTstate(52)"q52""<";
+\MTstate(53)"q53"">";
+\MTstate(54)"q54""<";
+\MTstate(55)"q55""<";
+\MTstate(56)"q56""<";
+\MTstate(57)"q57""<";
+
+\MTstate(61)"q61"">";
+\MTstate(62)"q62"">";
+\MTstate(63)"q63""<";
+\MTstate(64)"q64""<";
+\MTstate(65)"q65"">";
+\MTstate(66)"q66"">";
+
+\MT: pickup thinpen;
+
+\MTinput(09.ix)(11.iii)"X""X";
+
+\MTinput(01.vi)(02.xii)"Y""0";
+\MTauto(01)(ii,iv)"*""0";
+\MTauto(02)(xi,ix)"M""0";
+\MTauto(02)(vii,ix)"N""1";
+\MTinput(02.vi)(99.xii)"Y""0";
+
+\MTauto(11)(ii,xii)"0""A";
+\MTauto(11)(x,xii)"1""B";
+\MTinput(11.vii)(12.i)"Y""Y";
+\MTinput(12.xi)(13.v)"A""0";
+\MTinput(12.vii)(14.i)"B""1";
+\MTinput(12.vi)(21.xii)"X""X";
+\MTinput(13.vi)(15.xii)"0""A";
+\MTinput(13.iii)(16.x)"1""B";
+\MTline{ z13.Y.p = (2.7w/8,9.1h/11);}
+\MTinput(13.iv)(01.x)"Y""0";
+\MTinput(14.xii)(15.vi)"1""B";
+\MTinput(14.iii)(16.viii)"0""A";
+\MTinput(14.iv)(01.viii)"Y""0";
+\MTinput(15.iii)(12.ix)"Y""Y";
+\MTinput(16.xi)(11.v)"X""X";
+\MTinput(16.vi)(01.xii)"Y""0";
+
+\MTinput(21.v)(22.xi)"0""A";
+\MTinput(21.vii)(23.i)"1""B";
+\MTinput(22.vi)(24.xii)"Y""Y";
+\MTinput(23.vi)(25.xii)"Y""Y";
+\MTinput(24.x)(26.v)"0""A";
+\MTinput(24.xi)(26.iv)"1""A";
+\MTinput(24.vi)(31.xii)"X""X";
+\MTinput(25.i)(26.viii)"1""B";
+\MTinput(25.ii)(26.vii)"0""B";
+\MTinput(25.vi)(35.xii)"X""X";
+\MTinput(26.xii)(21.vi)"X""X";
+
+\MTinput(31.ii)(32.x)"M""S";
+\MTinput(31.iv)(32.viii)"N""S";
+\MTinput(32.ii)(33.x)"0""A";
+\MTinput(32.iii)(33.ix)"1""B";
+\MTinput(32.i)(34.vii)"Y""A";
+\MTinput(33.ii)(51.x)"0""0";
+\MTinput(33.iv)(51.viii)"1""1";
+\MTinput(33.viii)(32.iv)"M""S";
+\MTinput(33.vii)(32.v)"N""S";
+\MTinput(33.i)(52.vii)"Y""Y";
+\MTinput(34.v)(33.xi)"0""Y";
+\MTinput(35.vii)(36.xi)"M""S";
+\MTinput(35.v)(36.i)"N""S";
+
+\MTinput(36.ii)(37.x)"0""A";
+\MTinput(36.iii)(37.ix)"1""B";
+\MTinput(36.vi)(41.xii)"Y""Y";
+\MTinput(37.xi)(51.vii)"0""0";
+\MTinput(37.xii)(51.vi)"1""1";
+\MTinput(37.viii)(36.iv)"M""S";
+\MTinput(37.vii)(36.v)"N""S";
+\MTinput(37.i)(51.v)"Y""Y";
+
+\MTinput(41.vi)(42.xii)"B""A";
+\MTinput(41.iii)(43.ix)"M""A";
+\MTinput(41.iv)(43.viii)"N""A";
+\MTinput(41.v)(44.x)"S""A";
+\MTinput(42.xi)(41.vii)"A""B";
+\MTinput(42.i)(43.viii)"M""B";
+\MTinput(42.ii)(43.vii)"N""B";
+\MTinput(42.iii)(44.ix)"S""B";
+\MTinput(43.iii)(45.ix)"0""M";
+\MTinput(43.iv)(46.x)"1""M";
+\MTauto(43)(x,xii)"N""M";
+\MTinput(43.vi)(44.xii)"S""M";
+\MTline{ z43.Y.p = (5w/8,2.5h/11);}
+\MTinput(43.ii)(47.xi)"Y""M";
+\MTinput(44.ii)(45.viii)"0""S";
+\MTinput(44.iii)(46.ix)"1""S";
+\MTinput(44.xi)(43.vii)"M""S";
+\MTinput(44.i)(43.v)"N""S";
+\MTline{ z44.Y.p = (5w/8,0.5h/11);}
+\MTinput(44.iv)(47.viii)"Y""S";
+
+\MTinput(45.vii)(46.xi)"1""0";
+\MTinput(45.iv)(47.x)"Y""0";
+\MTinput(46.i)(45.v)"0""1";
+\MTinput(46.iii)(47.ix)"Y""1";
+\MTinput(47.xii)(48.vi)"0""Y";
+\MTinput(48.xii)(37.vi)"S""S";
+
+\MTinput(51.xii)(52.vi)"Y""Y";
+\MTinput(52.x)(53.iv)"S""M";
+\MTinput(53.xi)(54.vi)"X""X";
+\MTinput(54.ii)(55.viii)"A""S";
+\MTinput(54.iv)(56.x)"B""S";
+\MTinput(55.iv)(57.x)"M""0";
+\MTinput(56.ii)(57.viii)"M""1";
+
+\MTinput(57.vi)(53.i)"S""M";
+\MTinput(57.xi)(61.vii)"0""0";
+\MTinput(57.xii)(61.vi)"1""1";
+\MTinput(57.i)(61.v)"A""A";
+\MTline{ z57.B.p = (7.4w/8,7.5h/11);}
+\MTinput(57.ii)(61.iv)"B""B";
+\MTline{ z57.Y.p = (7.6w/8,7.5h/11);}
+\MTinput(57.iii)(61.iii)"Y""Y";
+
+\MTinput(61.xii)(62.vi)"Y""Y";
+\MTinput(62.x)(63.ii)"0""0";
+\MTinput(62.viii)(63.iv)"1""1";
+\MTauto(62)(v,iii)"A""0";
+\MTauto(62)(i,iii)"B""1";
+\MTinput(62.ix)(63.iii)"Y""Y";
+\MTinput(63.xii)(64.vi)"S""X";
+\MTinput(63.x)(09.iv)"Y""Y";
+\MTinput(64.viii)(65.iv)"A""M";
+\MTinput(64.iv)(66.viii)"B""N";
+\MTinput(65.v)(63.xi)"X""0";
+\MTinput(66.vii)(63.i)"X""1";
+
+\MTline{ label("MMc-UTM",(4w/8,12pt));}
+
+\MTendfig;
+
+\dest
+\centerline{\lbl{MMcDiagram}{MMcDiagram}\ndx{MMc-UTM}{D}\box\MTbox}
+
+\vfill\break
+
+
+\labeled{MMc-Testing}\subsection{Testing}
+
+We repeat here the emulation of Turing machine "TM1022b" by MMc-UTM.
+The first line shows the initial situation.
+Thereafter, each time state "q00" is reached,
+ MMc-UTM has completed a emulated step.
+It takes MMc-UTM 7397 steps to emulate the 7 steps of "TM1022",
+or of "TM1022b".
+The last line shows the halting situation.
+\medskip
+\input ../test/pr1022.out
+\medskip
+
+You can use again the Turing machine interpreter to test MMc-UTM.
+\begincode
+.../UTM/test$ export LUA_PATH="../lua/?.lua"
+.../UTM/test$ lua -i < MMc.lua > MMc.out
+\endcode
+Then you can examine the resulting output file ".../UTM/test/MMc.out".
+
+Function "MM.TM2MMc(tm)" encodes Turing machine "tm",
+ including its tape,
+into a string that makes a valid initial tape for MMc-UTM,
+and function "MM.MMc2TM(tp)" decodes string "tp", a MMc-UTM tape,
+returning the corresponding Turing machine.
+
+Function "MM.recode(s,dic,rpat,fpat,rsep,fsep)" takes
+ a string "s" representing a table and returns
+ another string representing the same table recoded.
+ Firstly, it uses patterns "rpat" and "fpat" to extract
+ its records and fields,
+ next it codes each field using dictionary "dic",
+ and then it reassembles back the
+ coded fields into records, using "fsep" as separator,
+ and the resulting records into a string,
+ using "rsep" as separator.
+
+Function "tm:steps(n,...)"\ executes steps
+ until some condition is met.
+If Turing machine "tm" halts, then the function returns.
+It also returns after having executed "n" steps.
+Each of the other arguments ("...")\ refers either
+to a state ("s", a "string"),
+and then the function returns if the current state is "s",
+or  to a transition ("{st,sy}", a state and symbol "table"),
+and then the function returns
+ if the current state is "st" and the scanned symbol is "sy".
+
+
+\vfill\break
+
+\section{Turing completeness theorem}
+
+Whenever it halts,
+MMc-UTM returns, simply encoded, the same string that
+the emulated Turing machine $\cal P$ computes. And,
+if $\cal P$ does not halt, then MMc-UTM will not halt, either.
+Therefore, MMc-UTM is a perfect emulator of Turing machines.
+The \ndx{Turing completeness theorem}D{\em theorem of Turing completeness} says:\\
+{\sc Theorem}: {\em There is a universal Turing machine}.
+
+\dest
+{\sc Proof}: In other words,
+$$\exists\,{\cal U}\in{\frak T},\,
+  \forall{\cal P}\in{\frak T},\,
+  \forall{\frak d}\in\Gamma^*_{\!\cal P}:\;
+ \overleftarrow{\TM U<\,p|\vec{d}\,>} = \TM P<d> \;,$$
+where
+\beginpoints
+\point $\frak T$ is the set of Turing machines,
+ so $\cal U$ and $\cal P$ are Turing machines,
+\point ${\frak d}$ is an input string to $\cal P$,
+\point $\TM P<d> \in\Gamma^*_{\!\cal P}$ is the corresponding output
+ string, or $\infty \notin \Gamma^*_{\!\cal P}$ if it does not halt,
+\point the right pointing arrow hat represents encoding, so
+ $\vec{\frak d} \in {\cal L_U}$ is the string $\frak d$
+ encoded in the language $\cal L_U$ implemented by $\cal U$,
+ ${\cal L_U} \subset \Gamma^*_{\!\cal U}$,
+\point ${\frak p} \in {\cal L_U}$ is the \definition{program} that codes
+ $\cal P$ in the language $\cal L_U$,
+ so \smash{$\frak p = \vec{\cal P}$},
+\point the $|$ represents the composing operation
+ of language $\cal L_U$, so $\frak p|\vec{d} \in {\cal L_U}$,
+\point $\TM U<\,p|\vec{d}\,> \in {\cal L_U}$ is the
+ corresponding output string computed by $\cal U$,\\
+ %which is encoded in the language $\cal L_U$,
+ or $\infty \notin \Gamma^*_{\!\cal U}$ if it does not halt, and
+\point the left pointing arrow on top denotes the corresponding decoding,
+ $\forall {\frak d} \in \Gamma^*_{\!\cal P}:\!\!\smash{\overleftarrow{\frak\vec d}} = {\frak d}$,
+ which leaves $\infty$ unchanged, $\overleftarrow{\vphantom{i}\infty} = \infty$.
+\endpoints
+
+Since MMc-UTM, in the place of $\cal U$, satisfies the equation,
+then we have shown that the theorem is {\sc true}.
+\QED
+
+Therefore,
+MMc-UTM proves constructively
+ the theorem of Turing completeness, and
+MMc-UTM is a universal Turing machine~$\cal U$.
+
+It seems imposible that a complex Turing machine
+can be emulated by a simpler universal Turing machine.
+However, this is the case. % For example,
+MMc-UTM is a 9-symbol 44-state Turing machine that is universal,
+and then, even if $\cal P$ is a $\gamma$-symbol $\phi$-state
+Turing machine such that $\gamma > 9$ and $\phi > 44$,
+it can be emulated by MMc-UTM.
+
+
+
+\vfil\break
+
+\section{Discussion}
+
+\subsection{Turing}
+
+The first universal computing machine was designed
+by Alan \cite Turing (1936), §7, who presented a UTM*,
+which we will call ATo-UTM. In his words (page 241),
+ATo-UTM “can be used to compute any computable sequence”,
+because his aim was to compute the binary expansion
+of any computable number, which is one that
+a Turing machine can calculate with arbitrary precision.
+Since mathematically the binary expansion is as valid as any other,
+the binary limitation was not a limitation for Turing.
+In other words, sometimes encoding can be abstracted away.
+
+The requirement of arbitrary precision
+means that, whenever a bit of the computable number
+that is being calculated is commited,
+it will not be recalculated anymore. Then, for Turing,
+it was enough to compute {\em sequences}, for which
+a singly infinite tape suffices. Thus, basically, ATo-UTM has the
+same limitations that MMo-UTM has, as seen in \refsc{MMo-Limitations}:
+unidirectionality, binarity, and dirtiness.
+For details on ATo-UTM limitations, see \cite Petzold (2008), page 161.
+
+Even though ATo-UTM and MMo-UTM have the same limitations,
+ATo-UTM is much more complex than MMo-UTM.
+The reason, we can guess, is that ATo-UTM was the very first one,
+while MMo-UTM had the advantage of examining all previous trials.
+The reader interested on ATo-UTM
+will find \cite Davies (2004) explanation
+clearer than the original exposition by Turing,
+for the same reason.
+By the way, ATo-UTM is so complex that Davies,
+although his aim was just to correct the errors,
+had to redesign ATo-UTM in order to run it.
+Following our naming practice,
+we should call the version revised by Davies ATr-UTM.
+
+
+\subsection{Encoding}
+
+Sometimes encoding can be abstracted away,
+but some other times encoding could be abused.
+This problem was addressed by \cite Davis (1956), page 167.
+\begincitation
+ The universality of a Turing machine is manifested
+ by its ability, {\em via a suitable encoding},
+ to perform any computation which could be performed
+ by any given Turing machine. However, the condition
+ must surely be added that the encoding itself be,
+ in some suitable sense, simple.
+ For there would not be much point in claiming
+ universality for a Turing machine
+ for which the encoding would require, in essence,
+ another universal machine to carry it out.
+ This raises the problem of explicitly
+ defining {\em universal Turing machine},
+ which problem is the subject of the present note.
+\endcitation
+Then, following Turing,
+a universal Turing machine is a Turing machine
+that can perform any computation.
+And, in addition, Davis requires (page 169) “that
+the encoding [of the computation] may be entirely accomplished
+by Turing machines which are not themselves universal.”
+
+\dest\cite Minsky (1967),
+whole first paragraph of §14.8.1 in page 277,
+goes further.
+In order to make “sure that the machine was not applied to the data
+during the encoding procces”, he requires that
+ “{\em the encodings for the machine structure and for the data
+ [to be] done separately}.”
+This is why, in the equation of Turing completeness,
+ see \refsc{Turing completeness theorem},
+ program $\frak p$ is Turing machine $\cal P$ encoded and
+ argument $\frak\vec d$ is data $\frak d$ encoded {\em separately},
+ which are then composed, denoted by $|$.
+We will call Minsky's requirement the \definition{separation requirement}.
+
+Minsky made those comments because
+he had designed a 4-symbol 7-state Turing machine
+that can emulate any 2-tag system.
+Then, using a theorem by Cocke, presented in page 270,
+that affirms that, for any Turing machine $\cal P$,
+ there is a 2-tag system that behaves like $\cal P$,
+he concludes that his 4-7-machine must be universal,
+though the encoding is not straightforward. As he writes,
+in page 278, “the conversion [doing the encoding]
+is a primitive-recursive operation
+[thus fulfilling Davis' requirement]. In fact,
+it involves only writing down sixteen productions
+for each quintuple.”
+On the other hand, Minsky's didactic encoding used by MMo-UTM
+is straightforward, just a finite mapping, see \refsc{MMo-UTM}.
+And so they are MMr-UTM and MMc-UTM encodings,
+ see \refsc{MMr-UTM} and \refsc{MMc-UTM}.
+
+Minsky is right writing, again in page 277, that
+“there is not particular virtue in the quintuple formulation,
+and one might be able to get a simpler universal Turing machine
+with some other representation.”
+This has allowed him, and others following his track,
+to design small universal Turing machines but,
+by requiring an additional theorem,
+these universal Turing machines do not make
+self-contained proofs of the theorem of Turing completeness.
+
+
+\subsection{Definition}
+
+Our definition of universal Turing machine
+is not anymore the one by Turing (UTM*).
+The current definition of universal Turing machine (UTM)
+derives from the separation requirement by Minsky.
+\beginpoints
+\point Turing: a UTM* is a Turing machine that
+can perform any computation.
+\point Minsky: a UTM is a Turing machine that
+ can emulate any Turing machine.
+\endpoints
+Neither ATo-UTM nor MMo-UTM qualify as universal Turing machines
+under the current definition,
+since neither can emulate itself. On the other hand,
+any universal Turing machine under the current definition
+can perform any computation, and then it
+“can be used to compute any computable sequence”,
+and then it is also universal by Turing's definition.
+In summary, every UTM is a UTM*, but not the converse.
+
+Minsky's separation requirement is the reason why
+the current definition of universal Turing machine
+has superseded the original one by Turing. Let us see it.
+
+Any computation can be performed in many ways.
+Let us take, for example, the computation that calculates
+the hundreth bit of the binary expansion of number $\pi$.
+There are several algorithms to calculate it,
+and for each algorithm several Turing machines that implement it,
+and then, at least, one way of encoding each Turing machine
+as a program for each universal Turing machine.
+Since number $\pi$ is computable,
+our computation example is a halting one,
+so it will take a finite number of steps
+and it will scan a finite number of tape squares.
+Then, a singly infinite tape is enough,
+meaning that there are programs that
+compute it on a singly infinite tape.
+In summary, we can compute it using
+a UTM* that only emulates singly infinite tapes,
+but, since not every program goes,
+we have to make some judgements on the behavior of programs.
+For example, since MMo-UTM's {\em tape} is {\em only} infinite
+to the left, we have to determine in advance
+how many squares to the right does each program require.
+And this is undecidable,
+given the halting problem and its consequences,
+in this case \cite[\1's (\2)] Rice (1953) theorem.
+
+The current definition of universal Turing machine
+avoids this problem. And, in the case of MMc-UTM,
+ which satisfies the current definition,
+encoding simply applies a finite mapping to translate
+each element (state, symbol or movement) in the Turing machine table
+into a binary string, so it is independent of its behavior;
+all is syntax, no semantics are involved.
+
+
+\subsection{Foundations}
+
+In order to compare our proof of the theorem,
+in sections \refsc{MMc-UTM} and \refsc{Turing completeness theorem},
+with others, it could be instructive to divert ourselves for a moment
+to the theory of recursive functions.
+In a very precise sense,
+recursion theory and computing theory are the same,
+since \cite Turing (1937) proved that
+every recursive function is computable, and the converse.
+In that sense, the theorem of Turing completeness of computing
+is equivalent to the normal form theorem of recursion.
+However, \cite Kleene (1952) presents his normal form theorem
+in page 288, using Gödel numbers and dense mathematical tools.
+Of course, it can be done in less pages;
+\cite Davis (1958), who also uses recursion theory and Gödel numbers,
+presents the theorem of Turing completeness in page 64
+and Kleene normal form theorem in page 171.
+
+In stark contrast to those proofs,
+the proof in this paper should be easy to follow,
+since the universal Turing machine presented, MMc-UTM,
+is completely defined,
+so it can be run in any Turing machine interpreter,
+and it is composed of eight sub-machines,
+each one with a specific task accomplished
+with eight states, or less.
+Once you understand how each sub-machine works,
+then it will also be easy to see how the whole machine works.
+At that point, you will convince yourself that
+there is a universal Turing machine.
+Surely, if you design your own universal Turing machine,
+which I encorage you to do,
+you will feel more assured, but
+even in that case you can elaborate on this one, MMc-UTM,
+to design yours, as I did on the universal Turing machine
+by \cite Minsky (1967), MMo-UTM.
+In the end,
+the purpose of any mathematical proof should be
+to convince its reader that the theorem is {\sc true}.
+
+The advantage of \cite Turing (1936) computing
+ compared with other equivalent forms,
+such as recursion or lambda-calculus,
+is its conceptual simplicity.
+For example, it is documented, see \cite Davis (1982),
+that, for stating what is effectively calculable,
+Gödel disregarded his own recursion
+and Church's lambda-calculus, and that
+he was instead convinced that Turing computing
+was the definitive answer
+only after he had read % \cite[\1's (\2)] Turing (1936) analysis,
+Turing's analysis,
+which is axiomatic, see \cite Shagrir (2006).
+Using an analogy, Turing computing is machine code, while
+all other equivalent formulations are higher level languages.
+
+Then, an advantage of the proof in this paper
+is that, being of the lowest level,
+it does not need any abstraction.
+Another advantage is that,
+neither depending on other theorems nor
+on equivalences with other formulations,
+it is self-contained.
+And together, concreteness and independency,
+show the foundational character
+of the proof of the theorem of Turing completeness
+given in this paper, sections
+\refsc{MMc-UTM} and \refsc{Turing completeness theorem}.
+
+
+\section{Conclusion}
+
+In this paper, we have presented
+the whole table of a universal Turing machine
+that has not any limitation,
+that is conceptually simple, and
+that uses a straightforward encoding.
+These are qualities that make it
+a good foundational and constructive proof of
+the theorem of Turing completeness.
+
+
+\vfill\break
+
+
+\xsection{Definitions}
+
+\begingroup
+ \def\D{D}
+ \def\ndxline#1#2#3#4#5{\def\1{#1}\def\2{#2}%
+  \ifx\2\D\par \noindent\hangindent20pt
+   {\em\ref{#1}}\quad(\refsc{#1})%
+   \def\I{alphabet}\ifx\1\I\quad
+    completely ordered set of symbols, $\Gamma$\fi
+   \def\I{binary theorem}\ifx\1\I\quad
+    every Turing machine can be emulated by a two-symbol one\fi
+   \def\I{binary Turing completeness theorem}\ifx\1\I\quad
+    there is a Turing machine that can emulate
+    any two-symbol Turing machine\fi
+   \def\I{blank}\ifx\1\I\quad
+    empty tape square and its corresponding symbol\fi
+   \def\I{computable function}\ifx\1\I\quad
+    one implemented by a Turing machine\fi
+   \def\I{computation}\ifx\1\I\quad
+    from the initial situation,
+    follow instructions till {\em halt}, if ever\fi
+   \def\I{first row rule}\ifx\1\I\quad
+    the first row declares the {\em initial} state,
+    the {\em blank} symbol and the {\em right} movement\fi
+   \def\I{halt}\ifx\1\I\quad
+    instruction that terminates a computation\fi
+   \def\I{halting state}\ifx\1\I\quad
+    one from which all transitions are halting ones\fi
+   \def\I{index}\ifx\1\I\quad
+    instruction reference: current state, read symbol\fi
+   \def\I{initial state}\ifx\1\I\quad
+    state when starting a computation\fi
+   \def\I{instruction}\ifx\1\I\quad
+    what to do: either next state, write symbol and movement or {\em halt}\fi
+    \def\I{meta-string infty}\ifx\1\I\quad
+    a computation that does not {\em halt}\fi
+   \def\I{meta-symbol *}\ifx\1\I\quad
+    any other symbol in index, and the same symbol in instruction\fi
+   \def\I{MMc-UTM}\ifx\1\I\quad
+    universal Turing machine based on MMo-UTM, \refx{see diagram}{MMcDiagram}\fi
+   \def\I{MMo-UTM}\ifx\1\I\quad
+    didactic universal Turing machine by Minsky, \refx{see diagram}{MMoDiagram}\fi
+   \def\I{MMr-UTM}\ifx\1\I\quad
+    MMo-UTM revised, \refx{see diagram}{MMrDiagram}\fi
+   \def\I{movement}\ifx\1\I\quad
+    next scanned square, either {\em left} or {\em right}\fi
+  \def\I{movements}\ifx\1\I\quad
+    set of movements, $\Delta = \{\, \hbox{\it left},\hbox{\it right} \,\}$\fi
+   \def\I{processor}\ifx\1\I\quad
+    a finite-state automaton\fi
+   \def\I{program}\ifx\1\I\quad
+    an encoded Turing machine, ${\frak p} = \smash{\vec{\cal P}}$\fi
+   \def\I{quintuple}\ifx\1\I\quad
+    index and instruction defining a transition\fi
+   \def\I{separation requirement}\ifx\1\I\quad
+    program and data have to be encoded separately\fi
+   \def\I{situation}\ifx\1\I\quad
+    current state, tape content and scanned square\fi
+   \def\I{states}\ifx\1\I\quad
+    processor's set of states, $\Phi$\fi
+   \def\I{step}\ifx\1\I\quad
+    transition from a computing situation to the next one\fi
+   \def\I{symbols}\ifx\1\I\quad
+    tape's set of symbols, $\Gamma$, or alphabet\fi
+   \def\I{table}\ifx\1\I\quad
+    transition function or what to do in every possible situation, $\Pi$\fi
+   \def\I{tape}\ifx\1\I\quad
+    inexhaustible chain of read and write squares\fi
+   \def\I{transition}\ifx\1\I\quad
+    a computing step definition or what to do in a specific situation\fi
+   \def\I{transition function}\ifx\1\I\quad
+    total function $\Pi: \Phi\times\Gamma \to
+       (\Phi\times\Gamma\times\Delta) \;\cup\; \{\,\hbox{\it halt}\,\}$\fi
+   \def\I{Turing completeness}\ifx\1\I\quad
+    computing can express computing completely\fi
+   \def\I{Turing completeness theorem}\ifx\1\I\quad
+    there is a universal Turing machine\fi
+   \def\I{Turing machine}\ifx\1\I\quad
+    a tape controlled by a processor, $\cal P$\fi
+   \def\I{universal Turing machine}\ifx\1\I\quad
+    a Turing machine $\cal U$ that can emulate any Turing machine\fi
+  \fi\ignorespaces}
+\input auxiliar.abc
+\par
+\endgroup
+
+
+\vfill\break
+
+\xsection{References}
+
+\biblabel Copeland (2004)
+B.\ Jack Copeland (editor),
+\book{The Essential Turing:
+ Seminal Writings in Computing, Logic, Philosophy,
+ Artificial Intelligence, and Artificial Life
+ {\sl plus} The Secrets of Enigma};
+Oxford University Press, New York, 2004,
+\ISBN 978-0-19-825079-1.
+Available also with \DOI{10.1093/oso/9780198250791.001.0001}.
+
+\biblabel Davies (2004)
+Donald W.\ Davies,
+\article{Corrections to Turing's Universal Computing Machine};
+in \cite Copeland (2004), §2.4, pp.\ 103--124.
+
+\biblabel Davis (1956)
+M.\ D.\ Davis,
+\article{A Note on Universal Turing Machines};
+in \cite Shannon \& McCarthy (1956), pp.\ 167--175,
+Available also with \DOI{10.1515/9781400882618-008}.
+
+\biblabel Davis (1958)
+Martin Davis,
+\book{Computability \& Unsolvability};
+Dover Publications, New York, 1982,
+\ISBN 978-0-486-61471-7.
+Enlarged version of the work originally published
+by McGraw-Hill Book Company, New York, in 1958.
+
+\biblabel Davis (1982)
+Martin Davis,
+\article{Why Gödel Didn't Have Church's Thesis};
+in \periodical{Information and Control},
+vol.\ 54, pp.\ 3--24, 1982,
+\DOI{10.1016/s0019-9958(82)91226-8}.
+
+\biblabel Kleene (1952)
+Stephen Kleene,
+\book{Introduction to Meta-Mathematics};
+Ishi Press, New York, 2009,
+\ISBN 978-0-923891-57-2.
+Reprint of the same title by
+North-Holland, Amsterdam, 1952.
+
+\biblabel Minsky (1967)
+Marvin L.\ Minsky,
+\book{Computation: Finite and Infinite Machines};
+Prentice-Hall, Inc, Englewood Cliffs, NJ, 1967,
+\ISBN 978-0-13-165563-8.
+
+\biblabel Petzold (2008)
+Charles Petzold,
+\book{The Annotated Turing:
+ A Guided Tour Through Alan Turing's Historic Paper
+ on Computability and the Turing Machine};
+Wiley Publishing, Indianapolis, 2008,
+\ISBN 978-0-470-22905-7.
+
+\biblabel Rice (1953)
+H.\ G.\ Rice,
+\article{Classes of Recursively Enumerable Sets and Their Decision Problems},
+in \periodical{Transactions of the American Mathematical Society},
+vol.\ 74, pp.\ 358--366, 1953,
+\DOI{10.1090/S0002-9947-1953-0053041-6}.
+
+\biblabel Shagrir (2006)
+Oron Shagrir,
+\article{Gödel on Turing on Computability};
+in \book{Church's Thesis After 70 Years},
+ edited by Adam Olszewski, Jan Wolenski and Robert Janusz,
+ De Gruyter, Berlin, Boston, 2006, pp.\ 393--419,
+\DOI{10.1515/9783110325461.393}.
+
+\biblabel Shannon (1956)
+Claude E.\ Shannon,
+\article{A Universal Turing Machine with Two Internal States};
+in \cite Shannon \& McCarthy (1956), pp.\ 157--165.
+Available also with \DOI{10.1515/9781400882618-007}.
+
+\biblabel Shannon \& McCarthy (1956)
+Claude E.\ Shannon and J.\ McCarthy, editors,
+\book{Automata Studies}
+(Annals of Mathematics Studies, vol.\ 34);
+Princeton University Press, Princeton, NJ, 1956,
+\ISBN 978-0-69107916-5.\\
+Available also with \DOI{10.1515/9781400882618}.
+
+\biblabel Turing (1936)
+A.\ M.\ Turing,
+\article{On Computable Numbers,
+ with an Application to the Entscheidungsproblem};
+in \periodical{Proceedings of the London Mathematical Society},
+vol.\ s2-42, no.\ 1, pp.\ 230--265, 1937,
+\DOI{10.1112/plms/s2-42.1.230}.
+Received 28 May, 1936. Read 12 November, 1936.
+Available also in \cite Copeland (2004).
+
+\biblabel Turing (1937)
+A.\ M.\ Turing,
+\article{Computability and $\lambda$-Definability}; in
+\periodical{The Journal of Symbolic Logic},
+vol.\ 2, no.\ 4, pp.\ 153--163, December 1937,
+\DOI{10.2307/2268280}.
+
+
+\bye

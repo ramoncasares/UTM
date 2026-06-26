@@ -1,0 +1,15 @@
+# .gitignore (RMCG20260413)
+# ignore generated files
+*.pdf
+*.ps
+*.dvi
+*.html
+*.out
+*.patch
+test/*.csv
+# ignore auxiliaries
+auxiliar.*
+*~
+*.log
+*.session
+# EOF

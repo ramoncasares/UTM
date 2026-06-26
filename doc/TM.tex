@@ -1,0 +1,220 @@
+% TM.tex (RMCG20260121)
+
+\input RCstyle
+
+\input doubleco
+\darkcolors
+
+% Every point a period
+\count255=`A
+\loop
+\sfcode\count255=1000
+\ifnum\count255<`Z\advance\count255 1
+\repeat
+
+\def\definition#1{\lbl{#1}{#1}\ndx{#1}{D}{\em #1}}
+\def\define#1#2{\lbl{#1}{#2}\ndx{#1}{D}{\em #2}}
+
+\catcode`\@=11
+
+\newcount\sssecno \sssecno=0
+
+\outer\def\subsubsection#1{\vskip0pt plus 60pt\penalty-250\vskip0pt plus-60pt
+ \ifnum\parno=0 \vskip 0.5pc plus 3pt minus 3pt\else\vskip 1pc plus 6pt minus 6pt\fi
+ \ifx\n@xtlbl\relax \def\1{#1}\else\let\1=\n@xtlbl \let\n@xtlbl=\relax \fi
+ \everypar{}\advance\sssecno1 \thno=0 \parno=0
+ \def\secid{\presec\the\secno.\the\ssecno.\the\sssecno}\noindent\dest
+ {\setbox2=\hbox{\sl\secid\enspace}\hangindent\wd2
+  \rightskip=0pt plus 6em
+ \sl\secid\enspace#1\toc3{#1}\lbl{\1}{#1}\par}
+ \everypar{\numberedpars}}
+
+\def\file{\ifvmode\vskip\parskip\else\par\fi
+ \begingroup \lineskip=3pt \ifdim\parindent<20pt \parindent=20pt \fi
+ \catcode`\~=12 \catcode`\"=12 \catcode`\_=12 \catcode`\\=12 \@file}
+\def\@file#1{\index{#1}1
+ \hbox{\indent\vbox{\hrule\hbox{\strut\color{Blue}\tt#1\endcolor}\hrule}}\nobreak
+ \let\verbatimoptions=\tenttlistingoptions \setupverbatim \input#1
+ \dimen0=\prevdepth \advance\dimen0by-3pt \prevdepth=\dimen0
+ \everypar{}\noindent\endgroup \ignorespaces}
+\def\tenttlistingoptions{\tentt
+ \baselineskip=12pt plus0.1pt minus0.1pt
+ \parindent=40pt \rightskip=0pt plus 3cm
+ \everypar{\hangindent60pt \llap{\sevenrm\the\inputlineno\quad}}}
+
+\def\codeoptions{\tentt \baselineskip=12pt plus0.1pt minus0.1pt
+ \parindent=20pt}
+\def\begincode{\ifvmode \vskip\parskip \else \par\smallskip\fi
+  \begingroup \catcode`\~=12 \catcode`\"=12 \catcode`\_=12 \catcode`\\=12
+  \let\verbatimoptions\codeoptions\setupverbatim\d@code}
+\catcode`/=0 \catcode`\\=12
+ /def/d@code{/def/next##1##2\endcode{##2/everypar{}/smallskip%
+   /noindent/endgroup/ignorespaces}/next}
+/catcode`\=0 /catcode`\/=12
+
+% \plisting#1
+% #2
+% #3
+% prints file #1 contents verbatim
+% from the first line equal to #2
+% to the next line equal to #3
+\def\plisting#1{\ifvmode\vskip\parskip\else\par\fi \begingroup
+ \def~{\string~}\def\1{#1}\beforeplisting
+ \def\d@next{\expandafter\pa@ss\input #1 }\setupverbatim\getm@rks}
+{\obeylines\gdef\getm@rks^^M#1^^M#2^^M{%
+  \gdef\beginm@rk{#1}\gdef\endm@rk{#2}\d@next}}
+{\obeylines\gdef\pa@ss#1^^M{\def\next{#1}\ifx\next\beginm@rk %
+  #1\par \let\next\pr@nt \else \let\next\pa@ss\fi \next}}
+\def\endpr@nt{\afterplisting\endgroup\endinput}  
+{\obeylines\gdef\pr@nt#1^^M{\def\next{#1}\ifx\next\endm@rk %
+  \let\next\endpr@nt \else #1\par \let\next\pr@nt \fi \next}}
+\let\beforeplisting=\relax \let\afterplisting=\relax
+
+{\obeylines\gdef\getm@rk#1^^M{\def\endm@rk{#1}\d@next}}
+
+\def\pfile{\begingroup\let\beforeplisting=\tenttplisting
+ \let\afterplisting=\endgroup\plisting}
+\def\tenttplisting{\ifdim\lastskip<\smallskipamount
+ \removelastskip \smallskip\fi \index{\1}1
+ \let\verbatimoptions=\tenttlistingoptions
+ \ifx\1\@pfile \else \xdef\@pfile{\1}%
+  \hbox{\indent\vbox{\hrule\hbox{\strut\color{Blue}\tt\1\endcolor}\hrule}}\nobreak
+ \fi}
+
+\catcode`\@=12
+
+\newread\situations
+\newcount\sitno
+
+\def\nextsituation{\read\situations to\situation \situation}
+\def\skipsituation#1{\sitno=#1\loop \read\situations to\situation
+ \advance\sitno-1 \ifnum\sitno>1\repeat}
+
+
+\newread\lines
+\newcount\linno
+
+\def\listline#1#2{\openin\lines=#1
+ \linno=0\loop \read\lines to\rline
+ \advance\linno1 \ifnum\linno<#2\repeat
+ \hbox{\kern40pt\llap{\sevenrm #2\quad}\tentt\rline}%
+ \closein\lines}
+
+
+\def\M#1{\hbox{\tt#1}}
+\def\T#1{\\\null\kern\oldparindent\M{#1}}
+
+\def\Table#1{\vtop{%
+\halign{\strut\vrule\enspace\M{##}\hfil\enspace
+ &\enspace\hfil\M{##}\hfil\enspace
+ &\vrule\enspace\hfil\M{##}\hfil\enspace
+ &\enspace\hfil\M{##}\hfil\enspace
+ &\enspace\hfil\M{##}\hfil\enspace\vrule\cr
+ \noalign{\vskip-11pt\hrule}
+ {\sc c}&{\sc r}&{\sc n}&{\sc w}&{\sc m}\cr
+ \noalign{\hrule}\noalign{\kern\jot}\noalign{\hrule}
+ #1\crcr
+ \noalign{\hrule}
+}}}
+
+\def\tape#1#2{\line{\qquad\tt #1\hfil\tentt #2}}
+
+\def\TM#1<#2>{\def\1{#1}\ifx\empty\1\else{\cal #1}\fi
+ \langle{\frak #2}\rangle}
+\def\RS#1<#2>{\def\1{#1}\ifx\empty\1\else{\cal #1}\fi
+ \langle\hbox{\tt #2}\rangle}
+
+\def\label#1{\leavevmode\dest\lbl{#1}{label}\ignorespaces}
+
+\MTfigures
+
+\def\MTbeginfig{\begingroup \catcode`\"=12 \MTbeginchar}
+\def\MTendfig;{\MTendchar; \endgroup}
+
+\MTcode
+def state(suffix s)(expr side) =
+ x.s.iii = x.s + side;   y.s.iii = y.s;
+ x.s.ix = x.s - side;    y.s.ix = y.s;
+ x.s.i = x.s + side/2;   y.s.i = y.s + side * sqrt(3)/2;
+ x.s.v = x.s + side/2;   y.s.v = y.s - side * sqrt(3)/2;
+ x.s.vii = x.s - side/2; y.s.vii = y.s - side * sqrt(3)/2;
+ x.s.xi = x.s - side/2;  y.s.xi = y.s + side * sqrt(3)/2;
+ z.s.ii = 1/2[z.s.i,z.s.iii];
+ z.s.iv = 1/2[z.s.iii,z.s.v];
+ z.s.vi = 1/2[z.s.v,z.s.vii];
+ z.s.viii = 1/2[z.s.vii,z.s.ix];
+ z.s.x = 1/2[z.s.ix,z.s.xi];
+ z.s.xii = 1/2[z.s.xi,z.s.i];
+ draw (z.s.i) -- (z.s.iii) -- (z.s.v) -- (z.s.vii) -- (z.s.ix) -- (z.s.xi) -- cycle;
+enddef;
+
+\MTcode
+def circle(suffix s)(expr diameter) =
+ x.s.l = x.s - diameter/2;  x.s.r = x.s + diameter/2;
+ y.s.t = y.s + diameter/2;  y.s.b = y.s - diameter/2;
+ erase fill (fullcircle scaled (x.s.r - x.s.l) shifted z.s);
+ draw (fullcircle scaled (x.s.r - x.s.l) shifted z.s);
+enddef;
+
+\MTcode
+defaultfont:="cmtt12"; 
+pickup pencircle scaled 0.4pt; thinpen:=savepen;
+pickup pencircle scaled 0.8pt; medpen:=savepen;
+pickup pencircle scaled 1.2pt; thickpen:=savepen;
+
+\def\MTresetpa;{\MTline{ path pa[],
+ pa[]O,pa[]I,pa[]A,pa[]B,pa[]X,pa[]Y,pa[]M,pa[]N,pa[]L,pa[]R,pa[]S,pa[]T,pa[]Z;}}
+
+\def\MTstate(#1)"#2""#3";{%
+  \MTline{ state(#1,6mm);}
+  \MTline{ z#1.lbl1 = z#1+(0,3pt);}
+  \MTline{ label("#2", z#1.lbl1);}
+  \MTline{ z#1.lbl2 = z#1.vi+(0,8pt);}
+  \MTline{ label("#3", z#1.lbl2);}
+}
+
+\def\MTinput(#1.#2)(#3.#4)"#5""#6";{{%
+  \def\0{0}\def\1{1}\def\9{*}\def\5{#5}%
+  \def\6{#6}\ifx\5\6\def\6{}\fi
+  \ifx\5\0\def\5{O}\fi \ifx\5\1\def\5{I}\fi \ifx\5\9\def\5{Z}\fi
+  \MTline{ z#1.\5.in = 1.2[z#1,z#1.#2];}
+  \MTline{ z#1.\5.lbl1 = z#1.\5.in;}
+  \MTline{ z#1.\5.o = z#1.#2;}
+  \MTline{ z#1.\5.d = z#3.#4;}
+  \MTline{ pa#1.\5 = z#1.\5.o}
+  \MTline{   if known z#1.\5.p: .. z#1.\5.p fi}
+  \MTline{   if known z#1.\5.q: .. z#1.\5.q fi}
+  \MTline{   if known z#1.\5.r: .. z#1.\5.r fi}
+  \MTline{   if known z#1.\5.t: .. z#1.\5.t fi}
+  \MTline{   .. z#1.\5.d;}
+  \MTline{ drawarrow pa#1.\5;}
+  \MTline{ circle(#1.\5.in)(4mm);}
+  \MTline{ label("#5", z#1.\5.lbl1);}
+  \ifx\6\empty\else
+  \MTline{ z#1.\5.lbl2 = point (arctime 15pt of pa#1.\5) of pa#1.\5;}
+  \MTline{ erase fill (fullcircle scaled 10pt shifted z#1.\5.lbl2);}
+  \MTline{ label("#6", z#1.\5.lbl2);}
+  \fi
+}}
+
+\def\MTauto(#1)(#2,#3)"#4""#5";{{%
+  \def\0{0}\def\1{1}\def\9{*}\def\4{#4}%
+  \ifx\4\0\def\4{O}\fi \ifx\4\1\def\4{I}\fi \ifx\4\9\def\4{Z}\fi
+  \MTline{ z#1.\4.in = 1.2[z#1,z#1.#2];}
+  \MTline{ z#1.\4.lbl1 = z#1.\4.in;}
+  \MTline{ z#1.\4.o = z#1.#2;}
+  \MTline{ z#1.\4.d = z#1.#3;}
+  \MTline{ z#1.\4.p = 2[z#1,z#1.\4.o];}
+  \MTline{ z#1.\4.q = 2[z#1,z#1.\4.d];}
+  \MTline{ pa#1.\4 = z#1.\4.o{z#1.#2-z#1} .. z#1.\4.p .. z#1.\4.q .. z#1.\4.d{z#1-z#1.#3};}
+  \MTline{ z#1.\4.lbl2 = point (arctime 15pt of pa#1.\4) of pa#1.\4;}
+  \MTline{ drawarrow pa#1.\4;}
+  \MTline{ circle(#1.\4.in)(4mm);}
+  \MTline{ label("#4", z#1.\4.lbl1);}
+  \MTline{ erase fill (fullcircle scaled 10pt shifted z#1.\4.lbl2);}
+  \MTline{ label("#5", z#1.\4.lbl2);}
+}}
+
+\catcode`\"=13 \def"{\verb"}
+
+\endinput
