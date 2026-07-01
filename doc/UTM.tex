@@ -2,17 +2,6 @@
 
 \input TM
 
-%%% arXiv
-%\let\dvips=\relax %% comment if using dvipdfm; uncomment for arXiv
-%
-% ACM cs.LO
-% F.1.1 Models of Computation
-% A.1   Introductory and survey
-% MSC math.LO
-% 03D10: Turing machines and related notions
-% 68-01: Instructional exposition (in "Computer science")
-%%% arXiv
-
 \title{A Universal Turing Machine}
 \author{Ramón Casares}
 \contact{{\sc orcid:}
@@ -42,7 +31,7 @@ the theorem of Turing completeness.
 \endabstract
 
 \beginnote
-This is \DOI{10.6084/m9.figshare.32261133},
+This is \DOI{10.6084/m9.figshare.32261133}\new/.v2\wen/,
 version {\tt\version}.\\
 \copyright\ 2026 Ramón Casares; licensed as {\tt cc-by}.\\
 Any comments on it to
@@ -55,7 +44,7 @@ are welcome.
 \section{Introduction}
 
 Marvin \cite[\1 (\2  §7)] Minsky (1967) presented a UTM*,
-that is, a Universal Turing machine with a disclaimer.
+that is, a \new/universal\wen/ Turing machine with a disclaimer.
 We will call it MMo-UTM.
 Disclaimer: MMo-UTM can only emulate
  Turing machines using two symbols, {\em blank} and another one,
@@ -464,8 +453,8 @@ and execute the Lua interpreter in inter\-active mode,
 which uses \M> as prompt.
 Firstly, we will ask the interpreter to redo
 the previous computations.
-\begincode
-...$ git clone git://github.com/ramoncasares/UTM.git
+\new/\wen/\begincode
+...$ git clone \new/https\wen/://github.com/ramoncasares/UTM.git
 ...$ cd UTM/lua/
 .../UTM/lua$ lua -i
 Lua 5.4.7  Copyright (C) 1994-2024 Lua.org, PUC-Rio
@@ -1866,9 +1855,9 @@ The tape of MMc-UTM has three areas:
 \centerline{\box\MTbox}
 \medskip
 
-We will follow the emulation of Turing machine "TM1022b",
+We will follow the emulation of Turing machine \new/"TM1022"\wen/,
  see \refsc{TM1022b}, by MMc-UTM.
-The initial tape for our "TM1022b" example is shown below,
+The initial tape for our \new/"TM1022"\wen/ example is shown below,
 where the scanned square is marked with a bar on top, which is,
 initially, the leftmost non-blank square:
 \smallskip\continuepar
@@ -1903,7 +1892,7 @@ initially, the leftmost non-blank square:
 \MTinput(01.iii)(11.ix)"X""X";
 \MTendfig;
 
-The initial situation of our "TM1022b" example is:
+The initial situation of our \new/"TM1022"\wen/ example is:
 
 \nextsituation
 %\tape{q00}{\=YMMY0000X000001101X001000100X010010111X011011000X011100110X100001110Y}
@@ -2863,7 +2852,7 @@ In the next page, you can find the complete diagram of MMc-UTM.
 
 \labeled{MMc-Testing}\subsection{Testing}
 
-We repeat here the emulation of Turing machine "TM1022b" by MMc-UTM.
+We repeat here the emulation of Turing machine \new/"TM1022"\wen/ by MMc-UTM.
 The first line shows the initial situation.
 Thereafter, each time state "q00" is reached,
  MMc-UTM has completed a emulated step.
@@ -3145,7 +3134,7 @@ all is syntax, no semantics are involved.
 
 \subsection{Foundations}
 
-In order to compare our proof of the theorem,
+In order to compare \new/this\wen/ proof of the theorem,
 in sections \refsc{MMc-UTM} and \refsc{Turing completeness theorem},
 with others, it could be instructive to divert ourselves for a moment
 to the theory of recursive functions.

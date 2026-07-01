@@ -12,4 +12,6 @@ auxiliar.*
 *~
 *.log
 *.session
+# ignore dir arXiv
+arXiv/
 # EOF
