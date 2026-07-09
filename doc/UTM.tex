@@ -63,6 +63,16 @@ presenting two universal Turing machines in complete detail.
  MMc-UTM is a universal Turing machine without disclaimers.
 \endpoints
 
+\new/The ultimate reason why I have written this paper
+is to present an accesible and foundational proof of
+the theorem of Turing completeness:
+{\em there is a universal Turing machine}.
+I defend that human language is a Turing complete language,
+where a Turing complete language is
+the language of a universal Turing machine.
+Therefore, to me, this theorem is the key to language,
+so I needed a self-contained and construtive proof of it.\wen/
+
 \break
 
 In this paper, section \refsc{Computing},
@@ -277,7 +287,7 @@ the movements $\Delta$, and the table $\Pi$.
  Then, $\Gamma = \bar\Gamma \cup \{ \M0 \}$,
  so $\M0\in\Gamma$ and $|\Gamma| \ge 2$.
  We say that $\Gamma$ is the \definition{alphabet}
- to say that its symbols are totally ordered.
+ to say that its symbols are \new/well-\wen/ordered.
 \point The set of \definition{movements} $\Delta$ has two elements:
  {\em left}, let us write it \M<; and
  {\em right}, let us write it \M>.
@@ -2973,7 +2983,8 @@ which we will call ATo-UTM. In his words (page 241),
 ATo-UTM “can be used to compute any computable sequence”,
 because his aim was to compute the binary expansion
 of any computable number, which is one that
-a Turing machine can calculate with arbitrary precision.
+a Turing machine can calculate with arbitrary precision\new/,
+see \cite Casares (N)\wen/.
 Since mathematically the binary expansion is as valid as any other,
 the binary limitation was not a limitation for Turing.
 In other words, sometimes encoding can be abstracted away.
@@ -3226,7 +3237,7 @@ the theorem of Turing completeness.
   \ifx\2\D\par \noindent\hangindent20pt
    {\em\ref{#1}}\quad(\refsc{#1})%
    \def\I{alphabet}\ifx\1\I\quad
-    completely ordered set of symbols, $\Gamma$\fi
+    \new/well-\wen/ordered set of symbols, $\Gamma$\fi
    \def\I{binary theorem}\ifx\1\I\quad
     every Turing machine can be emulated by a two-symbol one\fi
    \def\I{binary Turing completeness theorem}\ifx\1\I\quad
@@ -3308,6 +3319,11 @@ the theorem of Turing completeness.
 \vfill\break
 
 \xsection{References}
+
+\new/\biblabel Casares (N)
+Ramón Casares,
+\article{On Unprecise Numbers};\\
+\DOI{10.6084/m9.figshare.29066705}.\wen/
 
 \biblabel Copeland (2004)
 B.\ Jack Copeland (editor),
