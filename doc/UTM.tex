@@ -1800,7 +1800,9 @@ The tape of MMc-UTM has three areas:
 \point {\em tape}: emulated tape of $\cal P$,
  where the consecutive symbols "M" and "N" mark
  the emulated scanned square and represent its value,
- "M" for "0" and "N" for "1";
+ "M" for "0" and "N" for "1"\new/,
+ and where the leftmost~"Y", which represents a "0",
+ indicates that all the symbols to its left are "0"\wen/;
 \point {\em index}: current/next state ({\em st}) and
  read/write symbol ({\em sy}) of $\cal P$;
 \point {\em program}: description of $\cal P$,
@@ -2214,7 +2216,7 @@ or go forward to  state "q51", or to "q52", to write, see \refsc{MMc-Write}.
 
 \MTendfig;
 
-Lets now see the movement to the right.
+\new/Let us\wen/ now see the movement to the right.
 In this case, the "A"'s and "B"'s are written to the right
 of the "M"'s and "N"'s by state "q36".
 But firstly, state "q35" has moved from the {\em program},
@@ -2879,6 +2881,10 @@ You can use again the Turing machine interpreter to test MMc-UTM.
 .../UTM/test$ export LUA_PATH="../lua/?.lua"
 .../UTM/test$ lua -i < MMc.lua > MMc.out
 \endcode
+\new/Test suite "test/MMc.lua" includes two auto-emulations,
+that is, MMc-UTM emulating itself emulating a Turing machine,
+that take about a billion ($10^9$) steps each, so then,
+depending on your machine, it could take a long time to complete.\wen/
 Then you can examine the resulting output file ".../UTM/test/MMc.out".
 
 Function "MM.TM2MMc(tm)" encodes Turing machine "tm",
