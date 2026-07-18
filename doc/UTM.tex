@@ -2970,6 +2970,11 @@ Therefore,
 MMc-UTM proves constructively
  the theorem of Turing completeness, and
 MMc-UTM is a universal Turing machine~$\cal U$.
+\new/Language $\cal L_U$ is a \definition{Turing complete language}
+because every Turing machine and every computation
+can be meaningfully expressed in it;
+program $\frak p$ means Turing machine $\cal P$,
+and sentence $\frak p|\vec d$ means computation $\TM P<d>$.\wen/
 
 It seems imposible that a complex Turing machine
 can be emulated by a simpler universal Turing machine.
@@ -3312,6 +3317,9 @@ the theorem of Turing completeness.
    \def\I{transition function}\ifx\1\I\quad
     total function $\Pi: \Phi\times\Gamma \to
        (\Phi\times\Gamma\times\Delta) \;\cup\; \{\,\hbox{\it halt}\,\}$\fi
+   \def\I{Turing complete language}\ifx\1\I\quad
+    \new/one that can express and mean
+    every Turing machine and every computation\wen/\fi
    \def\I{Turing completeness}\ifx\1\I\quad
     computing can express computing completely\fi
    \def\I{Turing completeness theorem}\ifx\1\I\quad
