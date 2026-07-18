@@ -25,6 +25,8 @@ lua -i < MMo.lua > MMo.out
 lua -i < MMr.lua > MMr.out
 lua -i < MMc.lua > MMc.out
 
+export PATH="$HOME/bin:$PATH"
+
 cd ../doc/
 clrtex UTM
 touch auxiliar.abc
