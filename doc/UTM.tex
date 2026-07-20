@@ -219,12 +219,12 @@ symbol to write and movement to do
 for each possible current state and read symbol
 determines completely the Turing machine behavior.
 We will say that the pair of current state ({\sc c})
- and read symbol ({\sc r}) is the \definition{index},
+and read symbol ({\sc r}) is the \definition{index},
 and that the triplet of next state ({\sc n}),
- symbol to write ({\sc w}) and movement to do ({\sc m})
- is its corresponding \definition{instruction}. Together,
+symbol to write ({\sc w}) and movement to do ({\sc m})
+is its corresponding \definition{instruction}. Together,
 the index with its corresponding instruction
- form a \definition{quintuple},
+form a \definition{quintuple},
 which defines a \definition{transition}.
 As the number of states and the number of symbols are both finite,
 the table is finite.
@@ -233,11 +233,10 @@ the table is finite.
 The processor state, the tape content and the scanned square
 define the \definition{situation} of the Turing machine.
 A \definition{computation}
-starts from a well-defined situation and
- is executed in a loop
- with four stages ---read, transition, write, and move---
+starts from a well-defined situation and is executed in a loop
+with four stages ---read, transition, write, and move---
 that is exited whenever the transition is a \definition{halt}ing one,
- and then we say that the Turing machine has halted.
+and then we say that the Turing machine has halted.
 We will assume without loss of generality that
 in the initial situation the state is the \definition{initial state}
 and the scanned square is the leftmost non-{\em blank} square,
