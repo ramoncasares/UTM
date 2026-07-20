@@ -241,9 +241,8 @@ that is exited whenever the transition is a \definition{halt}ing one,
 We will assume without loss of generality that
 in the initial situation the state is the \definition{initial state}
 and the scanned square is the leftmost non-{\em blank} square,
-if any, or another square to its left;
-if all squares are {\em blank}, then any one goes,
- as any one is as good as any other.
+\new/preferably, though the convention just recomends
+that all squares to its left are {\em blank}\wen/.
 From that initial situation, the Turing machine
 follows the instructions given in the table
 until the instruction to do is {\em halt},
@@ -1145,7 +1144,8 @@ in the Lua interpreter we had to implement
 a \M{resettape} function specific for MMo-UTM.
 Then, MMr-UTM will be designed to start from
 the leftmost non-{\em blank} symbol,
-or any to its left, which is the usual convention.
+or any to its left, which is the usual convention\new/,
+see \refsc{situation}\wen/.
 Although this is not an important requirement,
 it is very easy to fulfill, just one additional state,
 see \refsc{MMr-Start}.
