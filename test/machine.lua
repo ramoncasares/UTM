@@ -2,7 +2,7 @@
 
 mac = require("machine")
 
--- TM1022 on an empty tape returns 1022
+-- TM1022 on a blank tape returns 1022
 TM1022t = "A0B1> A1A1< B0C2> B1H0< B2A2< C0B2<"
 TM1022 = mac:new(TM1022t)
 TM1022:compute(true)

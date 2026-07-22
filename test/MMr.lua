@@ -12,7 +12,7 @@ MM.UTMr:tape(TM111pr)
 MM.UTMr:compute()
 
 -- Convert MM to TM and back, states can be renamed
---  table 1 1 1 1 0(<)  tape empty
+--  table 1 1 1 1 0(<)  tape blank
 --        1 0 0 1 0(<)
 MMsucc = "YMY10X11110X10010Y"
 TMsucc = MM.MMr2TM(MMsucc)

@@ -583,8 +583,9 @@ the {\em initial} state is "A",
 {\em blank} is "0",
 and {\em right} is ">".
 
-When we run \M{TM1022} on an empty tape we get \M{1022},
-where we have omitted the infinities of blanks.
+When we run \M{TM1022} on \new/a blank\wen/ tape\new/,
+by which we mean that all its squares are {\em blank},\wen/ we get \M{1022},
+where we have omitted the infinities of \new/{\em blank}s\wen/.
 We can verify it using the interpreter.
 \begincode
 .../UTM/lua$ lua -i
@@ -608,7 +609,7 @@ Lua 5.4.7  Copyright (C) 1994-2024 Lua.org, PUC-Rio
 >
 > mac = require("machine")
 >
-> -- TM1022 on an empty tape returns 1022
+> -- TM1022 on a blank tape returns 1022
 > TM1022 = mac:new"A0B1> A1A1< B0C2> B1H0< B2A2< C0B2<"
 > TM1022:compute(true)
 1022    |A0|->|1B0|->|12C0|->|1B22|->|A122|->|A0122|->|1B122|->|H1022|
@@ -650,7 +651,7 @@ $$\M{TM1022b}\quad\Table{
  01& 11& 00& 11& 0\cr
  10& 00& 01& 11& 0\cr
 }$$
-Running \M{TM1022b} on an empty tape we get \M{10 00 11 11},
+Running \M{TM1022b} on \new/a blank\wen/ tape we get \M{10 00 11 11},
 where we have omitted the infinities of blanks and
 each symbol is coded by two bits.
 Applying the map for the alphabet in reverse
@@ -973,7 +974,7 @@ when the {\em read} stage was already done.
 
 Now, let us see MMo-UTM emulating "TM101",
 which is a simple Turing machine that,
-when it starts on an empty tape,
+when it starts on \new/a blank\wen/ tape,
 it halts with string "101" on the tape.
 $$\hbox{\tt TM101}\quad\Table{
  A& 0& B& 1& >\cr
@@ -999,14 +1000,14 @@ Lua 5.4.7  Copyright (C) 1994-2024 Lua.org, PUC-Rio
 > TM101:compute(true)
 101    |A0|->|1B0|->|10C0|->|1H01|
 \endcode
-As said, when "TM101" starts on an empty tape,
+As said, when "TM101" starts on \new/a blank\wen/ tape,
 it computes string "101".
 We use function
 "MM.TM2MMo(tm)" to encode Turing machine "tm",
  including its tape,
 into a string that makes a valid initial tape for MMo-UTM.
 So "TM101po" is the string that codes
-"TM101" with an empty tape for MMo-UTM.
+"TM101" with \new/a blank\wen/ tape for MMo-UTM.
 \begincode
 > MM.UTMo:tape(TM101po)
 MY000X0000111X0101001X1001110Y
@@ -1021,7 +1022,7 @@ because in state "q45" and reading a "0" ({\em blank}),
 it will move to the right without changing the state.
 This happens because the emulation has stepped out
 the {\em tape} area. However, it works
-if we reserve two blank squares to the right of the scanned square.
+if we reserve two \new/{\it blank}\wen/ squares to the right of the scanned square.
 \begincode
 > TM101xo = string.gsub(TM101po, "M", "M00")
 > MM.UTMo:tape(TM101xo)
@@ -2599,7 +2600,7 @@ On the other hand, if, for example, we would have encoded
 $$\{ \M{0}\leftrightarrow\M{00},
      \M{1}\leftrightarrow\M{01},
      \M{2}\leftrightarrow\M{10} \}\;,$$
-then the output of MMc-UTM emulating it on an empty tape
+then the output of MMc-UTM emulating it on \new/a blank\wen/ tape
 would have been
 $$\dots\M0\M0\M0\M1\M0\M0\M1\M0\M1\M0\M0\M0\dots\,,$$
 which is ambiguous:
@@ -2871,7 +2872,7 @@ The first line shows the initial situation.
 Thereafter, each time state "q00" is reached,
  MMc-UTM has completed a emulated step.
 It takes MMc-UTM 7397 steps to emulate the 7 steps of "TM1022",
-or of "TM1022b".
+or of "TM1022b"\new/, on a blank tape\wen/.
 The last line shows the halting situation.
 \medskip
 \input ../test/pr1022.out
@@ -3110,7 +3111,8 @@ can perform any computation.
 \point Minsky: a UTM is a Turing machine that
  can emulate any Turing machine.
 \endpoints
-Neither ATo-UTM nor MMo-UTM qualify as universal Turing machines
+Neither ATo-UTM nor MMo-UTM \new/qualifies\wen/
+ as universal Turing \new/machine\wen/
 under the current definition,
 since neither can emulate itself. On the other hand,
 any universal Turing machine under the current definition
