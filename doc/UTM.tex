@@ -239,9 +239,9 @@ that is exited whenever the transition is a \definition{halt}ing one,
 and then we say that the Turing machine has halted.
 We will assume without loss of generality that
 in the initial situation the state is the \definition{initial state}
-and the scanned square is the leftmost non-{\em blank} square,
-\new/preferably, although the convention just recommends
-that all squares to its left were {\em blank} squares\wen/.
+and the scanned square is \new/any one such that
+all squares to its left are {\em blank},
+preferably\wen/ the leftmost non-{\em blank} square.
 From that initial situation, the Turing machine
 follows the instructions given in the table
 until the instruction to do is {\em halt},
@@ -652,7 +652,7 @@ $$\M{TM1022b}\quad\Table{
  10& 00& 01& 11& 0\cr
 }$$
 Running \M{TM1022b} on \new/a blank\wen/ tape we get \M{10 00 11 11},
-where we have omitted the infinities of blanks and
+where we have omitted the infinities of \new/{\em blank}s\wen/ and
 each symbol is coded by two bits.
 Applying the map for the alphabet in reverse
 $$\{  \M{0}\leftarrow\M{00},
@@ -713,7 +713,7 @@ $\Gamma_{\!\rm o} = \{ \M0, \M1, \M A, \M B, \M M, \M S, \M X, \M Y \}$,
 where "0" is the {\em blank} symbol.
 The initial tape only contains symbol "M" once,
 symbol "Y" twice, symbol "X" as many times as quintuples in ${\cal P}_2$,
-symbol "1" a finite number of times, and any number of blanks, "0".
+symbol "1" a finite number of times, and any number of \new/{\em blank}s\wen/, "0".
 MMo-UTM's tape has three areas:
 \beginpoints
 \point {\em tape}: leftly infinite emulated tape of ${\cal P}_2$,
@@ -1203,7 +1203,7 @@ the {\em tape}, which requires limiting it.
 To this end, MMr-UTM uses another symbol "Y", the third one,
 to mark the leftmost position of the {\em tape} that has been reached.
 This leftmost "Y" on the {\em tape} is a {\em blank} for ${\cal P}_2$,
-and it has to be the leftmost non-blank symbol on the tape of MMr-UTM,
+and it has to be the leftmost non-\new/{\em blank}\wen/ symbol on the tape of MMr-UTM,
 except temporarily while it is being moved to the left.
 
 A valid initial tape for MMr-UTM is as follows,
@@ -1287,8 +1287,8 @@ $$\catcode`\<=1 \catcode`\>=2 \catcode`\{=12 \catcode`\}=12 \tt
 \MTendfig;
 
 Another peculiarity of MMo-UTM is that
-it does not start from the lefmost non-blank symbol,
-or from a blank at its left, a convention we follow,
+it does not start from the lefmost non-\new/{\em blank}\wen/ symbol,
+or from a \new/{\em blank}\wen/ at its left, a convention we follow,
 but it starts from the leftmost "X" on the tape,
 which is the "X" separating the {\em index} from the {\em program}.
 MMr-UTM resolves this problem by adding a new {\em initial} state "q00":
@@ -1765,7 +1765,7 @@ which thus requires a binary fixed-lengh encoding
 for the emulated alphabet $\Gamma_{\!\cal P}$.
 We will denote the number of bits that encode an emulated symbol "w".
 Another requirement is that
- the emulated blank is a string of {\em blank}s,
+ the emulated \new/{\em blank}\wen/ is a string of {\em blank}s,
 that is, a string of "w" symbols "0" of MMc-UTM.
 Aditionally, in order to avoid ambiguities,
 all other emulated symbols should start with a "1",
@@ -1790,7 +1790,7 @@ The initial tape of MMc-UTM contains
  "w" times in total symbols "M" and "N",
  symbol "X" as many times as quintuples in $\cal P$, and at least one,
  symbol "1" a finite number of times,
- and any number of blanks, "0".
+ and any number of \new/{\em blank}s\wen/, "0".
 The initial tape of MMc-UTM is any described by the regular expression
 \begincode
 0*Y[01]*[MN]{w}[01]*Y[01]{s}[01]{w}(X([01]{s}[01]{w}[01]{s}[01]{w}[01])?)+Y0*
@@ -1874,7 +1874,7 @@ We will follow the emulation of Turing machine \new/"TM1022"\wen/,
  see \refsc{TM1022b}, by MMc-UTM.
 The initial tape for our \new/"TM1022"\wen/ example is shown below,
 where the scanned square is marked with a bar on top, which is,
-initially, the leftmost non-blank square:
+initially, the leftmost non-\new/{\em blank}\wen/ square:
 \smallskip\continuepar
 \hbox{\qquad\tt\=YMMY0000X000001101X001000100X010010111X011011000X011100110X100001110Y}
 
@@ -2588,13 +2588,13 @@ This is the situation when the halting state is reached.
 \closein\situations
 
 \continuepar
-Disregarding the infinities of blanks,
+Disregarding the infinities of \new/{\em blank}s\wen/,
 the output is "10001111" which decodes as "1022".
 
-The advantage of coding every non-blank symbol
+The advantage of coding every non-\new/{\em blank}\wen/ symbol
 with an initial "1", is that then
 the leftmost non-blank bit of the emulation output is
-the leftmost bit of the leftmost \new/non-blank\wen/ symbol.
+the leftmost bit of the leftmost \new/non-{\em blank}\wen/ symbol.
 On the other hand, if, for example, we would have encoded
  Turing machine "TM1022" applying the map
 $$\{ \M{0}\leftrightarrow\M{00},
@@ -2608,7 +2608,7 @@ which is ambiguous:
  or "10-01-01" decoded as "211".
 
 We say that {\em blank} is a {\em special} symbol
-because of these infinities of blanks,
+because of these infinities of \new/{\em blank}s\wen/,
 which are always present on the tapes of Turing machines,
 and which are prone to cause ambiguities when concatenated
 with finite strings, or substrings, of {\em blank} symbols.
