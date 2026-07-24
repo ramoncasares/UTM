@@ -1769,7 +1769,8 @@ Another requirement is that
  the emulated \new/{\em blank}\wen/ is a string of {\em blank}s,
 that is, a string of "w" symbols "0" of MMc-UTM.
 Aditionally, in order to avoid ambiguities,
-all other emulated symbols should start with a "1",
+\new/the leftmost bit of\wen/
+all other emulated symbols should \new/be\wen/ "1",
 though this is not a requirement.
 Finally, MMo-UTM encodes emulated {\em left} as \M0
 and emulated {\em right} as \M1, and MMc-UTM too.
@@ -2592,10 +2593,13 @@ This is the situation when the halting state is reached.
 Disregarding the infinities of \new/{\em blank}s\wen/,
 the output is "10001111" which decodes as "1022".
 
-The advantage of coding every \new/ordinary\wen/ symbol
-with an initial "1", is that then
+The advantage of \new/encoding\wen/ every \new/ordinary\wen/ symbol
+with \new/a leftmost\wen/ "1", is that then
 the leftmost \new/non-{\em blank}\wen/ bit of the emulation output is
 the leftmost bit of the leftmost \new/ordinary\wen/ symbol.
+\new/In other words, this way
+the emulation is always as ambiguous as the emulated computation.\wen/
+
 On the other hand, if, for example, we would have encoded
  Turing machine "TM1022" applying the map
 $$\{ \M{0}\leftrightarrow\M{00},
@@ -2604,9 +2608,10 @@ $$\{ \M{0}\leftrightarrow\M{00},
 then the output of MMc-UTM emulating it on \new/a blank\wen/ tape
 would have been
 $$\dots\M0\M0\M0\M1\M0\M0\M1\M0\M1\M0\M0\M0\dots\,,$$
-which is ambiguous:
+which is ambiguous\new/,\wen/
  either "01-00-10-10" decoded as "1022"
- or "10-01-01" decoded as "211".
+ or "10-01-01" decoded as "211"\new/,
+while the emulated computation is not ambiguous, is "1022"\wen/.
 
 We say that {\em blank} is a {\em special} symbol
 because of these infinities of \new/{\em blank}s\wen/,
