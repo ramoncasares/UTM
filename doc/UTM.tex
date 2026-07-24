@@ -278,7 +278,7 @@ the movements $\Delta$, and the table $\Pi$.
 \point The set of \definition{states} $\Phi$ has to be finite, and
  the {\em initial} state, let us call it $\M A$, has to be in it,
  so $\M A \in\Phi$ and $|\Phi| \ge 1$.
-\point The set of ordinary symbols $\bar\Gamma$ has to be finite
+\point The set of \new/\definition{ordinary symbols}\wen/ $\bar\Gamma$ has to be finite
  and not empty. The set of \definition{symbols} $\Gamma$ is
  set $\bar\Gamma$ plus the {\em blank} special symbol,
  let us write it \M0, that denotes that a tape square is blank.
@@ -527,10 +527,11 @@ It is perhaps a bit easier for us to read this reduced form.
 It makes clearer that, when ${\cal S}_2$ is in state \M{A},
 it will keep moving right while reading {\em blank} symbols,
 and that it will change to state \M{B}
- when it finds a non-{\em blank} symbol.
+ when it finds a non-{\em blank}\new/ one,
+that is, an ordinary symbol\wen/.
 This is the standard way to implement the convention that,
  in the initial situation, the scanned square is
-the leftmost one where a non-{\em blank} symbol is written,
+the leftmost one where \new/an ordinary\wen/ symbol is written,
  or any to its left. \dest
 This convention makes convenient to interpret the
 state of the index of the first row of the table
@@ -1143,7 +1144,7 @@ Since this is a peculiar requirement,
 in the Lua interpreter we had to implement
 a \M{resettape} function specific for MMo-UTM.
 Then, MMr-UTM will be designed to start from
-the leftmost non-{\em blank} symbol,
+the leftmost \new/ordinary\wen/ symbol,
 or any to its left, which is the usual convention\new/,
 see \refsc{situation}\wen/.
 Although this is not an important requirement,
@@ -1203,7 +1204,7 @@ the {\em tape}, which requires limiting it.
 To this end, MMr-UTM uses another symbol "Y", the third one,
 to mark the leftmost position of the {\em tape} that has been reached.
 This leftmost "Y" on the {\em tape} is a {\em blank} for ${\cal P}_2$,
-and it has to be the leftmost non-\new/{\em blank}\wen/ symbol on the tape of MMr-UTM,
+and it has to be the leftmost \new/ordinary\wen/ symbol on the tape of MMr-UTM,
 except temporarily while it is being moved to the left.
 
 A valid initial tape for MMr-UTM is as follows,
@@ -1287,7 +1288,7 @@ $$\catcode`\<=1 \catcode`\>=2 \catcode`\{=12 \catcode`\}=12 \tt
 \MTendfig;
 
 Another peculiarity of MMo-UTM is that
-it does not start from the lefmost non-\new/{\em blank}\wen/ symbol,
+it does not start from the lefmost \new/ordinary\wen/ symbol,
 or from a \new/{\em blank}\wen/ at its left, a convention we follow,
 but it starts from the leftmost "X" on the tape,
 which is the "X" separating the {\em index} from the {\em program}.
@@ -2411,7 +2412,7 @@ state "q53" moves to the "X" that separates the {\em index}
 from the {\em program}, and state "q54" moves to the rightmost
 "A" or "B", which overwrites with an "S",
 and it remembers it going to state "q55" or "q56".
-States "q55" and "q56" move to the "M" and overwrites it
+States "q55" and "q56" move to the "M" and \new/overwrite\wen/ it
 accordingly, that is, "q55" with a "0" and "q56" with a "1".
 Then, state "q57" inspects the square at its left;
 if it is a "S", it overwrites it with an "M" and goes to "q53"
@@ -2591,10 +2592,10 @@ This is the situation when the halting state is reached.
 Disregarding the infinities of \new/{\em blank}s\wen/,
 the output is "10001111" which decodes as "1022".
 
-The advantage of coding every non-\new/{\em blank}\wen/ symbol
+The advantage of coding every \new/ordinary\wen/ symbol
 with an initial "1", is that then
-the leftmost non-blank bit of the emulation output is
-the leftmost bit of the leftmost \new/non-{\em blank}\wen/ symbol.
+the leftmost \new/non-{\em blank}\wen/ bit of the emulation output is
+the leftmost bit of the leftmost \new/ordinary\wen/ symbol.
 On the other hand, if, for example, we would have encoded
  Turing machine "TM1022" applying the map
 $$\{ \M{0}\leftrightarrow\M{00},
@@ -3260,7 +3261,7 @@ the theorem of Turing completeness.
     there is a Turing machine that can emulate
     any two-symbol Turing machine\fi
    \def\I{blank}\ifx\1\I\quad
-    empty tape square and its corresponding symbol\fi
+    empty tape square and its corresponding \new/special\wen/ symbol\fi
    \def\I{computable function}\ifx\1\I\quad
     one implemented by a Turing machine\fi
    \def\I{computation}\ifx\1\I\quad
@@ -3295,6 +3296,8 @@ the theorem of Turing completeness.
     set of movements, $\Delta = \{\, \hbox{\it left},\hbox{\it right} \,\}$\fi
    \def\I{processor}\ifx\1\I\quad
     a finite-state automaton\fi
+   \def\I{ordinary symbols}\ifx\1\I\quad
+    \new/non-empty set of non-{\em blank} symbols, $\bar\Gamma$\wen/\fi
    \def\I{program}\ifx\1\I\quad
     an encoded Turing machine, ${\frak p} = \smash{\vec{\cal P}}$\fi
    \def\I{quintuple}\ifx\1\I\quad
