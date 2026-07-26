@@ -43,18 +43,17 @@ are welcome.
 
 \section{Introduction}
 
-\new/I defend that human language is a Turing complete language,
-which is
-the language of a universal Turing machine.
+I defend that human language is a Turing complete language,
+which is the language of a universal Turing machine.
 Therefore, to me, the theorem of Turing completeness,
 {\em there is a universal Turing machine}, is the key to language,
 so I needed an accesible and foundational proof of it,
 where foundational requires it to be constructive and self-contained.
 And then, as we will see, I am afraid
-I have had to be (a bit) picky on disclaimers.\wen/
+I have had to be (a bit) picky on disclaimers.
 
 Marvin \cite[\1 (\2  §7)] Minsky (1967) presented a UTM*,
-that is, a \new/universal\wen/ Turing machine with a disclaimer.
+that is, a universal Turing machine with a disclaimer.
 We will call it MMo-UTM.
 Disclaimer: MMo-UTM can only emulate
  Turing machines using two symbols, {\em blank} and another one,
@@ -239,9 +238,9 @@ that is exited whenever the transition is a \definition{halt}ing one,
 and then we say that the Turing machine has halted.
 We will assume without loss of generality that
 in the initial situation the state is the \definition{initial state}
-and the scanned square is \new/any one such that
+and the scanned square is any one such that
 all squares to its left are {\em blank},
-preferably\wen/ the leftmost non-{\em blank} square.
+preferably the leftmost non-{\em blank} square.
 From that initial situation, the Turing machine
 follows the instructions given in the table
 until the instruction to do is {\em halt},
@@ -278,14 +277,14 @@ the movements $\Delta$, and the table $\Pi$.
 \point The set of \definition{states} $\Phi$ has to be finite, and
  the {\em initial} state, let us call it $\M A$, has to be in it,
  so $\M A \in\Phi$ and $|\Phi| \ge 1$.
-\point The set of \new/\definition{ordinary symbols}\wen/ $\bar\Gamma$ has to be finite
+\point The set of \definition{ordinary symbols} $\bar\Gamma$ has to be finite
  and not empty. The set of \definition{symbols} $\Gamma$ is
  set $\bar\Gamma$ plus the {\em blank} special symbol,
  let us write it \M0, that denotes that a tape square is blank.
  Then, $\Gamma = \bar\Gamma \cup \{ \M0 \}$,
  so $\M0\in\Gamma$ and $|\Gamma| \ge 2$.
  We say that $\Gamma$ is the \definition{alphabet}
- to say that its symbols are \new/well-\wen/ordered.
+ to say that its symbols are well-ordered.
 \point The set of \definition{movements} $\Delta$ has two elements:
  {\em left}, let us write it \M<; and
  {\em right}, let us write it \M>.
@@ -461,8 +460,8 @@ and execute the Lua interpreter in inter\-active mode,
 which uses \M> as prompt.
 Firstly, we will ask the interpreter to redo
 the previous computations.
-\new/\wen/\begincode
-...$ git clone \new/https\wen/://github.com/ramoncasares/UTM.git
+\begincode
+...$ git clone https://github.com/ramoncasares/UTM.git
 ...$ cd UTM/lua/
 .../UTM/lua$ lua -i
 Lua 5.4.7  Copyright (C) 1994-2024 Lua.org, PUC-Rio
@@ -527,11 +526,10 @@ It is perhaps a bit easier for us to read this reduced form.
 It makes clearer that, when ${\cal S}_2$ is in state \M{A},
 it will keep moving right while reading {\em blank} symbols,
 and that it will change to state \M{B}
- when it finds a non-{\em blank}\new/ one,
-that is, an ordinary symbol\wen/.
+when it finds a non-{\em blank} one, that is, an ordinary symbol.
 This is the standard way to implement the convention that,
  in the initial situation, the scanned square is
-the leftmost one where \new/an ordinary\wen/ symbol is written,
+the leftmost one where an ordinary symbol is written,
  or any to its left. \dest
 This convention makes convenient to interpret the
 state of the index of the first row of the table
@@ -584,9 +582,9 @@ the {\em initial} state is "A",
 {\em blank} is "0",
 and {\em right} is ">".
 
-When we run \M{TM1022} on \new/a blank\wen/ tape\new/,
-meaning that all its squares are {\em blank},\wen/ we get \M{1022},
-where we have omitted the infinities of \new/{\em blank}s\wen/.
+When we run \M{TM1022} on a blank tape,
+meaning that all its squares are {\em blank}, we get \M{1022},
+where we have omitted the infinities of {\em blank}s.
 We can verify it using the interpreter.
 \begincode
 .../UTM/lua$ lua -i
@@ -652,8 +650,8 @@ $$\M{TM1022b}\quad\Table{
  01& 11& 00& 11& 0\cr
  10& 00& 01& 11& 0\cr
 }$$
-Running \M{TM1022b} on \new/a blank\wen/ tape we get \M{10 00 11 11},
-where we have omitted the infinities of \new/{\em blank}s\wen/ and
+Running \M{TM1022b} on a blank tape we get \M{10 00 11 11},
+where we have omitted the infinities of {\em blank}s and
 each symbol is coded by two bits.
 Applying the map for the alphabet in reverse
 $$\{  \M{0}\leftarrow\M{00},
@@ -714,7 +712,7 @@ $\Gamma_{\!\rm o} = \{ \M0, \M1, \M A, \M B, \M M, \M S, \M X, \M Y \}$,
 where "0" is the {\em blank} symbol.
 The initial tape only contains symbol "M" once,
 symbol "Y" twice, symbol "X" as many times as quintuples in ${\cal P}_2$,
-symbol "1" a finite number of times, and any number of \new/{\em blank}s\wen/, "0".
+symbol "1" a finite number of times, and any number of {\em blank}s, "0".
 MMo-UTM's tape has three areas:
 \beginpoints
 \point {\em tape}: leftly infinite emulated tape of ${\cal P}_2$,
@@ -722,7 +720,7 @@ MMo-UTM's tape has three areas:
 \point {\em index}: current/next state and
  read/write symbol of ${\cal P}_2$;
 \point {\em program}: description of ${\cal P}_2$,
- that is, its table \new/(free of meta-symbols)\wen/ coded in fixed length binary,
+ that is, its table (free of meta-symbols) coded in fixed length binary,
  so each state is a different binary string of length "s",
  and linearized, which is done by prefixing each quintuple with an "X".
  The {\em blank} of ${\cal P}_2$ is coded \M0,
@@ -975,7 +973,7 @@ when the {\em read} stage was already done.
 
 Now, let us see MMo-UTM emulating "TM101",
 which is a simple Turing machine that,
-when it starts on \new/a blank\wen/ tape,
+when it starts on a blank tape,
 it halts with string "101" on the tape.
 $$\hbox{\tt TM101}\quad\Table{
  A& 0& B& 1& >\cr
@@ -1001,14 +999,14 @@ Lua 5.4.7  Copyright (C) 1994-2024 Lua.org, PUC-Rio
 > TM101:compute(true)
 101    |A0|->|1B0|->|10C0|->|1H01|
 \endcode
-As said, when "TM101" starts on \new/a blank\wen/ tape,
+As said, when "TM101" starts on a blank tape,
 it computes string "101".
 We use function
 "MM.TM2MMo(tm)" to encode Turing machine "tm",
  including its tape,
 into a string that makes a valid initial tape for MMo-UTM.
 So "TM101po" is the string that codes
-"TM101" with \new/a blank\wen/ tape for MMo-UTM.
+"TM101" with a blank tape for MMo-UTM.
 \begincode
 > MM.UTMo:tape(TM101po)
 MY000X0000111X0101001X1001110Y
@@ -1023,7 +1021,7 @@ because in state "q45" and reading a "0" ({\em blank}),
 it will move to the right without changing the state.
 This happens because the emulation has stepped out
 the {\em tape} area. However, it works
-if we reserve two \new/{\it blank}\wen/ squares to the right of the scanned square.
+if we reserve two {\it blank} squares to the right of the scanned square.
 \begincode
 > TM101xo = string.gsub(TM101po, "M", "M00")
 > MM.UTMo:tape(TM101xo)
@@ -1143,10 +1141,10 @@ where the leftmost symbol \M{X} is written.
 Since this is a peculiar requirement,
 in the Lua interpreter we had to implement
 a \M{resettape} function specific for MMo-UTM.
-\new/In order to avoid this anomaly\wen/, MMr-UTM will be designed to start from
-the leftmost \new/ordinary\wen/ symbol,
-or \new/from\wen/ any \new/other\wen/ to its left, which is the usual convention\new/,
-see \refsc{situation}\wen/.
+In order to avoid this anomaly, MMr-UTM will be designed to start from
+the leftmost ordinary symbol,
+or from any other to its left, which is the usual convention,
+see \refsc{situation}.
 Although this is not an important requirement,
 it is very easy to fulfill, just one additional state,
 see \refsc{MMr-Start}.
@@ -1204,7 +1202,7 @@ the {\em tape}, which requires limiting it.
 To this end, MMr-UTM uses another symbol "Y", the third one,
 to mark the leftmost position of the {\em tape} that has been reached.
 This leftmost "Y" on the {\em tape} is a {\em blank} for ${\cal P}_2$,
-and it has to be the leftmost \new/ordinary\wen/ symbol on the tape of MMr-UTM,
+and it has to be the leftmost ordinary symbol on the tape of MMr-UTM,
 except temporarily while it is being moved to the left.
 
 A valid initial tape for MMr-UTM is as follows,
@@ -1288,8 +1286,8 @@ $$\catcode`\<=1 \catcode`\>=2 \catcode`\{=12 \catcode`\}=12 \tt
 \MTendfig;
 
 Another peculiarity of MMo-UTM is that
-it does not start from the \new/leftmost ordinary\wen/ symbol,
-or from a \new/{\em blank}\wen/ at its left, a convention we follow,
+it does not start from the leftmost ordinary symbol,
+or from a {\em blank} at its left, a convention we follow,
 but it starts from the leftmost "X" on the tape,
 which is the "X" separating the {\em index} from the {\em program}.
 MMr-UTM resolves this problem by adding a new {\em initial} state "q00":
@@ -1307,7 +1305,7 @@ These are the first lines of file "MMr-UTM.csv".
 Since MMo-UTM {\em halt}s when the whole {\em program}
 has been inspected without finding any instruction,
 then cleaning starts when, in state "q16",
-the \new/rightmost\wen/ symbol "Y" is read.
+the rightmost symbol "Y" is read.
 States "q13" and "q14" only read a "Y" when
  the {\em program} is just an "X",
 that is, when all ${\cal P}_2$ transtions are halting ones,
@@ -1379,7 +1377,7 @@ marks the leftmost position of the tape that has been reached.
 
 In case the emulation tries to move onto the second "Y",
 that is, if being MMr-UTM in state "q44", it reads a "Y",
-then it keeps moving to the left until finding the \new/leftmost\wen/ "Y"
+then it keeps moving to the left until finding the leftmost "Y"
 but remembering each bit to write it in the next to the left square.
 Firstly, state "q51" writes the "M" and,
 depending on the symbol overwritten,
@@ -1481,7 +1479,7 @@ Similarly to MMo-UTM, function "MM.TM2MMr(tm)" encodes
 Turing machine "tm", including its tape,
 into a string that makes a valid initial tape for MMr-UTM.
 And function "MM.MMr2TM(tp)" decodes string "tp",
-\new/which is a valid initial\wen/ MMr-UTM tape,
+which is a valid initial MMr-UTM tape,
 returning the corresponding Turing machine.
 
 % \medskip
@@ -1692,11 +1690,9 @@ where:
  is the program that encodes ${\cal P}_2$\\
  in the language ${\cal L}_{{\cal U}_2}$ implemented by ${\cal U}_2$,
  ${\cal L}_{{\cal U}_2} \subset \Gamma^*_{\!{\cal U}_2}$,
-\point \new/the $|$ represents the composing operation of
- language ${\cal L}_{{\cal U}_2}$, so\wen/
- ${\frak p}_2| {\frak d}_2 \in  {\cal L}_{{\cal U}_2}$\del/
- is the string that composes
- program ${\frak p}_2$ and string ${\frak d}_2$\led/, and
+\point the $|$ represents the composing operation of
+ language ${\cal L}_{{\cal U}_2}$, so
+ ${\frak p}_2| {\frak d}_2 \in  {\cal L}_{{\cal U}_2}$, and
 \point ${\cal U}_2\langle\,{\frak p}_2| {\frak d}_2\,\rangle
  \in \Gamma^*_2$ is the corresponding output
  string computed by ${\cal U}_2$,\\
@@ -1766,13 +1762,12 @@ which thus requires a binary fixed-lengh encoding
 for the emulated alphabet $\Gamma_{\!\cal P}$.
 We will denote the number of bits that encode an emulated symbol "w".
 Another requirement is that
- the emulated \new/{\em blank}\wen/ is a string of {\em blank}s,
+ the emulated {\em blank} is a string of {\em blank}s,
 that is, a string of "w" symbols "0" of MMc-UTM.
 Aditionally, in order to avoid ambiguities,
-\new/the leftmost bit of\wen/
-all other emulated symbols should \new/be\wen/ "1",
+the leftmost bit of all other emulated symbols should be "1",
 though this is not a requirement.
-Finally, MMo-UTM \new/codes\wen/ emulated {\em left} \M0
+Finally, MMo-UTM codes emulated {\em left} \M0
 and emulated {\em right} \M1, and MMc-UTM too.
 
 The initial tape of Misky's MMo-UTM has exactly one "M" on the tape,
@@ -1792,7 +1787,7 @@ The initial tape of MMc-UTM contains
  "w" times in total symbols "M" and "N",
  symbol "X" as many times as quintuples in $\cal P$, and at least one,
  symbol "1" a finite number of times,
- and any number of \new/{\em blank}s\wen/, "0".
+ and any number of {\em blank}s, "0".
 The initial tape of MMc-UTM is any described by the regular expression
 \begincode
 0*Y[01]*[MN]{w}[01]*Y[01]{s}[01]{w}(X([01]{s}[01]{w}[01]{s}[01]{w}[01])?)+Y0*
@@ -1804,9 +1799,9 @@ The tape of MMc-UTM has three areas:
 \point {\em tape}: emulated tape of $\cal P$,
  where the consecutive symbols "M" and "N" mark
  the emulated scanned square and represent its value,
- "M" for "0" and "N" for "1"\new/,
+ "M" for "0" and "N" for "1",
  and where the leftmost~"Y", which represents a "0",
- indicates that all the symbols to its left are "0"\wen/;
+ indicates that all the symbols to its left are "0";
 \point {\em index}: current/next state ({\em st}) and
  read/write symbol ({\em sy}) of $\cal P$;
 \point {\em program}: description of $\cal P$,
@@ -1872,11 +1867,11 @@ The tape of MMc-UTM has three areas:
 \centerline{\box\MTbox}
 \medskip
 
-We will follow the emulation of Turing machine \new/"TM1022"\wen/,
+We will follow the emulation of Turing machine "TM1022",
  see \refsc{TM1022b}, by MMc-UTM.
-The initial tape for our \new/"TM1022"\wen/ example is shown below,
+The initial tape for our "TM1022" example is shown below,
 where the scanned square is marked with a bar on top, which is,
-initially, the leftmost non-\new/{\em blank}\wen/ square:
+initially, the leftmost non-{\em blank} square:
 \smallskip\continuepar
 \hbox{\qquad\tt\=YMMY0000X000001101X001000100X010010111X011011000X011100110X100001110Y}
 
@@ -1909,7 +1904,7 @@ initially, the leftmost non-\new/{\em blank}\wen/ square:
 \MTinput(01.iii)(11.ix)"X""X";
 \MTendfig;
 
-The initial situation of our \new/"TM1022"\wen/ example is:
+The initial situation of our "TM1022" example is:
 
 \nextsituation
 %\tape{q00}{\=YMMY0000X000001101X001000100X010010111X011011000X011100110X100001110Y}
@@ -1917,7 +1912,7 @@ The initial situation of our \new/"TM1022"\wen/ example is:
 This first sub-machine,
 which we take from MMr-UTM, see \refsc{MMr-Start},
 only uses one state, the {\em initial} state "q00",
-which moves to the right until the \new/leftmost\wen/ "X" is found.
+which moves to the right until the leftmost "X" is found.
 Once the proper square is pointed to,
 it goes to state "q11" to locate the instruction,
 see \refsc{MMc-Locate}.
@@ -2220,7 +2215,7 @@ or go forward to  state "q51", or to "q52", to write, see \refsc{MMc-Write}.
 
 \MTendfig;
 
-\new/Let us\wen/ now see the movement to the right.
+Let us now see the movement to the right.
 In this case, the "A"'s and "B"'s are written to the right
 of the "M"'s and "N"'s by state "q36".
 But firstly, state "q35" has moved from the {\em program},
@@ -2404,7 +2399,7 @@ the situation is as follows.
 
 \MTendfig;
 
-Every symbol "S" \new/on\wen/ the {\em tape} is overwritten with
+Every symbol "S" on the {\em tape} is overwritten with
 the symbol that is in the {\em index}.
 State "q51" moves to the "Y" that separates the {\em tape}
 from the {\em index}, and state "q52" moves to the rightmost "S",
@@ -2413,7 +2408,7 @@ state "q53" moves to the "X" that separates the {\em index}
 from the {\em program}, and state "q54" moves to the rightmost
 "A" or "B", which overwrites with an "S",
 and it remembers it going to state "q55" or "q56".
-States "q55" and "q56" move to the "M" and \new/overwrite\wen/ it
+States "q55" and "q56" move to the "M" and overwrite it
 accordingly, that is, "q55" with a "0" and "q56" with a "1".
 Then, state "q57" inspects the square at its left;
 if it is a "S", it overwrites it with an "M" and goes to "q53"
@@ -2486,7 +2481,7 @@ the situation is as follows.
 The bits marked on the {\em tape} are
 writen in the symbol part of the {\em index}.
 State "q61" moves to the middle "Y".
-State "q62" moves right through the \new/{\em index}\wen/ and \new/{\em program}\wen/
+State "q62" moves right through the {\em index} and {\em program}
 restoring every "A" to "0" and every "B" to "1" until
 finding the first "0" or "1", or the rightmost "Y".
 State "q63" moves to the rightmost "S" that overwrites with an "X"
@@ -2568,7 +2563,7 @@ This is the situation.
 Since MMc-UTM detects a {\em halt}ing instruction when the whole {\em program}
 has been inspected without finding any instruction,
 then cleaning starts when, in state "q16", or "q13" or "q14",
-the \new/rightmost\wen/ symbol "Y" is read, which is erased.
+the rightmost symbol "Y" is read, which is erased.
 Next it goes to state "q01", which erases
 everything until the middle "Y", that is,
 it blanks the {\em program} and the {\em index}.
@@ -2590,31 +2585,31 @@ This is the situation when the halting state is reached.
 \closein\situations
 
 \continuepar
-Disregarding the infinities of \new/{\em blank}s\wen/,
+Disregarding the infinities of {\em blank}s,
 the output is "10001111" which decodes as "1022".
 
-The advantage of \new/encoding\wen/ every \new/ordinary\wen/ symbol
-with \new/a leftmost\wen/ "1", is that then
-the leftmost \new/non-{\em blank}\wen/ bit of the emulation output is
-the leftmost bit of the leftmost \new/ordinary\wen/ symbol.
-\new/In other words, this way
-the emulation is always as ambiguous as the emulated computation.\wen/
+The advantage of encoding every ordinary symbol
+with a leftmost "1", is that then
+the leftmost non-{\em blank} bit of the emulation output is
+the leftmost bit of the leftmost ordinary symbol.
+In other words, this way
+the emulation is always as ambiguous as the emulated computation.
 
 On the other hand, if, for example, we would have encoded
  Turing machine "TM1022" applying the map
 $$\{ \M{0}\leftrightarrow\M{00},
      \M{1}\leftrightarrow\M{01},
      \M{2}\leftrightarrow\M{10} \}\;,$$
-then the output of MMc-UTM emulating it on \new/a blank\wen/ tape
+then the output of MMc-UTM emulating it on a blank tape
 would have been
 $$\dots\M0\M0\M0\M1\M0\M0\M1\M0\M1\M0\M0\M0\dots\,,$$
-which is ambiguous\new/,\wen/
+which is ambiguous,
  either "01-00-10-10" decoded as "1022"
- or "10-01-01" decoded as "211"\new/,
-while the emulated computation is not ambiguous, is "1022"\wen/.
+ or "10-01-01" decoded as "211",
+while the emulated computation is not ambiguous, is "1022".
 
 We say that {\em blank} is a {\em special} symbol
-because of these infinities of \new/{\em blank}s\wen/,
+because of these infinities of {\em blank}s,
 which are always present on the tapes of Turing machines,
 and which are prone to cause ambiguities when concatenated
 with finite strings, or substrings, of {\em blank} symbols.
@@ -2873,12 +2868,12 @@ In the next page, you can find the complete diagram of MMc-UTM.
 
 \labeled{MMc-Testing}\subsection{Testing}
 
-We repeat here the emulation of Turing machine \new/"TM1022"\wen/ by MMc-UTM.
+We repeat here the emulation of Turing machine "TM1022" by MMc-UTM.
 The first line shows the initial situation.
 Thereafter, each time state "q00" is reached,
  MMc-UTM has completed a emulated step.
 It takes MMc-UTM 7397 steps to emulate the 7 steps of "TM1022",
-or of "TM1022b"\new/, on a blank tape\wen/.
+or of "TM1022b", on a blank tape.
 The last line shows the halting situation.
 \medskip
 \input ../test/pr1022.out
@@ -2889,17 +2884,17 @@ You can use again the Turing machine interpreter to test MMc-UTM.
 .../UTM/test$ export LUA_PATH="../lua/?.lua"
 .../UTM/test$ lua -i < MMc.lua > MMc.out
 \endcode
-\new/Test suite "test/MMc.lua" includes two auto-emulations,
+Test suite "test/MMc.lua" includes two auto-emulations,
 that is, MMc-UTM emulating itself emulating a Turing machine,
 that take about a billion ($10^9$) steps each, so then,
-depending on your machine, it could take a long time to complete.\wen/
+depending on your machine, it could take a long time to complete.
 Then you can examine the resulting output file ".../UTM/test/MMc.out".
 
 Function "MM.TM2MMc(tm)" encodes Turing machine "tm",
  including its tape,
 into a string that makes a valid initial tape for MMc-UTM,
 and function "MM.MMc2TM(tp)" decodes string "tp",
-\new/an initial\wen/ MMc-UTM tape,
+an initial MMc-UTM tape,
 returning the corresponding Turing machine.
 
 Function "MM.recode(s,dic,rpat,fpat,rsep,fsep)" takes
@@ -2976,11 +2971,11 @@ Therefore,
 MMc-UTM proves constructively
  the theorem of Turing completeness, and
 MMc-UTM is a universal Turing machine~$\cal U$.
-\new/Language $\cal L_U$ is a \definition{Turing complete language}
+Language $\cal L_U$ is a \definition{Turing complete language}
 because every Turing machine and every computation
 can be meaningfully expressed in it;
 program $\frak p$ means Turing machine $\cal P$,
-and sentence $\frak p|\vec d$ means computation $\TM P<d>$.\wen/
+and sentence $\frak p|\vec d$ means computation $\TM P<d>$.
 
 It seems imposible that a complex Turing machine
 can be emulated by a simpler universal Turing machine.
@@ -3004,8 +2999,8 @@ which we will call ATo-UTM. In his words (page 241),
 ATo-UTM “can be used to compute any computable sequence”,
 because his aim was to compute the binary expansion
 of any computable number, which is one that
-a Turing machine can calculate with arbitrary precision\new/,
-see \cite Casares (N)\wen/.
+a Turing machine can calculate with arbitrary precision,
+see \cite Casares (N).
 Since mathematically the binary expansion is as valid as any other,
 the binary limitation was not a limitation for Turing.
 In other words, sometimes encoding can be abstracted away.
@@ -3117,8 +3112,7 @@ can perform any computation.
 \point Minsky: a UTM is a Turing machine that
  can emulate any Turing machine.
 \endpoints
-Neither ATo-UTM nor MMo-UTM \new/qualifies\wen/
- as universal Turing \new/machine\wen/
+Neither ATo-UTM nor MMo-UTM qualifies as universal Turing machine
 under the current definition,
 since neither can emulate itself. On the other hand,
 any universal Turing machine under the current definition
@@ -3167,7 +3161,7 @@ all is syntax, no semantics are involved.
 
 \subsection{Foundations}
 
-In order to compare \new/this\wen/ proof of the theorem,
+In order to compare this proof of the theorem,
 in sections \refsc{MMc-UTM} and \refsc{Turing completeness theorem},
 with others, it could be instructive to divert ourselves for a moment
 to the theory of recursive functions.
@@ -3259,14 +3253,14 @@ the theorem of Turing completeness.
   \ifx\2\D\par \noindent\hangindent20pt
    {\em\ref{#1}}\quad(\refsc{#1})%
    \def\I{alphabet}\ifx\1\I\quad
-    \new/well-\wen/ordered set of symbols, $\Gamma$\fi
+    well-ordered set of symbols, $\Gamma$\fi
    \def\I{binary theorem}\ifx\1\I\quad
     every Turing machine can be emulated by a two-symbol one\fi
    \def\I{binary Turing completeness theorem}\ifx\1\I\quad
     there is a Turing machine that can emulate
     any two-symbol Turing machine\fi
    \def\I{blank}\ifx\1\I\quad
-    empty tape square and its corresponding \new/special\wen/ symbol\fi
+    empty tape square and its corresponding special symbol\fi
    \def\I{computable function}\ifx\1\I\quad
     one implemented by a Turing machine\fi
    \def\I{computation}\ifx\1\I\quad
@@ -3302,7 +3296,7 @@ the theorem of Turing completeness.
    \def\I{processor}\ifx\1\I\quad
     a finite-state automaton\fi
    \def\I{ordinary symbols}\ifx\1\I\quad
-    \new/non-empty set of non-{\em blank} symbols, $\bar\Gamma$\wen/\fi
+    non-empty set of non-{\em blank} symbols, $\bar\Gamma$\fi
    \def\I{program}\ifx\1\I\quad
     an encoded Turing machine, ${\frak p} = \smash{\vec{\cal P}}$\fi
    \def\I{quintuple}\ifx\1\I\quad
@@ -3327,7 +3321,7 @@ the theorem of Turing completeness.
     total function $\Pi: \Phi\times\Gamma \to
        (\Phi\times\Gamma\times\Delta) \;\cup\; \{\,\hbox{\it halt}\,\}$\fi
    \def\I{Turing complete language}\ifx\1\I\quad
-    \new/the language of a universal Turing machine, $\cal L_U$\wen/\fi
+    the language of a universal Turing machine, $\cal L_U$\fi
    \def\I{Turing completeness}\ifx\1\I\quad
     computing can express computing completely\fi
    \def\I{Turing completeness theorem}\ifx\1\I\quad
@@ -3346,10 +3340,10 @@ the theorem of Turing completeness.
 
 \xsection{References}
 
-\new/\biblabel Casares (N)
+\biblabel Casares (N)
 Ramón Casares,
 \article{On Unprecise Numbers};\\
-\DOI{10.6084/m9.figshare.29066705}.\wen/
+\DOI{10.6084/m9.figshare.29066705}.
 
 \biblabel Copeland (2004)
 B.\ Jack Copeland (editor),
