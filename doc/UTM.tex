@@ -31,7 +31,7 @@ the theorem of Turing completeness.
 \endabstract
 
 \beginnote
-This is \DOI{10.6084/m9.figshare.32261133}\new/.v2\wen/,
+This is \DOI{10.6084/m9.figshare.32261133}\new/.v3\wen/,
 version {\tt\version}.\\
 \copyright\ 2026 Ramón Casares; licensed as {\tt cc-by}.\\
 Any comments on it to
@@ -318,7 +318,7 @@ by using, for example, \M= to mean no movement,
 or we can rather omit the corresponding row.
 
 \dest
-We use \define{meta-symbol *}{meta-symbol {\tt *}} $\notin \Gamma$,
+We use \define{meta-symbol *}{meta-symbol {\tt *}} $\notin \Gamma$\del/,\led/
  to denote {\em any other symbol}.
 That is, index \M{C*} applies when, in state \M{C},
 the read symbol is any not explicitly defined.
@@ -332,7 +332,7 @@ Meta-symbol \M* is handy when writing tables,
 meta-symbol \M* is just an abbreviation.
 
 \dest
-We use \define{meta-string infty}{meta-string $\infty$} $\notin \Gamma^*$,
+We use \define{meta-string infty}{meta-string $\infty$} $\notin \Gamma^*$\del/,\led/
 to denote that a computation does not halt.
 With this notation,
 every Turing machine $\cal P$ implements a function
@@ -974,7 +974,7 @@ when the {\em read} stage was already done.
 Now, let us see MMo-UTM emulating "TM101",
 which is a simple Turing machine that,
 when it starts on a blank tape,
-it halts with string "101" on the tape.
+it \new/{\em halt}s\wen/ with \new/the\wen/ string "101" on the tape.
 $$\hbox{\tt TM101}\quad\Table{
  A& 0& B& 1& >\cr
  B& 0& C& 0& >\cr
@@ -1432,8 +1432,8 @@ and goes to state "q54", which rewrites the "Y".
 \MTendfig;
 
 \par\kern-12pt\vbox to0pt{\kern-14.4pt\hbox to 0pt{\kern3cm\box\MTbox\hss}\vss}
-\listline{../csv/MMr-UTM.csv}{78}
-\listline{../csv/MMr-UTM.csv}{82}
+\new/\listline{../csv/MMr-UTM.csv}{80}\wen/
+\new/\listline{../csv/MMr-UTM.csv}{84}\wen/
 \pfile{../csv/MMr-UTM.csv}
 -- shift
 -- end
@@ -1932,7 +1932,7 @@ When this sub-machine terminates the first time, the situation is as follows.
 
 We take the locate sub-machine of MMo-UTM.
 As \cite Minsky (1967), page 139, explains:
-\begincitation
+\begincitation \new/\wen/\font\tt=cmsltt10 at 12pt
 It first searches to the right to find the first
 state-symbol pair that matches the one represented in
 the [{\em index}] area. On the path to the desired
@@ -2967,11 +2967,13 @@ Since MMc-UTM, in the place of $\cal U$, satisfies the equation,
 then we have shown that the theorem is {\sc true}.
 \QED
 
+\dest
 Therefore,
 MMc-UTM proves constructively
  the theorem of Turing completeness, and
 MMc-UTM is a universal Turing machine~$\cal U$.
-Language $\cal L_U$ is a \definition{Turing complete language}
+\new/The language of a universal Turing machine\wen/
+$\cal L_U$ is a \definition{Turing complete language}
 because every Turing machine and every computation
 can be meaningfully expressed in it;
 program $\frak p$ means Turing machine $\cal P$,
