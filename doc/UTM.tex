@@ -1101,6 +1101,11 @@ requirement of bidirectionality by
 shifting all the {\em tape} when needed,
 see \refsc{MMr-Shift}.
 
+\new/And, in \refsc{bidirectionality theorem},
+you can find a proof of the bidirectionality theorem,
+which states that a singly infinite tape
+is enough to emulate any Turing machine.\wen/
+
 
 \subsubsection{Binarity}
 
@@ -2972,6 +2977,17 @@ Therefore,
 MMc-UTM proves constructively
  the theorem of Turing completeness, and
 MMc-UTM is a universal Turing machine~$\cal U$.
+\new/By the way,
+since it never moves to the right of the rightmost "Y",
+MMc-UTM also proves constructively
+the \define{bidirectionality theorem}{theorem of bidirectionality}:
+{\em a singly-infinite tape is enough to emulate any Turing machine}.
+In particular, a singly infinite tape universal Turing machine,
+such as MMc-UTM, can emulate Turing machines that work on tapes that
+are infinite in both directions.
+\wen/
+
+\dest
 \new/The language of a universal Turing machine\wen/
 $\cal L_U$ is a \definition{Turing complete language}
 because every Turing machine and every computation
@@ -3256,6 +3272,8 @@ the theorem of Turing completeness.
    {\em\ref{#1}}\quad(\refsc{#1})%
    \def\I{alphabet}\ifx\1\I\quad
     well-ordered set of symbols, $\Gamma$\fi
+   \def\I{bidirectionality theorem}\ifx\1\I\quad
+    a singly-infinite tape is enough to emulate any Turing machine\fi
    \def\I{binary theorem}\ifx\1\I\quad
     every Turing machine can be emulated by a two-symbol one\fi
    \def\I{binary Turing completeness theorem}\ifx\1\I\quad
