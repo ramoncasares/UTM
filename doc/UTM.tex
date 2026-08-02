@@ -318,7 +318,7 @@ by using, for example, \M= to mean no movement,
 or we can rather omit the corresponding row.
 
 \dest
-We use \define{meta-symbol *}{meta-symbol {\tt *}} $\notin \Gamma$\del/,\led/
+We use \defineA{meta-symbol *}{meta-symbol {\tt *}} $\notin \Gamma$\del/,\led/
  to denote {\em any other symbol}.
 That is, index \M{C*} applies when, in state \M{C},
 the read symbol is any not explicitly defined.
@@ -332,7 +332,7 @@ Meta-symbol \M* is handy when writing tables,
 meta-symbol \M* is just an abbreviation.
 
 \dest
-We use \define{meta-string infty}{meta-string $\infty$} $\notin \Gamma^*$\del/,\led/
+We use \defineA{meta-string infty}{meta-string $\infty$} $\notin \Gamma^*$\del/,\led/
 to denote that a computation does not halt.
 With this notation,
 every Turing machine $\cal P$ implements a function
@@ -1067,7 +1067,7 @@ after emulating some more steps.
 MMo-UTM only emulates Turing machines with singly left-infinite tapes,
 so it will fail to emulate computations that require
 more tape to the right than it is available,
-as seen when emulating \M{TM101}.
+as seen \new/in \refsc{MMo-Testing}\wen/ when emulating \M{TM101}.
 
 Regarding unidirectionality,
 \cite Minsky (1967) writes, §6.3.2 in page 129:
@@ -1101,10 +1101,11 @@ requirement of bidirectionality by
 shifting all the {\em tape} when needed,
 see \refsc{MMr-Shift}.
 
-\new/And, in \refsc{bidirectionality theorem},
-you can find a proof of the bidirectionality theorem,
+\new/The bidirectionality theorem,
 which states that a singly infinite tape
-is enough to emulate any Turing machine.\wen/
+is enough to emulate any Turing machine,
+settles this question,
+see \refsc{bidirectionality theorem}.\wen/
 
 
 \subsubsection{Binarity}
@@ -2980,7 +2981,7 @@ MMc-UTM is a universal Turing machine~$\cal U$.
 \new/By the way,
 since it never moves to the right of the rightmost "Y",
 MMc-UTM also proves constructively
-the \define{bidirectionality theorem}{theorem of bidirectionality}:
+the \defineB{bidirectionality theorem}{theorem of bidirectionality}:
 {\em a singly-infinite tape is enough to emulate any Turing machine}.
 In particular, a singly infinite tape universal Turing machine,
 such as MMc-UTM, can emulate Turing machines that work on tapes that
