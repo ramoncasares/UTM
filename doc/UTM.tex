@@ -179,14 +179,18 @@ its founding paper by \cite Turing (1936),
 where he presents his $a$-machine,
  now known as Turing machine,
 which is his mathematical model for computing devices.
-A \ndx{Turing machine}D{\em Turing machine}
+A \define|Turing-machine|Turing machine|a tape controlled by a processor, $\cal P$|
  is a tape controlled by a processor.
 
 \dest
-The \definition{tape} is read and write memory,
-and it is divided in squares, where each square can contain
-one symbol out of a finite set of symbols, or none.
-When a square contains no symbol, we say that it is \definition{blank}.
+The \define|tape||%
+ inexhaustible chain of read and write squares|
+is read and write memory, and it is divided in squares,
+where each square can contain one symbol
+out of a finite set of symbols, or none.
+When a square contains no symbol, we say that it is
+\define|blank||empty tape square
+ and its corresponding special symbol|.
 We will consider that {\em blank} is a symbol,
  though a {\em special} one.
 Each square has exactly one neighbor square to the left
@@ -200,7 +204,8 @@ that new {\em blank} squares are created
 whenever either end of the tape is going to be overstepped.
 
 \dest
-The \definition{processor} is a finite-state automaton.
+The \define|processor||a finite-state automaton|
+is a finite-state automaton.
 Then, the processor is in
 each moment in exactly one state out of a finite set of states,
 and the next state and the output depend on the current
@@ -209,41 +214,55 @@ In the case of the Turing machine processor,
 the input is read from the scanned square of the tape, and
 the output is a pair composed of a symbol and a movement,
 where the symbol is written to the scanned square and
-the \definition{movement} is {\em left} or {\em right},
+the \define|movement||next scanned square,
+ either {\em left} or {\em right}|
+is {\em left} or {\em right},
 so the next scanned square will be
 the neighbor one to the left,
 or the neighbor one to the right.
-So a \definition{table} defining the next state and the pair of
+So a \define|table||transition function or
+ what to do in every possible situation, $\Pi$|
+defining the next state and the pair of
 symbol to write and movement to do
 for each possible current state and read symbol
 determines completely the Turing machine behavior.
 We will say that the pair of current state ({\sc c})
-and read symbol ({\sc r}) is the \definition{index},
+and read symbol ({\sc r}) is the
+\define|index||instruction reference:
+ current state \new/({\sc c})\wen/, read symbol \new/({\sc r})\wen/|,
 and that the triplet of next state ({\sc n}),
 symbol to write ({\sc w}) and movement to do ({\sc m})
-is its corresponding \definition{instruction}. Together,
-the index with its corresponding instruction
-form a \definition{quintuple},
-which defines a \definition{transition}.
+is its corresponding
+\define|instruction||what to do: either next state \new/({\sc n})\wen/,
+ write symbol \new/({\sc w})\wen/ and movement \new/({\sc m})\wen/ or {\em halt}|.
+Together, the index with its corresponding instruction
+form a \define|quintuple||index and \new/corresponding\wen/ instruction
+ defining a transition|,
+which defines a \define|transition||a computing step definition
+ or what to do in a specific situation|.
 As the number of states and the number of symbols are both finite,
 the table is finite.
 
 \dest
 The processor state, the tape content and the scanned square
-define the \definition{situation} of the Turing machine.
-A \definition{computation}
+define the \define|situation||current state,
+ tape content and scanned square| of the Turing machine.
+A \define|computation||from the initial situation,
+ follow instructions till {\em halt}, if ever|
 starts from a well-defined situation and is executed in a loop
 with four stages ---read, transition, write, and move---
-that is exited whenever the transition is a \definition{halt}ing one,
+that is exited whenever the transition is a {\em halt}ing one,
 and then we say that the Turing machine has halted.
 We will assume without loss of generality that
-in the initial situation the state is the \definition{initial state}
+in the initial situation the state is the
+\define|initial state||state when starting a computation|
 and the scanned square is any one such that
 all squares to its left are {\em blank},
 preferably the leftmost non-{\em blank} square.
 From that initial situation, the Turing machine
 follows the instructions given in the table
-until the instruction to do is {\em halt},
+until the instruction to do is
+\define|halt||instruction that terminates a computation|,
 thus ending the computation, or else it goes forever.
 Some more details and examples are provided below,
 in subsections \refsc{Processor} and \refsc{Examples}.
@@ -257,8 +276,8 @@ implements a function from the set of strings of symbols
 to the set of strings of symbols,
 where the strings are finite in length and
 its symbols are drawn from a finite set.
-By definition, any function implemented by a Turing machine
-is a \definition{computable function}.
+By definition, any function implemented by a Turing machine is
+a \define|computable function||one implemented by a Turing machine|.
 Note that not all these functions are total functions,
 because there is not any guarantee that
 a Turing machine on an initial string will {\em halt},
@@ -274,28 +293,37 @@ A Turing machine $\cal P$ processor has four main components:\\
 the states $\Phi$, the symbols $\Gamma$,
 the movements $\Delta$, and the table $\Pi$.
 \beginpoints
-\point The set of \definition{states} $\Phi$ has to be finite, and
+\point The set of \define|states||processor’s set of states, $\Phi$|
+ $\Phi$ has to be finite, and
  the {\em initial} state, let us call it $\M A$, has to be in it,
  so $\M A \in\Phi$ and $|\Phi| \ge 1$.
-\point The set of \definition{ordinary symbols} $\bar\Gamma$ has to be finite
- and not empty. The set of \definition{symbols} $\Gamma$ is
- set $\bar\Gamma$ plus the {\em blank} special symbol,
+\point The set of \define|ordinary symbols||non-empty set of
+ non-{\em blank} symbols, $\bar\Gamma$|
+ $\bar\Gamma$ has to be finite and not empty. The set of
+ \define|symbols||tape’s set of symbols, $\Gamma$, or alphabet|
+ $\Gamma$ is set $\bar\Gamma$ plus the {\em blank} special symbol,
  let us write it \M0, that denotes that a tape square is blank.
  Then, $\Gamma = \bar\Gamma \cup \{ \M0 \}$,
  so $\M0\in\Gamma$ and $|\Gamma| \ge 2$.
- We say that $\Gamma$ is the \definition{alphabet}
+ We say that $\Gamma$ is the
+ \define|alphabet||well-ordered set of symbols, $\Gamma$|
  to say that its symbols are well-ordered.
-\point The set of \definition{movements} $\Delta$ has two elements:
+\point The set of \define|movements||set of movements,
+ $ \Delta=\{\, \hbox{\it left}, \hbox{\it right}\, \}$|
+ $\Delta$ has two elements:
  {\em left}, let us write it \M<; and
  {\em right}, let us write it \M>.
  Then, $\Delta=\{\M<, \M>\}$.
 \point The table $\Pi$ is a total function
  $\Pi: \Phi\times\Gamma \to
-  (\Phi\times\Gamma\times\Delta) \;\cup\; \{\,\hbox{\it halt}\,\}$,
+  (\Phi\times\Gamma\times\Delta) \cup \{\,\hbox{\it halt}\,\}$,
  so it can be written as a table
  of $|\Phi|\times|\Gamma|$ rows and five columns,
  although we can omit some rows, as will we see soon.
- Table $\Pi$ is also known as the \definition{transition function}.
+ Table $\Pi$ is also known as the
+ \define|transition function||total function
+ $ \Pi : \Phi\times\Gamma \to
+ (\Phi\times\Gamma\times\Delta) \cup \{\,\hbox{\it halt}\,\}$|.
 \endpoints
 
 Set $\Gamma^*$ is the infinite set
@@ -318,7 +346,9 @@ by using, for example, \M= to mean no movement,
 or we can rather omit the corresponding row.
 
 \dest
-We use \defineA{meta-symbol *}{meta-symbol {\tt *}} $\notin \Gamma$\del/,\led/
+We use \define|meta-symbol *|meta-symbol {\tt *}|any other symbol in index,
+ and the same symbol in instruction|
+ $\notin \Gamma$\del/,\led/
  to denote {\em any other symbol}.
 That is, index \M{C*} applies when, in state \M{C},
 the read symbol is any not explicitly defined.
@@ -332,7 +362,9 @@ Meta-symbol \M* is handy when writing tables,
 meta-symbol \M* is just an abbreviation.
 
 \dest
-We use \defineA{meta-string infty}{meta-string $\infty$} $\notin \Gamma^*$\del/,\led/
+We use \define|meta-string infty|meta-string $\infty$|a
+ computation that does not {\em halt}|
+ $\notin \Gamma^*$\del/,\led/
 to denote that a computation does not halt.
 With this notation,
 every Turing machine $\cal P$ implements a function
@@ -359,8 +391,10 @@ the next state and the action,
 where the action can either be to write a symbol or to move.
 Others {\em halt} when reaching a halting state;
 we will use them frequently, since for us
-a \definition{halting state} is any from which any transition
-is a halting transition. In other words, a halting state
+a \define|halting state||one from which all
+ transitions are halting ones|
+ is any from which any transition is a halting transition.
+In other words, a halting state
 can be completely omitted from the {\em index}.
 Some others require two halting states,
 the accepting and the rejecting state,
@@ -441,8 +475,9 @@ from which the two infinities of {\em blank} symbols are omitted,
 is the string \M{2221}, which is twenty nine in base two without zero.
 We summarize it, thus:
 $\RS S_{\rm 2}<2212> = \RS<2221>$.
-Defining \definition{step} as
-a transition from a computing situation to the next one,
+Defining \define|step||transition from a computing situation
+ to the next one|
+ as a transition from a computing situation to the next one,
 this computation takes seven steps.
 Now you should try yourself
 $\RS S_{\rm 2}<22> = \RS<111>$,
@@ -539,7 +574,8 @@ the symbol of the index of the first row of the table
 the movement of the instruction of the first row of the table
  to be the {\em right} movement.
 Whenever possible, we will take advantage of this
-\definition{first row rule},
+\define|first row rule||the first row declares the {\em initial} state,
+ the {\em blank} symbol and the {\em right} movement|,
 by which the table contains all the information
 that defines a Turing machine.
 
@@ -672,8 +708,9 @@ We can verify it using the interpreter.
 
 \subsection{Turing completeness}
 
-\ndx{Turing completeness}D{\em Turing completeness}
- is a property of computing, namely,
+\define|Turing-completeness|Turing completeness|computing
+ can express computing completely|
+is a property of computing, namely,
 that {\em computing can express computing completely}.
 The original formulation is in \cite Turing (1936), page 241,
 in the first sentence of section §6,
@@ -681,8 +718,10 @@ titled {\sl The universal computing machine}:
 “It is possible to invent a single machine
 which can be used to compute any computable sequence.”
 
-In modern terms, a \definition{universal Turing machine} $\cal U$
-is a Turing machine that can emulate any Turing machine $\cal P$.
+In modern terms, a \define|universal Turing machine||a
+ Turing machine $\cal U$ that can emulate any Turing machine|
+$\cal U$ is a Turing machine that can emulate
+ any Turing machine $\cal P$.
 The emulation has to be such that,
 if a computation by $\cal P$ halts and computes a string,
 then the emulation by $\cal U$ also halts and computes the same string,
@@ -939,7 +978,9 @@ and \M{>} for the right movement, instead of his \M{R}.
 \MTendfig;
 
 \dest
-\centerline{\lbl{MMoDiagram}{MMoDiagram}\ndx{MMo-UTM}{D}\box\MTbox}
+\centerline{\lbl{MMoDiagram}{MMoDiagram}\define*|MMo-UTM||didactic
+ universal Turing machine by Minsky,
+ \refx{see diagram}{MMoDiagram}|\box\MTbox}
 \vfill\break
 
 This is the comma-separated values table of MMo-UTM,
@@ -1174,7 +1215,6 @@ see \refsc{MMr-Clean}.
 \vfil\break
 
 \section{MMr-UTM}
-
 
 \labeled{MMr-Tape}\subsection{Tape}
 
@@ -1656,7 +1696,8 @@ returning the corresponding Turing machine.
 \MTendfig;
 
 \dest
-\centerline{\lbl{MMrDiagram}{MMrDiagram}\ndx{MMr-UTM}{D}\box\MTbox}
+\centerline{\lbl{MMrDiagram}{MMrDiagram}\define*|MMr-UTM||MMo-UTM revised,
+ \refx{see diagram}{MMrDiagram}|\box\MTbox}
 
 \vfil\break
 
@@ -1668,7 +1709,9 @@ MMr-UTM returns the very same binary string that
 the emulated binary Turing machine ${\cal P}_2$ computes. And,
 if ${\cal P}_2$ does not halt, then MMr-UTM will not halt, either.
 Therefore, MMr-UTM is a perfect emulator of binary Turing machines.
-The \ndx{binary Turing completeness theorem}D{\em theorem of binary Turing completeness} says:\\
+%%The \ndx{binary Turing completeness theorem}D{\em theorem of binary Turing completeness} says:\\
+The {\em theorem of binary Turing completeness}\define*|binary Turing completeness theorem||%
+there is a Turing machine that can emulate any two-symbol Turing machine| says:\\
 {\sc Theorem}: {\em There is a binary-universal Turing machine}.
 
 {\sc Proof}: In other words,
@@ -1728,7 +1771,10 @@ which will act like any given Turing machine A
 and use only two symbols 1 and 0 on its tape,
 one of which, 0 say, is the symbol for a blank square.
 \endcitation
-Here, we will call it the \definition{binary theorem} by Shannon.
+Here, we will call it the
+\define|binary theorem||every Turing machine
+ can be emulated by a two-symbol one|
+by Shannon.
 
 Following Shannon, to emulate an arbitrary
 $m$-symbol $n$-state Turing machine A
@@ -2867,7 +2913,8 @@ In the next page, you can find the complete diagram of MMc-UTM.
 \MTendfig;
 
 \dest
-\centerline{\lbl{MMcDiagram}{MMcDiagram}\ndx{MMc-UTM}{D}\box\MTbox}
+\centerline{\lbl{MMcDiagram}{MMcDiagram}\define*|MMc-UTM||universal
+ Turing machine based on MMo-UTM, \refx{see diagram}{MMcDiagram}|\box\MTbox}
 
 \vfill\break
 
@@ -2935,7 +2982,8 @@ MMc-UTM returns, simply encoded, the same string that
 the emulated Turing machine $\cal P$ computes. And,
 if $\cal P$ does not halt, then MMc-UTM will not halt, either.
 Therefore, MMc-UTM is a perfect emulator of Turing machines.
-The \ndx{Turing completeness theorem}D{\em theorem of Turing completeness} says:\\
+The {\em theorem of Turing completeness}\define*|Turing-completeness-theorem|Turing
+ completeness theorem|there is a universal Turing machine| says:\\
 {\sc Theorem}: {\em There is a universal Turing machine}.
 
 \dest
@@ -2955,8 +3003,10 @@ where
  $\vec{\frak d} \in {\cal L_U}$ is the string $\frak d$
  encoded in the language $\cal L_U$ implemented by $\cal U$,
  ${\cal L_U} \subset \Gamma^*_{\!\cal U}$,
-\point ${\frak p} \in {\cal L_U}$ is the \definition{program} that codes
- $\cal P$ in the language $\cal L_U$,
+\point ${\frak p} \in {\cal L_U}$ is the
+ \define|program||an encoded Turing machine,
+ ${\frak p} = \smash{\vec{\cal P}}$|
+ that codes $\cal P$ in the language $\cal L_U$,
  so \smash{$\frak p = \vec{\cal P}$},
 \point the $|$ represents the composing operation
  of language $\cal L_U$, so $\frak p|\vec{d} \in {\cal L_U}$,
@@ -2981,7 +3031,8 @@ MMc-UTM is a universal Turing machine~$\cal U$.
 \new/By the way,
 since it never moves to the right of the rightmost "Y",
 MMc-UTM also proves constructively
-the \defineB{bidirectionality theorem}{theorem of bidirectionality}:
+the {\em theorem of bidirectionality}\define*|bidirectionality theorem||\new/a
+ a singly infinite tape is enough to emulate any Turing machine\wen/|:
 {\em a singly infinite tape is enough to emulate any Turing machine}.
 In particular, a singly infinite tape universal Turing machine,
 such as MMc-UTM, can emulate Turing machines that work on tapes that
@@ -2990,7 +3041,8 @@ are infinite in both directions.
 
 \dest
 \new/The language of a universal Turing machine\wen/
-$\cal L_U$ is a \definition{Turing complete language}
+$\cal L_U$ is a \define|Turing complete language||the language
+ of a universal Turing machine, $\cal L_U$|
 because every Turing machine and every computation
 can be meaningfully expressed in it;
 program $\frak p$ means Turing machine $\cal P$,
@@ -3088,7 +3140,9 @@ This is why, in the equation of Turing completeness,
  program $\frak p$ is Turing machine $\cal P$ encoded and
  argument $\frak\vec d$ is data $\frak d$ encoded {\em separately},
  which are then composed, denoted by $|$.
-We will call Minsky's requirement the \definition{separation requirement}.
+We will call Minsky's requirement the
+\define|separation requirement||program and data
+ have to be encoded separately|.
 
 Minsky made those comments because
 he had designed a 4-symbol 7-state Turing machine
@@ -3263,212 +3317,27 @@ the theorem of Turing completeness.
 
 \vfill\break
 
-
-\xsection{Definitions}
-
-\begingroup
- \def\D{D}
- \def\ndxline#1#2#3#4#5{\def\1{#1}\def\2{#2}%
-  \ifx\2\D\par \noindent\hangindent20pt
-   {\em\ref{#1}}\quad(\refsc{#1})%
-   \def\I{alphabet}\ifx\1\I\quad
-    well-ordered set of symbols, $\Gamma$\fi
-   \def\I{bidirectionality theorem}\ifx\1\I\quad
-    \new/a singly infinite tape is enough to emulate any Turing machine\wen/\fi
-   \def\I{binary theorem}\ifx\1\I\quad
-    every Turing machine can be emulated by a two-symbol one\fi
-   \def\I{binary Turing completeness theorem}\ifx\1\I\quad
-    there is a Turing machine that can emulate
-    any two-symbol Turing machine\fi
-   \def\I{blank}\ifx\1\I\quad
-    empty tape square and its corresponding special symbol\fi
-   \def\I{computable function}\ifx\1\I\quad
-    one implemented by a Turing machine\fi
-   \def\I{computation}\ifx\1\I\quad
-    from the initial situation,
-    follow instructions till {\em halt}, if ever\fi
-   \def\I{first row rule}\ifx\1\I\quad
-    the first row declares the {\em initial} state,
-    the {\em blank} symbol and the {\em right} movement\fi
-   \def\I{halt}\ifx\1\I\quad
-    instruction that terminates a computation\fi
-   \def\I{halting state}\ifx\1\I\quad
-    one from which all transitions are halting ones\fi
-   \def\I{index}\ifx\1\I\quad
-    instruction reference: current state, read symbol\fi
-   \def\I{initial state}\ifx\1\I\quad
-    state when starting a computation\fi
-   \def\I{instruction}\ifx\1\I\quad
-    what to do: either next state, write symbol and movement or {\em halt}\fi
-    \def\I{meta-string infty}\ifx\1\I\quad
-    a computation that does not {\em halt}\fi
-   \def\I{meta-symbol *}\ifx\1\I\quad
-    any other symbol in index, and the same symbol in instruction\fi
-   \def\I{MMc-UTM}\ifx\1\I\quad
-    universal Turing machine based on MMo-UTM, \refx{see diagram}{MMcDiagram}\fi
-   \def\I{MMo-UTM}\ifx\1\I\quad
-    didactic universal Turing machine by Minsky, \refx{see diagram}{MMoDiagram}\fi
-   \def\I{MMr-UTM}\ifx\1\I\quad
-    MMo-UTM revised, \refx{see diagram}{MMrDiagram}\fi
-   \def\I{movement}\ifx\1\I\quad
-    next scanned square, either {\em left} or {\em right}\fi
-  \def\I{movements}\ifx\1\I\quad
-    set of movements, $\Delta = \{\, \hbox{\it left},\hbox{\it right} \,\}$\fi
-   \def\I{processor}\ifx\1\I\quad
-    a finite-state automaton\fi
-   \def\I{ordinary symbols}\ifx\1\I\quad
-    non-empty set of non-{\em blank} symbols, $\bar\Gamma$\fi
-   \def\I{program}\ifx\1\I\quad
-    an encoded Turing machine, ${\frak p} = \smash{\vec{\cal P}}$\fi
-   \def\I{quintuple}\ifx\1\I\quad
-    index and \new/corresponding\wen/ instruction defining a transition\fi
-   \def\I{separation requirement}\ifx\1\I\quad
-    program and data have to be encoded separately\fi
-   \def\I{situation}\ifx\1\I\quad
-    current state, tape content and scanned square\fi
-   \def\I{states}\ifx\1\I\quad
-    processor's set of states, $\Phi$\fi
-   \def\I{step}\ifx\1\I\quad
-    transition from a computing situation to the next one\fi
-   \def\I{symbols}\ifx\1\I\quad
-    tape's set of symbols, $\Gamma$, or alphabet\fi
-   \def\I{table}\ifx\1\I\quad
-    transition function or what to do in every possible situation, $\Pi$\fi
-   \def\I{tape}\ifx\1\I\quad
-    inexhaustible chain of read and write squares\fi
-   \def\I{transition}\ifx\1\I\quad
-    a computing step definition or what to do in a specific situation\fi
-   \def\I{transition function}\ifx\1\I\quad
-    total function $\Pi: \Phi\times\Gamma \to
-       (\Phi\times\Gamma\times\Delta) \;\cup\; \{\,\hbox{\it halt}\,\}$\fi
-   \def\I{Turing complete language}\ifx\1\I\quad
-    the language of a universal Turing machine, $\cal L_U$\fi
-   \def\I{Turing completeness}\ifx\1\I\quad
-    computing can express computing completely\fi
-   \def\I{Turing completeness theorem}\ifx\1\I\quad
-    there is a universal Turing machine\fi
-   \def\I{Turing machine}\ifx\1\I\quad
-    a tape controlled by a processor, $\cal P$\fi
-   \def\I{universal Turing machine}\ifx\1\I\quad
-    a Turing machine $\cal U$ that can emulate any Turing machine\fi
-  \fi\ignorespaces}
-\input auxiliar.abc
-\par
-\endgroup
-
+\definitions
 
 \vfill\break
 
-\xsection{References}
-
-\biblabel Casares (N)
-Ramón Casares,
-\article{On Unprecise Numbers};\\
-\DOI{10.6084/m9.figshare.29066705}.
-
-\biblabel Copeland (2004)
-B.\ Jack Copeland (editor),
-\book{The Essential Turing:
- Seminal Writings in Computing, Logic, Philosophy,
- Artificial Intelligence, and Artificial Life
- {\sl plus} The Secrets of Enigma};
-Oxford University Press, New York, 2004,
-\ISBN 978-0-19-825079-1.
-Available also with \DOI{10.1093/oso/9780198250791.001.0001}.
-
-\biblabel Davies (2004)
-Donald W.\ Davies,
-\article{Corrections to Turing's Universal Computing Machine};
-in \cite Copeland (2004), §2.4, pp.\ 103--124.
-
-\biblabel Davis (1956)
-M.\ D.\ Davis,
-\article{A Note on Universal Turing Machines};
-in \cite Shannon \& McCarthy (1956), pp.\ 167--175,
-Available also with \DOI{10.1515/9781400882618-008}.
-
-\biblabel Davis (1958)
-Martin Davis,
-\book{Computability \& Unsolvability};
-Dover Publications, New York, 1982,
-\ISBN 978-0-486-61471-7.
-Enlarged version of the work originally published
-by McGraw-Hill Book Company, New York, in 1958.
-
-\biblabel Davis (1982)
-Martin Davis,
-\article{Why Gödel Didn't Have Church's Thesis};
-in \periodical{Information and Control},
-vol.\ 54, pp.\ 3--24, 1982,
-\DOI{10.1016/s0019-9958(82)91226-8}.
-
-\biblabel Kleene (1952)
-Stephen Kleene,
-\book{Introduction to Meta-Mathematics};
-Ishi Press, New York, 2009,
-\ISBN 978-0-923891-57-2.
-Reprint of the same title by
-North-Holland, Amsterdam, 1952.
-
-\biblabel Minsky (1967)
-Marvin L.\ Minsky,
-\book{Computation: Finite and Infinite Machines};
-Prentice-Hall, Inc, Englewood Cliffs, NJ, 1967,
-\ISBN 978-0-13-165563-8.
-
-\biblabel Petzold (2008)
-Charles Petzold,
-\book{The Annotated Turing:
- A Guided Tour Through Alan Turing's Historic Paper
- on Computability and the Turing Machine};
-Wiley Publishing, Indianapolis, 2008,
-\ISBN 978-0-470-22905-7.
-
-\biblabel Rice (1953)
-H.\ G.\ Rice,
-\article{Classes of Recursively Enumerable Sets and Their Decision Problems},
-in \periodical{Transactions of the American Mathematical Society},
-vol.\ 74, pp.\ 358--366, 1953,
-\DOI{10.1090/S0002-9947-1953-0053041-6}.
-
-\biblabel Shagrir (2006)
-Oron Shagrir,
-\article{Gödel on Turing on Computability};
-in \book{Church's Thesis After 70 Years},
- edited by Adam Olszewski, Jan Wolenski and Robert Janusz,
- De Gruyter, Berlin, Boston, 2006, pp.\ 393--419,
-\DOI{10.1515/9783110325461.393}.
-
-\biblabel Shannon (1956)
-Claude E.\ Shannon,
-\article{A Universal Turing Machine with Two Internal States};
-in \cite Shannon \& McCarthy (1956), pp.\ 157--165.
-Available also with \DOI{10.1515/9781400882618-007}.
-
-\biblabel Shannon \& McCarthy (1956)
-Claude E.\ Shannon and J.\ McCarthy, editors,
-\book{Automata Studies}
-(Annals of Mathematics Studies, vol.\ 34);
-Princeton University Press, Princeton, NJ, 1956,
-\ISBN 978-0-69107916-5.\\
-Available also with \DOI{10.1515/9781400882618}.
-
-\biblabel Turing (1936)
-A.\ M.\ Turing,
-\article{On Computable Numbers,
- with an Application to the Entscheidungsproblem};
-in \periodical{Proceedings of the London Mathematical Society},
-vol.\ s2-42, no.\ 1, pp.\ 230--265, 1937,
-\DOI{10.1112/plms/s2-42.1.230}.
-Received 28 May, 1936. Read 12 November, 1936.
-Available also in \cite Copeland (2004).
-
-\biblabel Turing (1937)
-A.\ M.\ Turing,
-\article{Computability and $\lambda$-Definability}; in
-\periodical{The Journal of Symbolic Logic},
-vol.\ 2, no.\ 4, pp.\ 153--163, December 1937,
-\DOI{10.2307/2268280}.
+\references
+\item Casares (N)
+\item Copeland (2004)
+\xitem Davies (2004) = Davies (2004x)
+\xitem Davis (1956) = Davis (1956x)
+\item Davis (1958)
+\item Davis (1982)
+\item Kleene (1952)
+\item Minsky (1967)
+\item Petzold (2008)
+\item Rice (1953)
+\item Shagrir (2006)
+\xitem Shannon (1956) = Shannon (1956x)
+\item Shannon \& McCarthy (1956)
+\item Turing (1936)
+\item Turing (1937)
+\endreferences
 
 
 \bye

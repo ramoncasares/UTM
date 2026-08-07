@@ -12,9 +12,30 @@
 \ifnum\count255<`Z\advance\count255 1
 \repeat
 
-\def\definition#1{\lbl{#1}{#1}\ndx{#1}{D}{\em #1}}
-\def\defineA#1#2{\lbl{#1}{#2}\ndx{#1}{D}{\em #2}}
-\def\defineB#1#2{\lbl{#1}{#1}\ndx{#1}{D}{\em #2}}
+
+% define#1|#2|#3|#4|
+%    #1 if empty write {\em #2}, else (if is *) do not write
+%    #2 a unique label - to be ordered alphabetically - preferred ASCII
+%    #3 the name of the concept typographically, empty = #1
+%    #4 its definition goes to macro \^^06#1
+
+\catcode`\^^06=12
+\def\define#1|#2|#3|#4|{\def\1{#1}\def\3{#3}\ifx\3\empty \def\3{#2}\fi
+ \expandafter\gdef\csname ^^06#2\endcsname{#4}%
+ \lbl{#2}{\3}\ndx{#2}{D}\ifx\1\empty {\em\2}\fi}
+
+ \def\TMndxline#1#2#3#4#5{\def\2{#2}%
+  \ifx\2\D\par \hangindent20pt\noindent
+   {\em\ref{#1}}\quad(\refsc{#1})\quad\ignorespaces
+  \csname^^06#1\endcsname\ignorespaces\else\ignorespaces\fi}
+
+\def\definitions{\par\begingroup
+ \everypar{}\parno=0\def\secid{}\noindent\dest
+ {\fonttwo Definitions\toc1{Definitions}\lbl{Definitions}{Definitions}}
+ \par\def\D{D}\let\ndxline=\TMndxline
+ \input auxiliar.abc
+ \par \endgroup}
+
 
 \chardef\diffchar=`!
 
@@ -68,7 +89,7 @@
   \gdef\beginm@rk{#1}\gdef\endm@rk{#2}\d@next}}
 {\obeylines\gdef\pa@ss#1^^M{\def\next{#1}\ifx\next\beginm@rk %
   #1\par \let\next\pr@nt \else \let\next\pa@ss\fi \next}}
-\def\endpr@nt{\afterplisting\endgroup\endinput}  
+\def\endpr@nt{\afterplisting\endgroup\endinput}
 {\obeylines\gdef\pr@nt#1^^M{\def\next{#1}\ifx\next\endm@rk %
   \let\next\endpr@nt \else #1\par \let\next\pr@nt \fi \next}}
 \let\beforeplisting=\relax \let\afterplisting=\relax
@@ -160,7 +181,7 @@ def circle(suffix s)(expr diameter) =
 enddef;
 
 \MTcode
-defaultfont:="cmtt12"; 
+defaultfont:="cmtt12";
 pickup pencircle scaled 0.4pt; thinpen:=savepen;
 pickup pencircle scaled 0.8pt; medpen:=savepen;
 pickup pencircle scaled 1.2pt; thickpen:=savepen;
