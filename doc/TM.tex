@@ -22,7 +22,7 @@
 \catcode`\^^06=12
 \def\define#1|#2|#3|#4|{\def\1{#1}\def\3{#3}\ifx\3\empty \def\3{#2}\fi
  \expandafter\gdef\csname ^^06#2\endcsname{#4}%
- \lbl{#2}{\3}\ndx{#2}{D}\ifx\1\empty {\em\2}\fi}
+ \lbl{#2}{\3}\ndx{#2}{D}\ifx\1\empty {\em\3}\fi}
 
  \def\TMndxline#1#2#3#4#5{\def\2{#2}%
   \ifx\2\D\par \hangindent20pt\noindent
