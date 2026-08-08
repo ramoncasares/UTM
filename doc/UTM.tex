@@ -368,7 +368,7 @@ We use \define|meta-string infty|meta-string $\infty$|a
 to denote that a computation does not halt.
 With this notation,
 every Turing machine $\cal P$ implements a function
-$\Gamma^* \rightarrow \Gamma^*  \cup \{ \infty \}$.
+$\Gamma^* \to \Gamma^*  \cup \{ \infty \}$.
 Overloading the Turing machine name, for instance $\cal P$,
 which can refer to the Turing machine, to its processor,
 or to the implemented function,
@@ -1133,6 +1133,8 @@ which is in page 286, he makes two proposals:
  would have to be moved.
 \endpoints
 
+\break
+
 His arguments are convincing,
 since they help us to see how it could be done,
 though they are complex to implement.
@@ -1141,6 +1143,8 @@ Our solution will be easier:
 requirement of bidirectionality by
 shifting all the {\em tape} when needed,
 see \refsc{MMr-Shift}.
+\new/That is, we will implement the algorithm
+that makes room for one additional guest in Hilbert's Hotel.\wen/
 
 \new/The bidirectionality theorem,
 which states that a singly infinite tape
