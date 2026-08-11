@@ -2170,20 +2170,21 @@ these marked bits will be found among all the "0"'s and "1"'s
 on the {\em tape}.
 In the process, the "M"'s and "N"'s are changed to "S"'s.
 
+
 \MT:
-\MTbeginfig(12cm,8cm,0pt);
+\MTbeginfig(12cm,6cm,0pt);
 \MTresetpa;
 \MT: pickup medpen;
 \MT: defaultfont:="cmtt12";
 %\MT: draw (0,0)--(w,0)--(w,h)--(0,h)--cycle;
 \MTcode
- z24 = (7w/8, 5h/6);
- z31 = (5w/8, 5h/6);
- z32 = (5w/8, 3h/6);
- z33 = (3w/8, 3h/6);
- z34 = (3w/8, 5h/6);
- z51 = (3w/8, 1h/6);
- z52 = (1w/8, 1h/6);
+ z24 = (1w/8, 3h/4);
+ z31 = (3w/8, 3h/4);
+ z32 = (5w/8, 3h/4);
+ z33 = (5w/8, 1h/4);
+ z34 = (7w/8, 2h/4);
+ z51 = (2w/8, 1h/4);
+ z52 = (2w/8, 2h/4);
 
 \MTstate(24)"q24"">";
 \MTstate(31)"q31""<";
@@ -2195,20 +2196,20 @@ In the process, the "M"'s and "N"'s are changed to "S"'s.
 
 \MT: pickup thinpen;
 
-\MTinput(24.ix)(31.iii)"X""X";
-\MTinput(31.v)(32.i)"M""S";
-\MTinput(31.vi)(32.xii)"N""S";
-\MTinput(32.x)(33.ii)"0""A";
-\MTinput(32.viii)(33.iv)"1""B";
-\MTinput(32.xi)(34.v)"Y""A";
-\MTinput(33.vii)(51.xi)"0""0";
-\MTinput(33.vi)(51.xii)"1""1";
-\MTinput(33.iii)(32.ix)"M""S";
-\MTline{ z33.N.p = (4.5w/8, 2.2h/6);}
-\MTinput(33.v)(32.vi)"N""S";
+\MTinput(24.iii)(31.ix)"X""X";
+\MTinput(31.ii)(32.x)"M""S";
+\MTinput(31.iv)(32.viii)"N""S";
+\MTinput(32.vii)(33.xi)"0""A";
+\MTinput(32.v)(33.i)"1""B";
+\MTinput(32.iii)(34.x)"Y""A";
+\MTinput(33.ix)(51.iii)"0""0";
+\MTinput(33.viii)(51.iv)"1""1";
+\MTinput(33.xii)(32.vi)"M""S";
+\MTline{ z33.N.p = (5.7w/8,2h/4);}
+\MTinput(33.ii)(32.iv)"N""S";
 %\MTinput(33.v)(32.vii)"N""S";
-\MTinput(33.viii)(52.ii)"Y""Y";
-\MTinput(34.vi)(33.xii)"0""Y";
+\MTinput(33.x)(52.iv)"Y""Y";
+\MTinput(34.viii)(33.iii)"0""Y";
 
 \MTendfig;
 
@@ -2225,7 +2226,7 @@ then the inspected {\em tape} has to be enlarged to the left,
 which is done by state "q34".
 State "q33" determines whether to go back to "q32" to continue marking,
 or go forward to  state "q51", or to "q52", to write, see \refsc{MMc-Write}.
-\par\kern-12pt\vbox to0pt{\kern-15pt\hbox to 0pt{\kern4cm\box\MTbox\hss}\vss}
+\par\kern-12pt\new/\vbox to0pt{\kern12pt\hbox to 0pt{\kern4cm\box\MTbox\hss}\vss}\wen/
 \pfile{../csv/MMc-UTM.csv}
 -- move left
 -- move right
