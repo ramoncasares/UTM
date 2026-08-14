@@ -261,8 +261,7 @@ all squares to its left are {\em blank},
 preferably the leftmost non-{\em blank} square.
 From that initial situation, the Turing machine
 follows the instructions given in the table
-until the instruction to do is
-\define|halt||instruction that terminates a computation|,
+until the instruction to do is {\em halt},
 thus ending the computation, or else it goes forever.
 Some more details and examples are provided below,
 in subsections \refsc{Processor} and \refsc{Examples}.
@@ -319,7 +318,7 @@ the movements $\Delta$, and the table $\Pi$.
   (\Phi\times\Gamma\times\Delta) \cup \{\,\hbox{\it halt}\,\}$,
  so it can be written as a table
  of $|\Phi|\times|\Gamma|$ rows and five columns,
- although we can omit some rows, as will we see soon.
+ although we \mod[will<can] omit some rows, as will we see soon.
  Table $\Pi$ is also known as the
  \define|transition function||total function
  $ \Pi : \Phi\times\Gamma \to
@@ -337,13 +336,15 @@ a meaningful finite string of {\em blank} symbols
 concatenated with any of those two infinities could
 cause ambiguities.
 
-The default instruction is {\em halt},
+\dest
+The default instruction is
+\define|halt||instruction that \new/finishes\wen/ a computation|,
 which halts the Turing machine,
 so it does not change anything, neither the state nor the symbol,
 and it does not move.
 We could make explicit a {\em halt} instruction in the table
 by using, for example, \M= to mean no movement,
-or we can rather omit the corresponding row.
+\mod[but we will<or we can] rather omit the corresponding row.
 
 \dest
 We use \define|meta-symbol *|meta-symbol {\tt *}|any other symbol in index,
