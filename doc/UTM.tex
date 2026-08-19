@@ -251,7 +251,7 @@ A \define|computation||from the initial situation,
  follow instructions till {\em halt}, if ever|
 starts from a well-defined situation and is executed in a loop
 with four stages ---read, transition, write, and move---
-that is exited whenever the transition is a {\em halt}ing one,
+that is exited whenever the transition is a \new/halting\wen/ one,
 and then we say that the Turing machine has halted.
 We will assume without loss of generality that
 in the initial situation the state is the
@@ -269,7 +269,7 @@ in subsections \refsc{Processor} and \refsc{Examples}.
 \dest
 So the Turing machine transforms the string of symbols that was
 written on the tape when it started into the string of symbols
-that was written on the tape when it {\em halt}ed.
+that was written on the tape when it \new/halted\wen/.
 From this point of view, each Turing machine
 implements a function from the set of strings of symbols
 to the set of strings of symbols,
@@ -279,10 +279,10 @@ By definition, any function implemented by a Turing machine is
 a \define|computable function||one implemented by a Turing machine|.
 Note that not all these functions are total functions,
 because there is not any guarantee that
-a Turing machine on an initial string will {\em halt},
+a Turing machine on an initial string will \new/halt\wen/,
 and then the function implemented by the Turing machine
 is not defined for those input strings on which the
-machine never {\em halt}s.
+machine never \new/halts\wen/.
 
 
 \subsection{Processor}
@@ -364,7 +364,7 @@ meta-symbol \M* is just an abbreviation.
 
 \dest
 We use \define|meta-string infty|meta-string $\infty$|a
- computation that does not {\em halt}|
+ computation that does not \new/halt\wen/|
  $\notin \Gamma^*$\del/,\led/
 to denote that a computation does not halt.
 With this notation,
@@ -390,7 +390,7 @@ Some use quadruples instead of quintuples,
 so the instruction is a pair composed of
 the next state and the action,
 where the action can either be to write a symbol or to move.
-Others {\em halt} when reaching a halting state;
+Others \new/halt\wen/ when reaching a halting state;
 we will use them frequently, since for us
 a \define|halting state||one from which all
  transitions are halting ones|
@@ -1016,7 +1016,7 @@ when the {\em read} stage was already done.
 Now, let us see MMo-UTM emulating "TM101",
 which is a simple Turing machine that,
 when it starts on a blank tape,
-it \new/{\em halt}s\wen/ with \new/the\wen/ string "101" on the tape.
+it halts with \new/the\wen/ string "101" on the tape.
 $$\hbox{\tt TM101}\quad\Table{
  A& 0& B& 1& >\cr
  B& 0& C& 0& >\cr
@@ -1056,9 +1056,9 @@ MY000X0000111X0101001X1001110Y
 1YA1SXM000111X0101001X1001110Y000000000[q45]0	900
 \endcode
 Function "tm:steps(n)" runs Turing machine "tm" until
-it computes "n" steps or until it {\em halt}s,
+it computes "n" steps or until it \new/halts\wen/,
 and returns the situation and the number of steps executed.
-Notice that MMo-UTM will not {\em halt},
+Notice that MMo-UTM will not \new/halt\wen/,
 because in state "q45" and reading a "0" ({\em blank}),
 it will move to the right without changing the state.
 This happens because the emulation has stepped out
@@ -1206,7 +1206,7 @@ see \refsc{MMr-Start}.
 
 Another minor limitation is that
 MMo-UTM fails to emulate the empty table Turing machine.
-The table is empty when all transitions are {\em halt}ing ones,
+The table is empty when all transitions are \new/halting\wen/ ones,
 so it corresponds to a Turing machine $\cal I$ that does nothing:
  $\forall {\frak d}\in \Gamma^*: \TM I<d> = \TM<d>$.
 $\cal I$ is also known as no-operation ("NOP"), and
@@ -1231,8 +1231,8 @@ saving its value in the rightmost square of the {\em index}.
 For this reason, when it starts,
  the value of the "M" square should be interpreted
  to be the value of the rightmost bit in the {\em index}.
-And it happens the same when it {\em halt}s.
-Therefore, after {\em halt}ing,
+And it happens the same when it \new/halts\wen/.
+Therefore, after \new/halting\wen/,
  we have to interpret the value of "M" to be "0" or "1"
  depending on the value of the rightmost symbol of the {\em index}
  to be "A" or "B".
@@ -1247,7 +1247,7 @@ $\Gamma_{\!\rm r} = \{ \M0, \M1, \M A, \M B, \M M, \M N,
 An additional requirement is that,
 whenever it halts, MMr-UTM will return the very same tape that
 the emulated binary Turing machine ${\cal P}_2$ computes.
-Therefore, before {\em halt}ing, MMr-UTM has to blank
+Therefore, before \new/halting\wen/, MMr-UTM has to blank
 the {\em program} and {\em index}, and it has to tidy up
 the {\em tape}, which requires limiting it.
 To this end, MMr-UTM uses another symbol "Y", the third one,
@@ -1353,7 +1353,7 @@ These are the first lines of file "MMr-UTM.csv".
 
 \labeled{MMr-Clean}\subsubsection{Clean}
 
-Since MMo-UTM {\em halt}s when the whole {\em program}
+Since MMo-UTM \new/halts\wen/ when the whole {\em program}
 has been inspected without finding any instruction,
 then cleaning starts when, in state "q16",
 the rightmost symbol "Y" is read.
@@ -1365,7 +1365,7 @@ The cleaning task is simple:
  after state "q16", or "q13" or "q14", has erased the rightmost "Y",
  state "q01" moves to the left blanking the {\em program}
 and the {\em index}, and then state "q02" tidies up the {\em tape}
-and {\em halt}s after erasing the leftmost~"Y".
+and \new/halts\wen/ after erasing the leftmost~"Y".
 Having added the symbol "N" simplifies this task,
 since now the read symbol has not been overwritten.
 
@@ -1739,7 +1739,7 @@ where:
 \point ${\cal P}_2\langle{\frak d}_2\rangle \in \Gamma^*_2$
  is the output string computed by ${\cal P}_2$ when
  its input is ${\frak d}_2$,\\
- or $\infty\notin\Gamma^*_2$ if it does not {\em halt},
+ or $\infty\notin\Gamma^*_2$ if it does not \new/halt\wen/,
 \point ${\frak p}_2\in {\cal L}_{{\cal U}_2}$
  is the program that encodes ${\cal P}_2$\\
  in the language ${\cal L}_{{\cal U}_2}$ implemented by ${\cal U}_2$,
@@ -1750,7 +1750,7 @@ where:
 \point ${\cal U}_2\langle\,{\frak p}_2| {\frak d}_2\,\rangle
  \in \Gamma^*_2$ is the corresponding output
  string computed by ${\cal U}_2$,\\
- or $\infty\notin\Gamma^*_2$ if it does not {\em halt}.
+ or $\infty\notin\Gamma^*_2$ if it does not \new/halt\wen/.
 \endpoints
 
 Since MMr-UTM, in the place of ${\cal U}_2$,
@@ -2618,7 +2618,7 @@ This is the situation.
 
 \MTendfig;
 
-Since MMc-UTM detects a {\em halt}ing instruction when the whole {\em program}
+Since MMc-UTM detects a \new/{\em halt}\wen/ instruction when the whole {\em program}
 has been inspected without finding any instruction,
 then cleaning starts when, in state "q16", or "q13" or "q14",
 the rightmost symbol "Y" is read, which is erased.
@@ -2626,7 +2626,7 @@ Next it goes to state "q01", which erases
 everything until the middle "Y", that is,
 it blanks the {\em program} and the {\em index}.
 And then it goes to state "q02", which tidies up the {\em tape},
-and it finally {\em halt}s after erasing the leftmost "Y".
+and it finally \new/halts\wen/ after erasing the leftmost "Y".
 \par\kern0pt\vbox to0pt{\kern-15pt\hbox to 0pt{\kern3.75cm\box\MTbox\hss}\vss}
 \pfile{../csv/MMc-UTM.csv}
 -- clean
