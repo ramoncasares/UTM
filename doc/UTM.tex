@@ -301,7 +301,7 @@ the movements $\Delta$, and the table $\Pi$.
  $\bar\Gamma$ has to be finite and not empty. The set of
  \define|symbols||tape’s set of symbols, $\Gamma$, or alphabet|
  $\Gamma$ is set $\bar\Gamma$ plus the {\em blank} special symbol,
- let us write it \M0, that denotes that a tape square is \new\{\em blank}\wen/.
+ let us write it \M0, that denotes that a tape square is \new/{\em blank}\wen/.
  Then, $\Gamma = \bar\Gamma \cup \{ \M0 \}$,
  so $\M0\in\Gamma$ and $|\Gamma| \ge 2$.
  We say that $\Gamma$ is the
@@ -2169,7 +2169,8 @@ It changes as many "0"'s or "1"'s to "A"'s and "B"'s
 as there are "M"'s and "N"'s. This way later, when reading,
 these marked bits will be found among all the "0"'s and "1"'s
 on the {\em tape}.
-In the process, the "M"'s and "N"'s are changed to "S"'s.
+In the process, the "M"'s and "N"'s are changed to "S"'s\new/,
+so they will be the target when writing\wen/.
 
 
 \MT:
