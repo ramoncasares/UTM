@@ -2158,7 +2158,8 @@ so it goes to state "q31" to emulate the left movement
 -- move left
 
 When this sub-machine terminates the first time,
-since the movement is {\em right}, the situation is as follows.
+since the \new/emulated\wen/ movement is {\em right},
+the situation is as follows.
 
 \nextsituation
 %\tape{q35}{YMMYABB\=AXAAAAABBABX001000100X010010111X011011000X011100110X100001110Y}
@@ -2295,7 +2296,7 @@ or go forward to state "q51" to write, see \refsc{MMc-Write}.
 -- shift
 
 When this sub-machine terminates the first time,
-since the movement was {\em right} and
+since the \new/emulated\wen/ movement was {\em right} and
 it finds a "Y", the situation is as follows.
 
 \nextsituation
@@ -2395,7 +2396,7 @@ the situation is as follows.
 \nextsituation
 %\tape{q37}{Y\=MTAYABBAXAAAAABBABX001000100X010010111X011011000X011100110X100001110Y}
 
-And when the first right movement is completed,
+And when the first \mod[emulated<right] movement is completed,
 the situation is as follows.
 
 \nextsituation
@@ -3162,7 +3163,7 @@ that can emulate any 2-tag system.
 Then, using a theorem by Cocke, presented in page 270,
 that affirms that, for any Turing machine $\cal P$,
  there is a 2-tag system that behaves like $\cal P$,
-he concludes that his 4-7-machine must be universal,
+he \mod[concluded<concludes] that his 4-7-machine must be universal,
 though the encoding is not straightforward. As he writes,
 in page 278, “the conversion [doing the encoding]
 is a primitive-recursive operation
