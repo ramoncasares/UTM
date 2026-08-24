@@ -317,7 +317,7 @@ the movements $\Delta$, and the table $\Pi$.
 \point The table $\Pi$ is a \mod[partial<total] function
  $\Pi: \Phi\times\Gamma \to \new/\Phi\times\Gamma\times\Delta\wen/$,
  so it can be written as a table
- of $|\Phi|\times|\Gamma|$ rows\new/, at most,\wen/ and five columns\del/,
+ of $|\Phi|\times|\Gamma|$ rows\new/ at most,\wen/ and five columns\del/,
  although we can omit some rows, as will we see soon\led/.
  Table $\Pi$ is also known as the
  \define|transition function||\mod[partial<total] function
@@ -339,17 +339,6 @@ and it does not move.
 Thus, we can also say that any row omitted from table~$\Pi$
  specifies a halting transition.\wen/
 
-Set $\Gamma^*$ is the infinite set
- of the {\em finite} strings drawn from $\Gamma$.
-There is a practical problem regarding the {\em blank} special symbol,
-because there are two infinities of them on the tape,
-one to the left and the other to the right.
-We will ignore these two infinities,
-but we should be aware that
-a meaningful finite string of {\em blank} symbols
-concatenated with any of those two infinities could
-cause ambiguities.
-
 \dest
 We use \define|meta-symbol *|meta-symbol {\tt *}|any other symbol in index,
  and the same symbol in instruction|
@@ -365,6 +354,17 @@ then row \M{C*B*<} expands to \M{C1B1<}.
 Meta-symbol \M* is handy when writing tables,
  but it can always be replaced by symbols;
 meta-symbol \M* is just an abbreviation.
+
+\new/\wen/Set $\Gamma^*$ is the infinite set
+ of the {\em finite} strings drawn from $\Gamma$.
+There is a practical problem regarding the {\em blank} special symbol,
+because there are two infinities of them on the tape,
+one to the left and the other to the right.
+We will ignore these two infinities,
+but we should be aware that
+a meaningful finite string of {\em blank} symbols
+concatenated with any of those two infinities could
+cause ambiguities.
 
 \dest
 We use \define|meta-string infty|meta-string $\infty$|a
