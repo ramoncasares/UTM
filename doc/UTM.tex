@@ -237,9 +237,9 @@ is its corresponding
  write symbol \new/({\sc w})\wen/ and movement \new/({\sc m})\wen/ or {\em halt}|.
 Together, the index with its corresponding instruction
 form a \define|quintuple||index and \new/corresponding\wen/ instruction
- defining a transition|,
-which defines a \define|transition||a computing step definition
- or what to do in a specific situation|.
+ \mod[specifying<defining] a transition|,
+which \mod[specifies<defines] a \define|transition||a computing step
+ \new/specification\wen/ or what to do in a specific situation|.
 As the number of states and the number of symbols are both finite,
 the table is finite.
 
@@ -314,17 +314,30 @@ the movements $\Delta$, and the table $\Pi$.
  {\em left}, let us write it \M<; and
  {\em right}, let us write it \M>.
  Then, $\Delta=\{\M<, \M>\}$.
-\point The table $\Pi$ is a total function
- $\Pi: \Phi\times\Gamma \to
-  (\Phi\times\Gamma\times\Delta) \cup \{\,\hbox{\it halt}\,\}$,
+\point The table $\Pi$ is a \mod[partial<total] function
+ $\Pi: \Phi\times\Gamma \to \new/\Phi\times\Gamma\times\Delta\wen/$,
  so it can be written as a table
- of $|\Phi|\times|\Gamma|$ rows and five columns,
- although we \mod[will<can] omit some rows, as will we see soon.
+ of $|\Phi|\times|\Gamma|$ rows\new/, at most,\wen/ and five columns\del/,
+ although we can omit some rows, as will we see soon\led/.
  Table $\Pi$ is also known as the
- \define|transition function||total function
- $ \Pi : \Phi\times\Gamma \to
- (\Phi\times\Gamma\times\Delta) \cup \{\,\hbox{\it halt}\,\}$|.
+ \define|transition function||\mod[partial<total] function
+ $ \Pi : \Phi\times\Gamma \to \new/\Phi\times\Gamma\times\Delta\wen/$|.
+ \new/Function $\Pi$ argument is the {\em index}, and
+ its value is its corresponding {\em instruction}.\wen/
 \endpoints
+
+\dest
+The default instruction is
+\define|halt||instruction that \new/finishes\wen/ a computation|\mod[.<,
+ which halts the Turing machine, so]
+\new/The {\em halt} instruction finishes the computation, and\wen/
+it does not change anything, neither the state nor the symbol,
+and it does not move.
+\new/Being the default instruction means that,
+ for any argument of table $\Pi$ that is not defined,
+ the corresponding instruction is {\em halt}.
+Thus, we can also say that any row omitted from table~$\Pi$
+ specifies a halting transition.\wen/
 
 Set $\Gamma^*$ is the infinite set
  of the {\em finite} strings drawn from $\Gamma$.
@@ -336,16 +349,6 @@ but we should be aware that
 a meaningful finite string of {\em blank} symbols
 concatenated with any of those two infinities could
 cause ambiguities.
-
-\dest
-The default instruction is
-\define|halt||instruction that \new/finishes\wen/ a computation|,
-which halts the Turing machine,
-so it does not change anything, neither the state nor the symbol,
-and it does not move.
-We could make explicit a {\em halt} instruction in the table
-by using, for example, \M= to mean no movement,
-\mod[but we will<or we can] rather omit the corresponding row.
 
 \dest
 We use \define|meta-symbol *|meta-symbol {\tt *}|any other symbol in index,
