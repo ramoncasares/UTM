@@ -220,10 +220,8 @@ is {\em left} or {\em right},
 so the next scanned square will be
 the neighbor one to the left,
 or the neighbor one to the right.
-So a \define|table||transition function or
- what to do in every possible situation, $\Pi$|
-defining the next state and the pair of
-symbol to write and movement to do
+So a {\em table} defining the next state
+and the pair of symbol to write and movement to do
 for each possible current state and read symbol
 determines completely the Turing machine behavior.
 We will say that the pair of current state ({\sc c})
@@ -314,14 +312,16 @@ the movements $\Delta$, and the table $\Pi$.
  {\em left}, let us write it \M<; and
  {\em right}, let us write it \M>.
  Then, $\Delta=\{\M<, \M>\}$.
-\point The table $\Pi$ is a \mod[partial<total] function
+\point The \define|table||\new/partial function
+ $\Pi: \Phi\times\Gamma \to \Phi\times\Gamma\times\Delta$\wen/|
+ $\Pi$ is a \mod[partial<total] function
  $\Pi: \Phi\times\Gamma \to \new/\Phi\times\Gamma\times\Delta\wen/$,
  so it can be written as a table
  of $|\Phi|\times|\Gamma|$ rows\new/ at most,\wen/ and five columns\del/,
  although we can omit some rows, as will we see soon\led/.
- Table $\Pi$ is also known as the
- \define|transition function||\mod[partial<total] function
- $ \Pi : \Phi\times\Gamma \to \new/\Phi\times\Gamma\times\Delta\wen/$|.
+ \del/Table $\Pi$ is also known as the
+  define|transition function||\mod[partial<total] function
+ $ \Pi : \Phi\times\Gamma \to \new/\Phi\times\Gamma\times\Delta\wen/$|.\led/
  \new/Function $\Pi$ argument is the {\em index}, and
  its value is its corresponding {\em instruction}.\wen/
 \endpoints
@@ -335,9 +335,17 @@ it does not change anything, neither the state nor the symbol,
 and it does not move.
 \new/Being the default instruction means that,
  for any argument of table $\Pi$ that is not defined,
- the corresponding instruction is {\em halt}.
-Thus, we can also say that any row omitted from table~$\Pi$
- specifies a halting transition.\wen/
+ the corresponding instruction is {\em halt},
+ so every argument gets its corresponding instruction.
+ %%%Remember: any row omitted from table~$\Pi$
+ %%%specifies a halting transition.
+This way, table $\Pi$ with the default instruction {\em halt} makes
+the \define|transition function||total function
+ $ \new/\Pi'\wen/ : \Phi\times\Gamma \to
+ (\Phi\times\Gamma\times\Delta)\cup\{\,\hbox{\it halt}\,\}$|
+ $\Pi'$ a total function,
+$\Pi':  \Phi\times\Gamma \to
+(\Phi\times\Gamma\times\Delta)\cup\{\,\hbox{\it halt}\,\}$.\wen/
 
 \dest
 We use \define|meta-symbol *|meta-symbol {\tt *}|any other symbol in index,
