@@ -31,7 +31,7 @@ the theorem of Turing completeness.
 \endabstract
 
 \beginnote
-This is \DOI{10.6084/m9.figshare.32261133}\new/.v3\wen/,
+This is \DOI{10.6084/m9.figshare.32261133}.v3,
 version {\tt\version}.\\
 \copyright\ 2026 Ramón Casares; licensed as {\tt cc-by}.\\
 Any comments on it to
@@ -227,17 +227,17 @@ determines completely the Turing machine behavior.
 We will say that the pair of current state ({\sc c})
 and read symbol ({\sc r}) is the
 \define|index||instruction reference:
- current state \new/({\sc c}) and\wen/ read symbol \new/({\sc r})\wen/|,
+ current state ({\sc c}) and read symbol ({\sc r})|,
 and that the triplet of next state ({\sc n}),
 symbol to write ({\sc w}) and movement to do ({\sc m})
 is its corresponding
-\define|instruction||what to do: either next state \new/({\sc n})\wen/,
- write symbol \new/({\sc w})\wen/ and movement \new/({\sc m})\wen/ or {\em halt}|.
+\define|instruction||what to do: either next state ({\sc n}),
+ write symbol ({\sc w}) and movement ({\sc m}) or {\em halt}|.
 Together, the index with its corresponding instruction
-form a \define|quintuple||index and \new/corresponding\wen/ instruction
- \mod[specifying<defining] a transition|,
-which \mod[specifies<defines] a \define|transition||a computing step
- \new/specification\wen/ or what to do in a specific situation|.
+form a \define|quintuple||index and corresponding instruction
+ specifying a transition|,
+which specifies a \define|transition||a computing step
+ specification or what to do in a specific situation|.
 As the number of states and the number of symbols are both finite,
 the table is finite.
 
@@ -249,7 +249,7 @@ A \define|computation||from the initial situation,
  follow instructions till {\em halt}, if ever|
 starts from a well-defined situation and is executed in a loop
 with four stages ---read, transition, write, and move---
-that is exited whenever the transition is a \new/halting\wen/ one,
+that is exited whenever the transition is a halting one,
 and then we say that the Turing machine has halted.
 We will assume without loss of generality that
 in the initial situation the state is the
@@ -267,7 +267,7 @@ in subsections \refsc{Processor} and \refsc{Examples}.
 \dest
 So the Turing machine transforms the string of symbols that was
 written on the tape when it started into the string of symbols
-that was written on the tape when it \new/halted\wen/.
+that was written on the tape when it halted.
 From this point of view, each Turing machine
 implements a function from the set of strings of symbols
 to the set of strings of symbols,
@@ -277,10 +277,10 @@ By definition, any function implemented by a Turing machine is
 a \define|computable function||one implemented by a Turing machine|.
 Note that not all these functions are total functions,
 because there is not any guarantee that
-a Turing machine on an initial string will \new/halt\wen/,
+a Turing machine on an initial string will halt,
 and then the function implemented by the Turing machine
 is not defined for those input strings on which the
-machine never \new/halts\wen/.
+machine never halts.
 
 
 \subsection{Processor}
@@ -298,9 +298,9 @@ the movements $\Delta$, and the table $\Pi$.
  non-{\em blank} symbols, $\bar\Gamma$|
  $\bar\Gamma$ has to be finite and not empty. The set of
  \define|symbols||tape’s set of symbols,
- $\Gamma\new/ = \bar\Gamma \cup \{\,\hbox{\it blank}\,\}\wen/$, or alphabet|
+ $\Gamma = \bar\Gamma \cup \{\,\hbox{\it blank}\,\}$, or alphabet|
  $\Gamma$ is set $\bar\Gamma$ plus the {\em blank} special symbol,
- let us write it \M0, that denotes that a tape square is \new/{\em blank}\wen/.
+ let us write it \M0, that denotes that a tape square is {\em blank}.
  Then, $\Gamma = \bar\Gamma \cup \{ \M0 \}$,
  so $\M0\in\Gamma$ and $|\Gamma| \ge 2$.
  We say that $\Gamma$ is the
@@ -312,28 +312,23 @@ the movements $\Delta$, and the table $\Pi$.
  {\em left}, let us write it \M<; and
  {\em right}, let us write it \M>.
  Then, $\Delta=\{\M<, \M>\}$.
-\point The \define|table||\new/partial function
- $\Pi: \Phi\times\Gamma \to \Phi\times\Gamma\times\Delta$\wen/|
- $\Pi$ is a \mod[partial<total] function
- $\Pi: \Phi\times\Gamma \to \new/\Phi\times\Gamma\times\Delta\wen/$,
+\point The \define|table||partial function
+ $\Pi: \Phi\times\Gamma \to \Phi\times\Gamma\times\Delta$|
+ $\Pi$ is a partial function
+ $\Pi: \Phi\times\Gamma \to \Phi\times\Gamma\times\Delta$,
  so it can be written as a table
- of $|\Phi|\times|\Gamma|$ rows\new/ at most,\wen/ and five columns\del/,
- although we can omit some rows, as will we see soon\led/.
- \del/Table $\Pi$ is also known as the
-  define|transition function||\mod[partial<total] function
- $ \Pi : \Phi\times\Gamma \to \new/\Phi\times\Gamma\times\Delta\wen/$|.\led/
- \new/Function $\Pi$ argument is the {\em index}, and
- its value is its corresponding {\em instruction}.\wen/
+ of $|\Phi|\times|\Gamma|$ rows at most, and five columns.
+ Function $\Pi$ argument is the {\em index}, and
+ its value is its corresponding {\em instruction}.
 \endpoints
 
 \dest
 The default instruction is
-\define|halt||instruction that \new/finishes\wen/ a computation|\mod[.<,
- which halts the Turing machine, so]
-\new/The {\em halt} instruction finishes the computation, and\wen/
+\define|halt||instruction that finishes a computation|.
+The {\em halt} instruction finishes the computation, and
 it does not change anything, neither the state nor the symbol,
 and it does not move.
-\new/Being the default instruction means that,
+Being the default instruction means that,
  for any argument of table $\Pi$ that is not defined,
  the corresponding instruction is {\em halt},
  so every argument gets its corresponding instruction.
@@ -341,17 +336,16 @@ and it does not move.
  %%%specifies a halting transition.
 This way, table $\Pi$ with the default instruction {\em halt} makes
 the \define|transition function||total function
- $ \new/\Pi'\wen/ : \Phi\times\Gamma \to
+ $ \Pi' : \Phi\times\Gamma \to
  (\Phi\times\Gamma\times\Delta)\cup\{\,\hbox{\it halt}\,\}$|
  $\Pi'$ a total function,
 $\Pi':  \Phi\times\Gamma \to
-(\Phi\times\Gamma\times\Delta)\cup\{\,\hbox{\it halt}\,\}$.\wen/
+(\Phi\times\Gamma\times\Delta)\cup\{\,\hbox{\it halt}\,\}$.
 
 \dest
 We use \define|meta-symbol *|meta-symbol {\tt *}|any other symbol in index,
  and the same symbol in instruction|
- $\notin \Gamma$\del/,\led/
- to denote {\em any other symbol}.
+ $\notin \Gamma$ to denote {\em any other symbol}.
 That is, index \M{C*} applies when, in state \M{C},
 the read symbol is any not explicitly defined.
 And, in that case, the corresponding instruction
@@ -363,7 +357,7 @@ Meta-symbol \M* is handy when writing tables,
  but it can always be replaced by symbols;
 meta-symbol \M* is just an abbreviation.
 
-\new/\wen/Set $\Gamma^*$ is the infinite set
+Set $\Gamma^*$ is the infinite set
  of the {\em finite} strings drawn from $\Gamma$.
 There is a practical problem regarding the {\em blank} special symbol,
 because there are two infinities of them on the tape,
@@ -376,12 +370,8 @@ cause ambiguities.
 
 \dest
 We use \define|meta-string infty|meta-string $\infty$|a
- computation that does not \new/halt\wen/|
- $\notin \Gamma^*$\del/,\led/
-to denote that a computation does not halt.
-With this notation,
-every Turing machine $\cal P$ implements a function
-$\Gamma^* \to \Gamma^*  \cup \{ \infty \}$.
+ computation that does not halt|
+ $\notin \Gamma^*$ to denote that a computation does not halt.
 Overloading the Turing machine name, for instance $\cal P$,
 which can refer to the Turing machine, to its processor,
 or to the implemented function,
@@ -392,7 +382,9 @@ it computes it and halts
  with the string ${\frak r}\in\Gamma^*$ on the tape.
 So $\frak d$ is the input string to $\cal P$,
 and $\frak r$ is the corresponding output string.
-Should it no halt, we would write $\TM P<d> = \infty$ instead.
+Should it no halt, we would write $\TM P<d> = \infty$ instead,
+expressing that function $\cal P$ is not defined
+for argument $\frak d$.
 
 \dest
 There are many versions of the Turing machine,
@@ -402,7 +394,7 @@ Some use quadruples instead of quintuples,
 so the instruction is a pair composed of
 the next state and the action,
 where the action can either be to write a symbol or to move.
-Others \new/halt\wen/ when reaching a halting state;
+Others halt when reaching a halting state;
 we will use them frequently, since for us
 a \define|halting state||one from which all
  transitions are halting ones|
@@ -1014,7 +1006,7 @@ and the symbol is the {\em blank} symbol \M0,
 these two do not need to be specified.
 
 Sub-machines Locate and Copy implement the {\em transition} stage
-of the computing loop, seen in \refsc{Turing machine}.
+of the computing loop, seen in \refsc{computation}.
 The other two sub-machines implement
 the other stages of the computing loop, but somehow mixed.
 Since the initial state is \M{q11}, then MMo-UTM starts
@@ -1028,7 +1020,7 @@ when the {\em read} stage was already done.
 Now, let us see MMo-UTM emulating "TM101",
 which is a simple Turing machine that,
 when it starts on a blank tape,
-it halts with \new/the\wen/ string "101" on the tape.
+it halts with the string "101" on the tape.
 $$\hbox{\tt TM101}\quad\Table{
  A& 0& B& 1& >\cr
  B& 0& C& 0& >\cr
@@ -1068,9 +1060,9 @@ MY000X0000111X0101001X1001110Y
 1YA1SXM000111X0101001X1001110Y000000000[q45]0	900
 \endcode
 Function "tm:steps(n)" runs Turing machine "tm" until
-it computes "n" steps or until it \new/halts\wen/,
+it computes "n" steps or until it halts,
 and returns the situation and the number of steps executed.
-Notice that MMo-UTM will not \new/halt\wen/,
+Notice that MMo-UTM will not halt,
 because in state "q45" and reading a "0" ({\em blank}),
 it will move to the right without changing the state.
 This happens because the emulation has stepped out
@@ -1121,7 +1113,7 @@ after emulating some more steps.
 MMo-UTM only emulates Turing machines with singly left-infinite tapes,
 so it will fail to emulate computations that require
 more tape to the right than it is available,
-as seen \new/in \refsc{MMo-Testing}\wen/ when emulating \M{TM101}.
+as seen in \refsc{MMo-Testing} when emulating \M{TM101}.
 
 Regarding unidirectionality,
 \cite Minsky (1967) writes, §6.3.2 in page 129:
@@ -1156,14 +1148,14 @@ Our solution will be easier:
 requirement of bidirectionality by
 shifting all the {\em tape} when needed,
 see \refsc{MMr-Shift}.
-\new/That is, we will implement the algorithm
-that makes room for one additional guest in Hilbert's Hotel.\wen/
+That is, we will implement the algorithm
+that makes room for one additional guest in Hilbert's Hotel.
 
-\new/In formal terms, the bidirectionality theorem,
+In formal terms, the bidirectionality theorem,
 which states that a singly infinite tape
 is enough to emulate any Turing machine,
 settles this question,
-see \refsc{bidirectionality theorem}.\wen/
+see \refsc{bidirectionality theorem}.
 
 
 \subsubsection{Binarity}
@@ -1218,7 +1210,7 @@ see \refsc{MMr-Start}.
 
 Another minor limitation is that
 MMo-UTM fails to emulate the empty table Turing machine.
-The table is empty when all transitions are \new/halting\wen/ ones,
+The table is empty when all transitions are halting ones,
 so it corresponds to a Turing machine $\cal I$ that does nothing:
  $\forall {\frak d}\in \Gamma^*: \TM I<d> = \TM<d>$.
 $\cal I$ is also known as no-operation ("NOP"), and
@@ -1243,8 +1235,8 @@ saving its value in the rightmost square of the {\em index}.
 For this reason, when it starts,
  the value of the "M" square should be interpreted
  to be the value of the rightmost bit in the {\em index}.
-And it happens the same when it \new/halts\wen/.
-Therefore, after \new/halting\wen/,
+And it happens the same when it halts.
+Therefore, after halting,
  we have to interpret the value of "M" to be "0" or "1"
  depending on the value of the rightmost symbol of the {\em index}
  to be "A" or "B".
@@ -1259,7 +1251,7 @@ $\Gamma_{\!\rm r} = \{ \M0, \M1, \M A, \M B, \M M, \M N,
 An additional requirement is that,
 whenever it halts, MMr-UTM will return the very same tape that
 the emulated binary Turing machine ${\cal P}_2$ computes.
-Therefore, before \new/halting\wen/, MMr-UTM has to blank
+Therefore, before halting, MMr-UTM has to blank
 the {\em program} and {\em index}, and it has to tidy up
 the {\em tape}, which requires limiting it.
 To this end, MMr-UTM uses another symbol "Y", the third one,
@@ -1365,7 +1357,7 @@ These are the first lines of file "MMr-UTM.csv".
 
 \labeled{MMr-Clean}\subsubsection{Clean}
 
-Since MMo-UTM \new/halts\wen/ when the whole {\em program}
+Since MMo-UTM halts when the whole {\em program}
 has been inspected without finding any instruction,
 then cleaning starts when, in state "q16",
 the rightmost symbol "Y" is read.
@@ -1377,7 +1369,7 @@ The cleaning task is simple:
  after state "q16", or "q13" or "q14", has erased the rightmost "Y",
  state "q01" moves to the left blanking the {\em program}
 and the {\em index}, and then state "q02" tidies up the {\em tape}
-and \new/halts\wen/ after erasing the leftmost~"Y".
+and halts after erasing the leftmost~"Y".
 Having added the symbol "N" simplifies this task,
 since now the read symbol has not been overwritten.
 
@@ -1495,8 +1487,8 @@ and goes to state "q54", which rewrites the "Y".
 \MTendfig;
 
 \par\kern-12pt\vbox to0pt{\kern-14.4pt\hbox to 0pt{\kern3cm\box\MTbox\hss}\vss}
-\new/\listline{../csv/MMr-UTM.csv}{80}\wen/
-\new/\listline{../csv/MMr-UTM.csv}{84}\wen/
+\listline{../csv/MMr-UTM.csv}{80}
+\listline{../csv/MMr-UTM.csv}{84}
 \pfile{../csv/MMr-UTM.csv}
 -- shift
 -- end
@@ -1749,7 +1741,7 @@ where:
 \point ${\cal P}_2\langle{\frak d}_2\rangle \in \Gamma^*_2$
  is the output string computed by ${\cal P}_2$ when
  its input is ${\frak d}_2$,\\
- or $\infty\notin\Gamma^*_2$ if it does not \new/halt\wen/,
+ or $\infty\notin\Gamma^*_2$ if it does not halt,
 \point ${\frak p}_2\in {\cal L}_{{\cal U}_2}$
  is the program that encodes ${\cal P}_2$\\
  in the language ${\cal L}_{{\cal U}_2}$ implemented by ${\cal U}_2$,
@@ -1760,7 +1752,7 @@ where:
 \point ${\cal U}_2\langle\,{\frak p}_2| {\frak d}_2\,\rangle
  \in \Gamma^*_2$ is the corresponding output
  string computed by ${\cal U}_2$,\\
- or $\infty\notin\Gamma^*_2$ if it does not \new/halt\wen/.
+ or $\infty\notin\Gamma^*_2$ if it does not halt.
 \endpoints
 
 Since MMr-UTM, in the place of ${\cal U}_2$,
@@ -1999,7 +1991,7 @@ When this sub-machine terminates the first time, the situation is as follows.
 
 We take the locate sub-machine of MMo-UTM.
 As \cite Minsky (1967), page 139, explains:
-\begincitation \new/\wen/\font\tt=cmsltt10 at 12pt
+\begincitation \font\tt=cmsltt10 at 12pt
 It first searches to the right to find the first
 state-symbol pair that matches the one represented in
 the [{\em index}] area. On the path to the desired
@@ -2165,7 +2157,7 @@ so it goes to state "q31" to emulate the left movement
 -- move left
 
 When this sub-machine terminates the first time,
-since the \new/emulated\wen/ movement is {\em right},
+since the emulated movement is {\em right},
 the situation is as follows.
 
 \nextsituation
@@ -2180,8 +2172,8 @@ It changes as many "0"'s or "1"'s to "A"'s and "B"'s
 as there are "M"'s and "N"'s. This way later, when reading,
 these marked bits will be found among all the "0"'s and "1"'s
 on the {\em tape}.
-In the process, the "M"'s and "N"'s are changed to "S"'s\new/,
-so they will be the target when writing\wen/.
+In the process, the "M"'s and "N"'s are changed to "S"'s,
+so they will be the target when writing.
 
 
 \MT:
@@ -2239,7 +2231,7 @@ then the inspected {\em tape} has to be enlarged to the left,
 which is done by state "q34".
 State "q33" determines whether to go back to "q32" to continue marking,
 or go forward to  state "q51", or to "q52", to write, see \refsc{MMc-Write}.
-\par\kern-12pt\new/\vbox to0pt{\kern12pt\hbox to 0pt{\kern4cm\box\MTbox\hss}\vss}\wen/
+\par\kern-12pt\vbox to0pt{\kern12pt\hbox to 0pt{\kern4cm\box\MTbox\hss}\vss}
 \pfile{../csv/MMc-UTM.csv}
 -- move left
 -- move right
@@ -2303,7 +2295,7 @@ or go forward to state "q51" to write, see \refsc{MMc-Write}.
 -- shift
 
 When this sub-machine terminates the first time,
-since the \new/emulated\wen/ movement was {\em right} and
+since the emulated movement was {\em right} and
 it finds a "Y", the situation is as follows.
 
 \nextsituation
@@ -2403,7 +2395,7 @@ the situation is as follows.
 \nextsituation
 %\tape{q37}{Y\=MTAYABBAXAAAAABBABX001000100X010010111X011011000X011100110X100001110Y}
 
-And when the first \mod[emulated<right] movement is completed,
+And when the first emulated movement is completed,
 the situation is as follows.
 
 \nextsituation
@@ -2630,7 +2622,7 @@ This is the situation.
 
 \MTendfig;
 
-Since MMc-UTM detects a \new/{\em halt}\wen/ instruction when the whole {\em program}
+Since MMc-UTM detects a {\em halt} instruction when the whole {\em program}
 has been inspected without finding any instruction,
 then cleaning starts when, in state "q16", or "q13" or "q14",
 the rightmost symbol "Y" is read, which is erased.
@@ -2638,7 +2630,7 @@ Next it goes to state "q01", which erases
 everything until the middle "Y", that is,
 it blanks the {\em program} and the {\em index}.
 And then it goes to state "q02", which tidies up the {\em tape},
-and it finally \new/halts\wen/ after erasing the leftmost "Y".
+and it finally halts after erasing the leftmost "Y".
 \par\kern0pt\vbox to0pt{\kern-15pt\hbox to 0pt{\kern3.75cm\box\MTbox\hss}\vss}
 \pfile{../csv/MMc-UTM.csv}
 -- clean
@@ -3048,19 +3040,19 @@ MMc-UTM proves constructively
 MMc-UTM is a universal Turing machine~$\cal U$.
 
 \dest
-\new/By the way,
+By the way,
 since it never moves to the right of the rightmost "Y",
 MMc-UTM also proves constructively
-the {\em theorem of bidirectionality}\define*|bidirectionality theorem||\new/a
- singly infinite tape is enough to emulate any Turing machine\wen/|:
+the {\em theorem of bidirectionality}\define*|bidirectionality theorem||a
+ singly infinite tape is enough to emulate any Turing machine|:
 {\em a singly infinite tape is enough to emulate any Turing machine}.
 In particular, a singly infinite tape universal Turing machine,
 such as MMc-UTM, can emulate Turing machines that work on tapes that
 are infinite in both directions.
-\wen/
+
 
 \dest
-\new/The language of a universal Turing machine\wen/
+The language of a universal Turing machine
 $\cal L_U$ is a \define|Turing complete language||the language
  of a universal Turing machine, $\cal L_U$|
 because every Turing machine and every computation
@@ -3170,7 +3162,7 @@ that can emulate any 2-tag system.
 Then, using a theorem by Cocke, presented in page 270,
 that affirms that, for any Turing machine $\cal P$,
  there is a 2-tag system that behaves like $\cal P$,
-he \mod[concluded<concludes] that his 4-7-machine must be universal,
+he concluded that his 4-7-machine must be universal,
 though the encoding is not straightforward. As he writes,
 in page 278, “the conversion [doing the encoding]
 is a primitive-recursive operation
