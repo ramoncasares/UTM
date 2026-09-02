@@ -31,7 +31,7 @@ the theorem of Turing completeness.
 \endabstract
 
 \beginnote
-This is \DOI{10.6084/m9.figshare.32261133}.v3,
+This is \DOI{10.6084/m9.figshare.32261133}\new/.v4\wen/,
 version {\tt\version}.\\
 \copyright\ 2026 Ramón Casares; licensed as {\tt cc-by}.\\
 Any comments on it to
@@ -1352,74 +1352,12 @@ These are the first lines of file "MMr-UTM.csv".
 \par\kern-12pt\vbox to0pt{\kern6pt\hbox to 0pt{\kern5cm\box\MTbox\hss}\vss}
 \pfile{../csv/MMr-UTM.csv}
 -- start
--- clean
-
-
-\labeled{MMr-Clean}\subsubsection{Clean}
-
-Since MMo-UTM halts when the whole {\em program}
-has been inspected without finding any instruction,
-then cleaning starts when, in state "q16",
-the rightmost symbol "Y" is read.
-States "q13" and "q14" only read a "Y" when
- the {\em program} is just an "X",
-that is, when all ${\cal P}_2$ transtions are halting ones,
-see \refsc{Empty table}.
-The cleaning task is simple:
- after state "q16", or "q13" or "q14", has erased the rightmost "Y",
- state "q01" moves to the left blanking the {\em program}
-and the {\em index}, and then state "q02" tidies up the {\em tape}
-and halts after erasing the leftmost~"Y".
-Having added the symbol "N" simplifies this task,
-since now the read symbol has not been overwritten.
-
-\MT:
-\MTbeginfig(13cm,4cm,0pt);
-\MTresetpa;
-\MT: pickup medpen;
-\MT: defaultfont:="cmtt12";
-%\MT: draw (0,0)--(w,0)--(w,h)--(0,h)--cycle;
-\MTcode
- z13 = (1w/8, 0.5h/4);
- z14 = (1w/8, 3.5h/4);
- z16 = (1w/8, 2h/4);
- z01 = (3w/8, 2h/4);
- z02 = (5w/8, 2h/4);
- z99 = (7w/8, 2h/4);
-
-\MTstate(13)"q13"">";
-\MTstate(14)"q14"">";
-\MTstate(16)"q16"">";
-\MTstate(01)"q01""<";
-\MTstate(02)"q02""<";
-\MTstate(99)"q99"">";
-
-\MT: pickup thinpen;
-
-\MTinput(13.iii)(01.viii)"Y""0";
-\MTinput(14.iii)(01.x)"Y""0";
-\MTinput(16.iii)(01.ix)"Y""0";
-\MTinput(01.iii)(02.ix)"Y""0";
-\MTauto(01)(vii,v)"*""0";
-\MTauto(02)(vii,v)"M""0";
-\MTauto(02)(xi,i)"N""1";
-\MTinput(02.iii)(99.ix)"Y""0";
-
-\MTendfig;
-
-\par\kern-12pt\vbox to0pt{\kern12pt\hbox to 0pt{\kern3.5cm\box\MTbox\hss}\vss}
-\pfile{../csv/MMr-UTM.csv}
--- clean
 -- locate
-\listline{../csv/MMr-UTM.csv}{23}
-\listline{../csv/MMr-UTM.csv}{27}
-\listline{../csv/MMr-UTM.csv}{32}
 
-%%\vfil\break
 
 \labeled{MMr-Shift}\subsubsection{Shift}
 
-Our last requirement for MMr-UTM is to avoid the
+Our \mod[main<last] requirement for MMr-UTM is to avoid the
 singly infinite tape limitation of MMo-UTM.
 Minsky makes two proposals, see \refsc{Unidirectionality},
 but we will implement a simpler solution in MMr-UTM:
@@ -1487,10 +1425,71 @@ and goes to state "q54", which rewrites the "Y".
 \MTendfig;
 
 \par\kern-12pt\vbox to0pt{\kern-14.4pt\hbox to 0pt{\kern3cm\box\MTbox\hss}\vss}
-\listline{../csv/MMr-UTM.csv}{80}
-\listline{../csv/MMr-UTM.csv}{84}
+\listline{../csv/MMr-UTM.csv}{73}
+\listline{../csv/MMr-UTM.csv}{77}
 \pfile{../csv/MMr-UTM.csv}
 -- shift
+-- clean
+
+
+\labeled{MMr-Clean}\subsubsection{Clean}
+
+Since MMo-UTM halts when the whole {\em program}
+has been inspected without finding any instruction,
+then cleaning starts when, in state "q16",
+the rightmost symbol "Y" is read.
+States "q13" and "q14" only read a "Y" when
+ the {\em program} is just an "X",
+that is, when all ${\cal P}_2$ transtions are halting ones,
+see \refsc{Empty table}.
+The cleaning task is simple:
+ after state "q16", or "q13" or "q14", has erased the rightmost "Y",
+ state "q71" moves to the left blanking the {\em program}
+and the {\em index}, and then state "q72" tidies up the {\em tape}
+and halts after erasing the leftmost~"Y".
+Having added the symbol "N" simplifies this task,
+since now the read symbol has not been overwritten.
+
+\MT:
+\MTbeginfig(13cm,4cm,0pt);
+\MTresetpa;
+\MT: pickup medpen;
+\MT: defaultfont:="cmtt12";
+%\MT: draw (0,0)--(w,0)--(w,h)--(0,h)--cycle;
+\MTcode
+ z13 = (1w/8, 0.5h/4);
+ z14 = (1w/8, 3.5h/4);
+ z16 = (1w/8, 2h/4);
+ z71 = (3w/8, 2h/4);
+ z72 = (5w/8, 2h/4);
+ z99 = (7w/8, 2h/4);
+
+\MTstate(13)"q13"">";
+\MTstate(14)"q14"">";
+\MTstate(16)"q16"">";
+\MTstate(71)"q71""<";
+\MTstate(72)"q72""<";
+\MTstate(99)"q99"">";
+
+\MT: pickup thinpen;
+
+\MTinput(13.iii)(71.viii)"Y""0";
+\MTinput(14.iii)(71.x)"Y""0";
+\MTinput(16.iii)(71.ix)"Y""0";
+\MTinput(71.iii)(72.ix)"Y""0";
+\MTauto(71)(vii,v)"*""0";
+\MTauto(72)(vii,v)"M""0";
+\MTauto(72)(xi,i)"N""1";
+\MTinput(72.iii)(99.ix)"Y""0";
+
+\MTendfig;
+
+\par\kern-12pt\vbox to0pt{\kern12pt\hbox to 0pt{\kern3.5cm\box\MTbox\hss}\vss}
+\listline{../csv/MMr-UTM.csv}{16}
+\listline{../csv/MMr-UTM.csv}{20}
+\listline{../csv/MMr-UTM.csv}{25}
+\pfile{../csv/MMr-UTM.csv}
+-- clean
 -- end
 
 
@@ -1507,13 +1506,13 @@ It was produced this way: "diff MMo-UTM.csv MMr-UTM.csv > MMo2MMr.patch".
 \singlecolumn
 
 In the patch we can see the three sections that implement
-\refx{Start}{MMr-Start}, \refx{Clean}{MMr-Clean},
- and \refx{Shift}{MMr-Shift},
+\refx{Start}{MMr-Start}, \refx{Shift}{MMr-Shift},
+ and \refx{Clean}{MMr-Clean},
 links to the new sections
- (going to states "q01", "q54", and "q51"),
+ (going to states "q71", "q54", and "q51"),
 and then those that deal with symbol "N".
 Compared with MMo-UTM, MMr-UTM uses one additional symbol ("N")
-and seven states more ("q00"--"q02" and "q51"--"q54").
+and seven states more ("q00", "q51"--"q54", and "q71"--"q72").
 
 MMr-UTM is a 9-symbol 31-state Turing machine.
 One of the 31 states is the halting state \M{q99}.
@@ -1583,8 +1582,8 @@ returning the corresponding Turing machine.
 
 \MTline{ label("START",(z09+(0,24pt))) withcolor blue;}
 \MTstate(09)"q00"">";
-\MTstate(01)"q01""<";
-\MTstate(02)"q02""<";
+\MTstate(01)"q71""<";
+\MTstate(02)"q72""<";
 \MTstate(99)"q99"">";
 \MTline{ label("HALT",(z99-(0,24pt))) withcolor red;}
 
@@ -1939,6 +1938,7 @@ initially, the leftmost non-{\em blank} square:
 
 \openin\situations=../test/pr1022.out
 
+
 \labeled{MMc-Table}\subsection{Table}
 
 \sssecno=-1
@@ -1979,7 +1979,7 @@ So these are the first lines of file "MMc-UTM.csv".
 \par\kern-12pt\vbox to0pt{\kern14.4pt\hbox to 0pt{\kern5cm\box\MTbox\hss}\vss}
 \pfile{../csv/MMc-UTM.csv}
 -- start
--- clean
+-- locate
 
 When this sub-machine terminates the first time, the situation is as follows.
 
@@ -2027,7 +2027,7 @@ it runs back to the leftmost "X".
 \MTstate(15)"q15""<";
 \MTstate(16)"q16"">";
 \MTstate(21)"q21"">";
-\MTstate(71)"q01""<";
+\MTstate(71)"q71""<";
 
 \MT: pickup thinpen;
 
@@ -2055,9 +2055,9 @@ If an instruction is found,
 then it goes to state "q21" to copy the instruction
  from the {\em program} into de {\em index}, see \refsc{MMc-Copy}.
 If no instruction is found,
-then it goes to state "q01" to finish, see \refsc{MMc-Clean};
+then it goes to state "q71" to finish, see \refsc{MMc-Clean};
  as done also for MMr-UTM, see \refsc{MMr-Clean},
- we have added two transitions to state "q01",
+ we have added two transitions to state "q71",
 one from "q13" and the other form "q14",
  in order to deal with empty tables.
 \par\kern-12pt\vbox to0pt{\kern24pt\hbox to 0pt{\kern4cm\box\MTbox\hss}\vss}
@@ -2560,7 +2560,7 @@ see \refsc{MMc-Start}.
 \par\kern-12pt\vbox to0pt{\kern12pt\hbox to 0pt{\kern5cm\box\MTbox\hss}\vss}
 \pfile{../csv/MMc-UTM.csv}
 -- read
--- end
+-- clean
 
 When this sub-machine terminates the first time,
 the first emulated step is completed, and the situation is as follows.
@@ -2586,7 +2586,7 @@ This is the situation.
 
 \skipsituation{7}
 \nextsituation
-%\tape{q01}{YNM001111Y11BAXAAAAABBABXAABAAABAAXABAABABBBXABBABBAAAXABBBAABBAXBA000111\=00}
+%\tape{q71}{YNM001111Y11BAXAAAAABBABXAABAAABAAXABAABABBBXABBABBAAAXABBBAABBAXBA000111\=00}
 
 \MT:
 \MTbeginfig(13cm,4cm,0pt);
@@ -2605,8 +2605,8 @@ This is the situation.
 \MTstate(13)"q13"">";
 \MTstate(14)"q14"">";
 \MTstate(16)"q16"">";
-\MTstate(01)"q01""<";
-\MTstate(02)"q02""<";
+\MTstate(01)"q71""<";
+\MTstate(02)"q72""<";
 \MTstate(99)"q99"">";
 
 \MT: pickup thinpen;
@@ -2626,15 +2626,15 @@ Since MMc-UTM detects a {\em halt} instruction when the whole {\em program}
 has been inspected without finding any instruction,
 then cleaning starts when, in state "q16", or "q13" or "q14",
 the rightmost symbol "Y" is read, which is erased.
-Next it goes to state "q01", which erases
+Next it goes to state "q71", which erases
 everything until the middle "Y", that is,
 it blanks the {\em program} and the {\em index}.
-And then it goes to state "q02", which tidies up the {\em tape},
+And then it goes to state "q72", which tidies up the {\em tape},
 and it finally halts after erasing the leftmost "Y".
 \par\kern0pt\vbox to0pt{\kern-15pt\hbox to 0pt{\kern3.75cm\box\MTbox\hss}\vss}
 \pfile{../csv/MMc-UTM.csv}
 -- clean
--- locate
+-- end
 
 \bigskip
 
@@ -2683,7 +2683,7 @@ In the next page, you can find the complete diagram of MMc-UTM.
 \+ Sub-machines &
  \refx{Locate}{MMc-Locate} (\M{q1n}) and
  \refx{Copy}{MMc-Copy} (\M{q2n}),
- with \refx{Start}{MMc-Start} and \refx{Clean}{MMc-Clean} (\M{q0n}),
+ with \refx{Start}{MMc-Start} and \refx{Clean}{MMc-Clean} (\M{q7n}),
  & use 15 states,\cr
 \+& \refx{Move}{MMc-Move} (\M{q3n}) and
  \refx{Shift}{MMc-Shift} (\M{q4n}) & use 15 states,\cr
@@ -2701,8 +2701,8 @@ In the next page, you can find the complete diagram of MMc-UTM.
 \MT: draw (0,0)--(w,0)--(w,h)--(0,h)--cycle withcolor green;
 \MTcode
  z09 = (4w/8, 10h/11);
- z01 = (4w/8, 8h/11);
- z02 = (4w/8, 7h/11);
+ z71 = (4w/8, 8h/11);
+ z72 = (4w/8, 7h/11);
  z99 = (4w/8, 6h/11);
  z11 = (3w/8, 10h/11);
  z12 = (2w/8, 9h/11);
@@ -2747,8 +2747,8 @@ In the next page, you can find the complete diagram of MMc-UTM.
 
 \MTline{ label("START",(z09+(0,24pt))) withcolor blue;}
 \MTstate(09)"q00"">";
-\MTstate(01)"q01""<";
-\MTstate(02)"q02""<";
+\MTstate(71)"q71""<";
+\MTstate(72)"q72""<";
 \MTstate(99)"q99"">";
 \MTline{ label("HALT",(z99-(0,24pt))) withcolor red;}
 
@@ -2802,12 +2802,6 @@ In the next page, you can find the complete diagram of MMc-UTM.
 
 \MTinput(09.ix)(11.iii)"X""X";
 
-\MTinput(01.vi)(02.xii)"Y""0";
-\MTauto(01)(ii,iv)"*""0";
-\MTauto(02)(xi,ix)"M""0";
-\MTauto(02)(vii,ix)"N""1";
-\MTinput(02.vi)(99.xii)"Y""0";
-
 \MTauto(11)(ii,xii)"0""A";
 \MTauto(11)(x,xii)"1""B";
 \MTinput(11.vii)(12.i)"Y""Y";
@@ -2817,13 +2811,13 @@ In the next page, you can find the complete diagram of MMc-UTM.
 \MTinput(13.vi)(15.xii)"0""A";
 \MTinput(13.iii)(16.x)"1""B";
 \MTline{ z13.Y.p = (2.7w/8,9.1h/11);}
-\MTinput(13.iv)(01.x)"Y""0";
+\MTinput(13.iv)(71.x)"Y""0";
 \MTinput(14.xii)(15.vi)"1""B";
 \MTinput(14.iii)(16.viii)"0""A";
-\MTinput(14.iv)(01.viii)"Y""0";
+\MTinput(14.iv)(71.viii)"Y""0";
 \MTinput(15.iii)(12.ix)"Y""Y";
 \MTinput(16.xi)(11.v)"X""X";
-\MTinput(16.vi)(01.xii)"Y""0";
+\MTinput(16.vi)(71.xii)"Y""0";
 
 \MTinput(21.v)(22.xi)"0""A";
 \MTinput(21.vii)(23.i)"1""B";
@@ -2918,6 +2912,12 @@ In the next page, you can find the complete diagram of MMc-UTM.
 \MTinput(65.v)(63.xi)"X""0";
 \MTinput(66.vii)(63.i)"X""1";
 
+\MTinput(71.vi)(72.xii)"Y""0";
+\MTauto(71)(ii,iv)"*""0";
+\MTauto(72)(xi,ix)"M""0";
+\MTauto(72)(vii,ix)"N""1";
+\MTinput(72.vi)(99.xii)"Y""0";
+
 \MTline{ label("MMc-UTM",(4w/8,12pt));}
 
 \MTendfig;
@@ -2947,9 +2947,9 @@ You can use again the Turing machine interpreter to test MMc-UTM.
 .../UTM/test$ export LUA_PATH="../lua/?.lua"
 .../UTM/test$ lua -i < MMc.lua > MMc.out
 \endcode
-Test suite "test/MMc.lua" includes two auto-emulations,
+Test suite "test/MMc.lua" includes \mod[an autoemulation<two auto-emulations],
 that is, MMc-UTM emulating itself emulating a Turing machine,
-that take about a billion ($10^9$) steps each, so then,
+that \mod[takes nearly<take about] a billion ($10^9$) steps\del/each\led/, so then,
 depending on your machine, it could take a long time to complete.
 Then you can examine the resulting output file ".../UTM/test/MMc.out".
 

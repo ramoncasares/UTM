@@ -136,8 +136,8 @@ test.append(MM.UTMc:steps(1000,"q00"),test.steps)
 MM.UTMc:steps(1000,"q21")
 MM.UTMc:steps(1000,"q31")
 test.append(MM.UTMc:steps(1000,"q00"),test.steps)
-test.append(MM.UTMc:steps(1000,"q01"),test.steps)
-test.append(MM.UTMc:steps(1000,"q02"),test.steps)
+test.append(MM.UTMc:steps(1000,"q71"),test.steps)
+test.append(MM.UTMc:steps(1000,"q72"),test.steps)
 test.append(MM.UTMc:steps(1000,"q99"),test.steps)
 test.close()
 
@@ -168,8 +168,8 @@ MM.UTMc:steps(1000,"q00")
 MM.UTMc:steps(1000,"q21")
 MM.UTMc:steps(1000,"q31")
 MM.UTMc:steps(1000,"q00")
-MM.UTMc:steps(1000,"q01")
-MM.UTMc:steps(1000,"q02")
+MM.UTMc:steps(1000,"q71")
+MM.UTMc:steps(1000,"q72")
 MM.UTMc:steps(1000,"q99")
 
 prcx1022 = "Y0MM0Y0000X"..MM.recode(cs1022,dic1022,"%S+",".","X","").."Y"
@@ -217,8 +217,8 @@ MM.UTMc:steps(1000,"q00")
 MM.UTMc:steps(1000,"q21")
 MM.UTMc:steps(1000,"q31")
 MM.UTMc:steps(1000,"q00")
-MM.UTMc:steps(1000,"q01")
-MM.UTMc:steps(1000,"q02")
+MM.UTMc:steps(1000,"q71")
+MM.UTMc:steps(1000,"q72")
 MM.UTMc:steps(1000,"q99")
 
 dicx1023 = {A="00",B="01",C="10",H="11",["0"]="00000",["1"]="10110",["2"]="11010",["3"]="11110",["<"]="0",[">"]="1"}
@@ -329,18 +329,5 @@ starttime = os.clock()
 MM.UTMc:compute()
 print(string.format("  elapsed time: %.2fs", os.clock() - starttime))
 print(sy11cdic)
-
--- renaming q01 -> q71, q02 -> q72
-UTMcx = mac:new( string.gsub(MM.ccode,"q0([12])","q7%1") , MM.cencoding)
-UTMcx:tape(pr11)
-UTMcx:compute()
-UTMcx:tape(pr11)
-pr11x,st11xdic,sy11xdic,mv11xdic = MM.TM2MM(UTMcx)
-UTMcx:tape( pr11x )
-io.stderr:write("Be patient! MMcx auto-emulation can take some time.\n");
-starttime = os.clock()
-UTMcx:compute()
-print(string.format("  elapsed time: %.2fs", os.clock() - starttime))
-print(sy11xdic)
 
 -- end test/MMc.lua
