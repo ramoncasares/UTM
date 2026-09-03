@@ -5,6 +5,7 @@ function test.printf(format, ...)
   print(string.format(format,...))
 end
 
+-- Files
 function test.tofile(fn, t)
   local f = assert(io.open(fn,"w"))
   if type(t) == "table" then
