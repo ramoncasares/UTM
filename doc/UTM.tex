@@ -2958,10 +2958,13 @@ You can use again the Turing machine interpreter to test MMc-UTM.
 .../UTM/test$ export LUA_PATH="../lua/?.lua"
 .../UTM/test$ lua -i < MMc.lua > MMc.out
 \endcode
-Test suite "test/MMc.lua" includes \mod[an autoemulation<two auto-emulations],
-that is, MMc-UTM emulating itself emulating a Turing machine,
-that \mod[takes nearly<take about] a billion ($10^9$) steps\del/each\led/, so then,
-depending on your machine, it could take a long time to complete.
+Test suite "test/MMc.lua" includes two auto-emulations,
+that is, MMc-UTM emulating itself emulating a Turing machine\mod[.<,]
+\mod[The  shortest one takes<that take] \new/$981\,682\,311$ steps,
+that is,\wen/ about a billion\mod[.<($10^9$) steps each]
+\new/And MMc-UTM emulating itself emulating "TM1022" on a blank tape
+ takes $8\,857\,405\,567$ steps, which are nearly nine billions.\wen/
+\mod[Therefore<, so then], depending on your machine, it could take a long time to complete.
 Then you can examine the resulting output file ".../UTM/test/MMc.out".
 
 Function "MM.TM2MMc(tm)" encodes Turing machine "tm",

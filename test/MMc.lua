@@ -86,7 +86,7 @@ tm123lr:compute()
 tm123lrbin:compute()
 MM.UTMc:compute()
 
--- The 1022 machine
+-- The TM1022 machine
 cs1022 = "A0B1> A1A1< B0C2> B1H0< B2A2< C0B2<"
 tm1022 = mac:new(cs1022)
 tb1022 = code.tobinary(tm1022)
@@ -314,20 +314,33 @@ NOP2:compute()
 NOPx = mac:new()
 NOPx:compute()
 
--- Another corner case: emulating itself
+-- Another corner case: MM.UTMc emulating itself
+-- First emulating itself emulating a simple binary Turing machine
 tm11 = mac:new"A0B1> B0H1<"
 pr11 = MM.TM2MMc(tm11)
 tm11:compute(true)
-
 MM.UTMc:tape(pr11)
 MM.UTMc:compute()
 MM.UTMc:tape(pr11)
 pr11c,st11cdic,sy11cdic,mv11cdic = MM.TM2MM(MM.UTMc)
 MM.UTMc:tape( pr11c )
 io.stderr:write("Be patient! MMc-UTM auto-emulation can take some time.\n");
+io.stderr:write("   It will take  981 682 311 steps.\n");
 starttime = os.clock()
 MM.UTMc:compute()
 print(string.format("  elapsed time: %.2fs", os.clock() - starttime))
 print(sy11cdic)
+
+-- Finally, MM.UTMc emulating itself emulating TM1022 on a blank tape
+-- cs1022 = "A0B1> A1A1< B0C2> B1H0< B2A2< C0B2<"
+MM.UTMc:tape( MM.TM2MMc(mac:new(cs1022)) )
+pr1022c,st1022cdic,sy1022cdic,mv1022cdic = MM.TM2MM(MM.UTMc)
+MM.UTMc:tape(pr1022c)
+io.stderr:write("Be patient! MMc-UTM auto-emulation can take some time.\n");
+io.stderr:write("   It will take 8 857 405 567 steps.\n");
+starttime = os.clock()
+MM.UTMc:compute()
+print(string.format("  elapsed time: %.2fs", os.clock() - starttime))
+print(sy1022cdic)
 
 -- end test/MMc.lua
