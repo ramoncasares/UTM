@@ -1059,9 +1059,20 @@ MY000X0000111X0101001X1001110Y
 > MM.UTMo:steps(900)
 1YA1SXM000111X0101001X1001110Y000000000[q45]0	900
 \endcode
-Function "tm:steps(n)" runs Turing machine "tm" until
-it computes "n" steps or until it halts,
-and returns the situation and the number of steps executed.
+\new/Function "tm:steps(n,...)"\  runs Turing machine "tm"
+ until some condition is met,
+ and returns the situation and the number of steps executed.
+If Turing machine "tm" halts, then the function returns.
+It also returns after having executed "n" steps.
+Each of the other optional arguments ("...")\ refers
+either to a state ("s", a "string"),
+ and then the function returns if the current state is "s",
+or  to a transition ("{st,sy}", a state and symbol "table"),
+ and then the function returns
+ if the current state is "st" and the scanned symbol is "sy".\wen/
+% Function "tm:steps(n)" runs Turing machine "tm" until
+% it computes "n" steps or until it halts,
+% and returns the situation and the number of steps executed.
 Notice that MMo-UTM will not halt,
 because in state "q45" and reading a "0" ({\em blank}),
 it will move to the right without changing the state.
@@ -2971,7 +2982,7 @@ Function "MM.recode(s,dic,rpat,fpat,rsep,fsep)" takes
  and the resulting records into a string,
  using "rsep" as separator.
 
-Function "tm:steps(n,...)"\ executes steps
+\del/Function "tm:steps(n,...)"\ executes steps
  until some condition is met.
 If Turing machine "tm" halts, then the function returns.
 It also returns after having executed "n" steps.
@@ -2980,7 +2991,7 @@ to a state ("s", a "string"),
 and then the function returns if the current state is "s",
 or  to a transition ("{st,sy}", a state and symbol "table"),
 and then the function returns
- if the current state is "st" and the scanned symbol is "sy".
+ if the current state is "st" and the scanned symbol is "sy".\led/
 
 
 \vfill\break
