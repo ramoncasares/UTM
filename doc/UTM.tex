@@ -342,21 +342,6 @@ the \define|transition function||total function
 $\Pi':  \Phi\times\Gamma \to
 (\Phi\times\Gamma\times\Delta)\cup\{\,\hbox{\it halt}\,\}$.
 
-\dest
-We use \define|meta-symbol *|meta-symbol {\tt *}|any other symbol in index,
- and the same symbol in instruction|
- $\notin \Gamma$ to denote {\em any other symbol}.
-That is, index \M{C*} applies when, in state \M{C},
-the read symbol is any not explicitly defined.
-And, in that case, the corresponding instruction
-can also use a \M*, then meaning {\em the same symbol},
-which is the read one.
-For example, if index \M{C1} is not in the table,
-then row \M{C*B*<} expands to \M{C1B1<}.
-Meta-symbol \M* is handy when writing tables,
- but it can always be replaced by symbols;
-meta-symbol \M* is just an abbreviation.
-
 Set $\Gamma^*$ is the infinite set
  of the {\em finite} strings drawn from $\Gamma$.
 There is a practical problem regarding the {\em blank} special symbol,
@@ -385,6 +370,21 @@ and $\frak r$ is the corresponding output string.
 Should it no halt, we would write $\TM P<d> = \infty$ instead,
 expressing that function $\cal P$ is not defined
 for argument $\frak d$.
+
+\dest\new/\wen/
+We use \define|meta-symbol *|meta-symbol {\tt *}|any other symbol in index,
+ and the same symbol in instruction|
+ $\notin \Gamma$ to denote {\em any other symbol}.
+That is, index \M{C*} applies when, in state \M{C},
+the read symbol is any not explicitly defined.
+And, in that case, the corresponding instruction
+can also use a \M*, then meaning {\em the same symbol},
+which is the read one.
+For example, if index \M{C1} is not in the table,
+then row \M{C*B*<} expands to \M{C1B1<}.
+Meta-symbol \M* is handy when writing tables,
+ but it can always be replaced by symbols;
+meta-symbol \M* is just an abbreviation.
 
 \dest
 There are many versions of the Turing machine,
@@ -1455,8 +1455,8 @@ that is, when all ${\cal P}_2$ transtions are halting ones,
 see \refsc{Empty table}.
 The cleaning task is simple:
  after state "q16", or "q13" or "q14", has erased the rightmost "Y",
- state "q71" moves to the left blanking the {\em program}
-and the {\em index}, and then state "q72" tidies up the {\em tape}
+ state \mod["q71"<"q01"] moves to the left blanking the {\em program}
+and the {\em index}, and then state \mod["q72"<"q02"] tidies up the {\em tape}
 and halts after erasing the leftmost~"Y".
 Having added the symbol "N" simplifies this task,
 since now the read symbol has not been overwritten.
@@ -1497,7 +1497,7 @@ since now the read symbol has not been overwritten.
 
 \par\kern-12pt\vbox to0pt{\kern12pt\hbox to 0pt{\kern3.5cm\box\MTbox\hss}\vss}
 \listline{../csv/MMr-UTM.csv}{16}
-\listline{../csv/MMr-UTM.csv}{20}
+\new/\wen/\listline{../csv/MMr-UTM.csv}{20}
 \listline{../csv/MMr-UTM.csv}{25}
 \pfile{../csv/MMr-UTM.csv}
 -- clean
@@ -1520,10 +1520,10 @@ In the patch we can see the three sections that implement
 \refx{Start}{MMr-Start}, \refx{Shift}{MMr-Shift},
  and \refx{Clean}{MMr-Clean},
 links to the new sections
- (going to states "q71", "q54", and "q51"),
+ (going to states \mod["q71"<"q01"], "q54", and "q51"),
 and then those that deal with symbol "N".
 Compared with MMo-UTM, MMr-UTM uses one additional symbol ("N")
-and seven states more ("q00", "q51"--"q54", and "q71"--"q72").
+and seven states more ("q00", "q51"--"q54", and \mod["q71"<"q01"]--\mod["q72"<"q02"]).
 
 MMr-UTM is a 9-symbol 31-state Turing machine.
 One of the 31 states is the halting state \M{q99}.
@@ -1715,7 +1715,7 @@ returning the corresponding Turing machine.
 \MTendfig;
 
 \dest
-\centerline{\define*|MMrDiagram|MMr-UTM|MMo-UTM
+\new/\wen/\centerline{\define*|MMrDiagram|MMr-UTM|MMo-UTM
  revised, see \refsc{MMr-UTM}|\box\MTbox}
 
 \vfil\break
@@ -2066,13 +2066,13 @@ If an instruction is found,
 then it goes to state "q21" to copy the instruction
  from the {\em program} into de {\em index}, see \refsc{MMc-Copy}.
 If no instruction is found,
-then it goes to state "q71" to finish, see \refsc{MMc-Clean};
+then it goes to state \mod["q71"<"q01"] to finish, see \refsc{MMc-Clean};
  as done also for MMr-UTM, see \refsc{MMr-Clean},
- we have added two transitions to state "q71",
+ we have added two transitions to state \mod["q71"<"q01"],
 one from "q13" and the other form "q14",
  in order to deal with empty tables.
 \par\kern-12pt\vbox to0pt{\kern24pt\hbox to 0pt{\kern4cm\box\MTbox\hss}\vss}
-\pfile{../csv/MMc-UTM.csv}
+\new/\wen/\pfile{../csv/MMc-UTM.csv}
 -- locate
 -- copy
 
@@ -2596,7 +2596,7 @@ and tidying up the {\em tape}.
 This is the situation.
 
 \skipsituation{7}
-\nextsituation
+\new/\wen/\nextsituation
 %\tape{q71}{YNM001111Y11BAXAAAAABBABXAABAAABAAXABAABABBBXABBABBAAAXABBBAABBAXBA000111\=00}
 
 \MT:
@@ -2637,13 +2637,13 @@ Since MMc-UTM detects a {\em halt} instruction when the whole {\em program}
 has been inspected without finding any instruction,
 then cleaning starts when, in state "q16", or "q13" or "q14",
 the rightmost symbol "Y" is read, which is erased.
-Next it goes to state "q71", which erases
+Next it goes to state \mod["q71"<"q01"], which erases
 everything until the middle "Y", that is,
 it blanks the {\em program} and the {\em index}.
-And then it goes to state "q72", which tidies up the {\em tape},
+And then it goes to state \mod["q72"<"q02"], which tidies up the {\em tape},
 and it finally halts after erasing the leftmost "Y".
 \par\kern0pt\vbox to0pt{\kern-15pt\hbox to 0pt{\kern3.75cm\box\MTbox\hss}\vss}
-\pfile{../csv/MMc-UTM.csv}
+\new/\wen/\pfile{../csv/MMc-UTM.csv}
 -- clean
 -- end
 
@@ -2934,7 +2934,7 @@ In the next page, you can find the complete diagram of MMc-UTM.
 \MTendfig;
 
 \dest
-\centerline{\define*|MMcDiagram|MMc-UTM|universal Turing
+\new/\wen/\centerline{\define*|MMcDiagram|MMc-UTM|universal Turing
  machine based on MMo-UTM, see \refsc{MMc-UTM}|\box\MTbox}
 
 \vfill\break
@@ -2950,7 +2950,7 @@ It takes MMc-UTM 7397 steps to emulate the 7 steps of "TM1022",
 or of "TM1022b", on a blank tape.
 The last line shows the halting situation.
 \medskip
-\input ../test/pr1022.out
+\new/\wen/\input ../test/pr1022.out
 \medskip
 
 You can use again the Turing machine interpreter to test MMc-UTM.
@@ -3066,11 +3066,12 @@ are infinite in both directions.
 
 
 \dest
-The language of a universal Turing machine
+The language \mod[implemented by<of] a universal Turing machine
 $\cal L_U$ is a \define|Turing complete language||the language
- of a universal Turing machine, $\cal L_U$|
-because every Turing machine and every computation
-can be meaningfully expressed in it;
+ of a universal Turing machine, $\cal L_U$|\mod[.<because]
+\new/In a Turing complete language,\wen/
+every Turing machine and every computation
+can be meaningfully expressed\del/<in it\led/;
 program $\frak p$ means Turing machine $\cal P$,
 and sentence $\frak p|\vec d$ means computation $\TM P<d>$.
 
