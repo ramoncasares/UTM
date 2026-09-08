@@ -2694,13 +2694,14 @@ In the next page, you can find the complete diagram of MMc-UTM.
 \+ Sub-machines &
  \refx{Locate}{MMc-Locate} (\M{q1n}) and
  \refx{Copy}{MMc-Copy} (\M{q2n}),
- with \refx{Start}{MMc-Start} and \refx{Clean}{MMc-Clean} (\M{q7n}),
- & use 15 states,\cr
+ with \del/\refx{Start}{MMc-Start} and\led/\refx{Clean}{MMc-Clean} (\M{q7n}),
+ & use \mod[14<15] states,\cr
 \+& \refx{Move}{MMc-Move} (\M{q3n}) and
  \refx{Shift}{MMc-Shift} (\M{q4n}) & use 15 states,\cr
 \+& \refx{Write}{MMc-Write} (\M{q5n}) and
  \refx{Read}{MMc-Read} (\M{q6n}) & use 13 states,\cr
-\+& which, adding the halting state \M{q99}, make 44 states.\cr
+\continuepar
+which, adding \new/the initial state \M{q00} and\wen/ the halting state \M{q99}, make 44 states.\cr
 
 \vfill\break
 
