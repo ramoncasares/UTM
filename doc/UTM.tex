@@ -511,11 +511,11 @@ Lua 5.4.7  Copyright (C) 1994-2024 Lua.org, PUC-Rio
 > TMS2:tape("2212")
 2212
 > TMS2:compute(true)
-2221	 |A2212|->|2B212|->|22B12|->|221B2|->|2212B0|->|221C20|->|22C110|->|2H2210|
+2221   |A2212|->|2B212|->|22B12|->|221B2|->|2212B0|->|221C20|->|22C110|->|2H2210|
 > TMS2:tape("22")
 22
 > TMS2:compute(true)
-111	  |A22|->|2B2|->|22B0|->|2C20|->|C210|->|C0110|->|H01110|
+111   |A22|->|2B2|->|22B0|->|2C20|->|C210|->|C0110|->|H01110|
 \endcode
 And we can continue.
 Calling "compute" without arguments, it returns the tape
@@ -1074,7 +1074,7 @@ So "TM101po" is the string that codes
 > MM.UTMo:tape(TM101po)
 MY000X0000111X0101001X1001110Y
 > MM.UTMo:steps(900)
-1YA1SXM000111X0101001X1001110Y000000000[q45]0	900
+1YA1SXM000111X0101001X1001110Y000000000[q45]0   900
 \endcode
 \new/In \refsc{steps}, we saw
 that function\wen/ "tm:steps(n)" runs Turing machine "tm"
@@ -1091,7 +1091,7 @@ if we reserve two {\it blank} squares to the right of the scanned square.
 > MM.UTMo:tape(TM101xo)
 M00Y000X0000111X0101001X1001110Y
 > MM.UTMo:compute()
-1M1Y11AXAAAABBBXABABAABXBA01110Y	1103
+1M1Y11AXAAAABBBXABABAABXBA01110Y   1103
 \endcode
 Since the rightmost symbol in the {\em index} is an "A",
 then the "M" should be interpreted to be a "0", and
