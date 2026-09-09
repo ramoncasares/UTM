@@ -294,8 +294,8 @@ the movements $\Delta$, and the table $\Pi$.
  $\Phi$ has to be finite, and
  the {\em initial} state, let us call it $\M A$, has to be in it,
  so $\M A \in\Phi$ and $|\Phi| \ge 1$.
-\point The set of \define|ordinary symbols||non-empty set of
- non-{\em blank} symbols, $\bar\Gamma$|
+\point The set of \define|ordinary symbols||\new/finite and\wen/ non-empty set
+ of non-{\em blank} symbols, $\bar\Gamma$|
  $\bar\Gamma$ has to be finite and not empty. The set of
  \define|symbols||tape’s set of symbols,
  $\Gamma = \bar\Gamma \cup \{\,\hbox{\it blank}\,\}$, or alphabet|
@@ -533,10 +533,10 @@ but it does not change the tape.\wen/
 > TMS2:compute()
 122   5
 \endcode
-\new/However, since Lua function "compute" will not return (gracefully)
+\new/Function "compute" will not return
 if the corresponding computation does not halt,
-we can rather call function "steps", which always returns.
-\label{steps}Function "tm:steps(n,...)"\  runs Turing machine "tm"
+but we can play safe calling function "steps", which always returns.
+\label{steps}Function "tm:steps(n,...)"\ runs Turing machine "tm"
  from its current situation, that is,
  neither resetting it nor changing its tape,
  until some condition is met,
