@@ -519,33 +519,50 @@ Lua 5.4.7  Copyright (C) 1994-2024 Lua.org, PUC-Rio
 \endcode
 And we can continue.
 Calling "compute" without arguments, it returns the tape
-and, instead of the steps, the number of steps.
+and, instead of the steps, the number of steps \new/executed\wen/.
+\new/Function "compute" resets the Turing machine to the initial situation,
+so it starts from the initial state and
+scanning the leftmost non-{\em blank} square, if any,
+but it does not change the tape.\wen/
+\begincode
+> TMS2:compute()
+112   5
+> TMS2:compute()
+121   6
+> TMS2:compute()
+122   5
+\endcode
+\new/However, since Lua function "compute" will not return (gracefully)
+if the corresponding computation does not halt,
+we can rather call function "steps", which always returns.
+\label{steps}Function "tm:steps(n,...)"\  runs Turing machine "tm"
+ from its current situation, that is,
+ neither resetting it nor changing its tape,
+ until some condition is met,
+ and returns the new situation and the number of steps executed.
+If Turing machine "tm" halts, then the function returns.
+It also returns after having executed "n" steps.
+Each of the other optional arguments ("...")\ refers
+either to a state "s" (a "string"),
+ and then the function returns if the current state is "s",
+or to a transition "{st,sy}" (a state and symbol "table"),
+ and then it returns
+ if the current state is "st" and the scanned symbol is "sy".\wen/
 For more details on these and other functions,
 you can examine the source code,
 which is in directory ".../UTM/lua".
-\begincode
-> TMS2:compute()
-112	5
-> TMS2:compute()
-121	6
-> TMS2:compute()
-122	5
-> TMS2:compute()
-211	7
-> TMS2:compute()
-212	5
-> TMS2:compute()
-221	6
-> TMS2:compute()
-222	5
-> TMS2:compute()
-1111	8
-> TMS2:compute()
-1112	6
-> TMS2:compute()
-1121	7
+\new/\begincode
+> TMS2:tape("")
+0
+> TMS2:steps(10)
+0000000000[A]0   10
+> TMS2:steps(10)
+00000000000000000000[A]0   10
+> TMS2:steps(10)
+000000000000000000000000000000[A]0   10
 > os.exit()
 \endcode
+\wen/
 
 \vfil\break
 
@@ -600,7 +617,7 @@ Lua 5.4.7  Copyright (C) 1994-2024 Lua.org, PUC-Rio
 > TMS2x:compute(true)
 111    |A22|->|2B2|->|22B0|->|2C20|->|C210|->|C0110|->|H01110|
 > TMS2x:compute()
-112	5
+112   5
 > Ctrl-D
 \endcode
 
@@ -1059,20 +1076,10 @@ MY000X0000111X0101001X1001110Y
 > MM.UTMo:steps(900)
 1YA1SXM000111X0101001X1001110Y000000000[q45]0	900
 \endcode
-\new/Function "tm:steps(n,...)"\  runs Turing machine "tm"
- until some condition is met,
- and returns the situation and the number of steps executed.
-If Turing machine "tm" halts, then the function returns.
-It also returns after having executed "n" steps.
-Each of the other optional arguments ("...")\ refers
-either to a state ("s", a "string"),
- and then the function returns if the current state is "s",
-or  to a transition ("{st,sy}", a state and symbol "table"),
- and then the function returns
- if the current state is "st" and the scanned symbol is "sy".\wen/
-% Function "tm:steps(n)" runs Turing machine "tm" until
-% it computes "n" steps or until it halts,
-% and returns the situation and the number of steps executed.
+\new/In \refsc{steps}, we saw
+that function\wen/ "tm:steps(n)" runs Turing machine "tm"
+until it computes "n" steps or until it halts,
+and returns the situation and the number of steps executed.
 Notice that MMo-UTM will not halt,
 because in state "q45" and reading a "0" ({\em blank}),
 it will move to the right without changing the state.
