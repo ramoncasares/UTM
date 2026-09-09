@@ -24,7 +24,8 @@ MM.UTMc:tape(prg2succ)
 MM.UTMc:compute()
 
 -- The 101 machine
-tm101 = mac:new"A0B1> B0C0> C0H1<"
+cs101 = "A0B1> B0C0> C0H1<"
+tm101 = mac:new(cs101)
 MM.UTMo:tape( MM.TM2MMo(tm101) )
 MM.UTMr:tape( MM.TM2MMr(tm101) )
 MM.UTMc:tape( MM.TM2MMc(tm101) )
@@ -314,6 +315,7 @@ NOP2:compute()
 NOPx = mac:new()
 NOPx:compute()
 
+--[[
 -- Another corner case: MM.UTMc emulating itself
 -- First emulating itself emulating a simple binary Turing machine
 tm11 = mac:new"A0B1> B0H1<"
@@ -330,6 +332,21 @@ starttime = os.clock()
 MM.UTMc:compute()
 print(string.format("  elapsed time: %.2fs", os.clock() - starttime))
 print(sy11cdic)
+]]
+
+-- Another corner case: MM.UTMc emulating itself
+-- First emulating itself emulating binary TM101 on a blank tape
+-- cs101 = "A0B1> B0C0> C0H1<"
+MM.UTMc:tape( MM.TM2MMc(mac:new(cs101)) )
+pr101c,st101cdic,sy101cdic,mv101cdic = MM.TM2MM(MM.UTMc)
+MM.UTMc:tape(pr101c)
+io.stderr:write("Be patient! MMc-UTM auto-emulation can take some time.\n");
+io.stderr:write("   It will take  X 981 682 311 steps.\n");
+starttime = os.clock()
+MM.UTMc:compute()
+print(string.format("  elapsed time: %.2fs", os.clock() - starttime))
+print(sy101cdic)
+
 
 -- Finally, MM.UTMc emulating itself emulating TM1022 on a blank tape
 -- cs1022 = "A0B1> A1A1< B0C2> B1H0< B2A2< C0B2<"
