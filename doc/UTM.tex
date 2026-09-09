@@ -2708,7 +2708,8 @@ In the next page, you can find the complete diagram of MMc-UTM.
 \+& \refx{Write}{MMc-Write} (\M{q5n}) and
  \refx{Read}{MMc-Read} (\M{q6n}) & use 13 states,\cr
 \continuepar
-which, adding \new/the initial state \M{q00} and\wen/ the halting state \M{q99}, make 44 states.\cr
+which, adding \new/the initial state \M{q00} and\wen/ the halting state \M{q99},
+make 44 states.
 
 \vfill\break
 
@@ -2967,12 +2968,20 @@ You can use again the Turing machine interpreter to test MMc-UTM.
 .../UTM/test$ lua -i < MMc.lua > MMc.out
 \endcode
 Test suite "test/MMc.lua" includes two auto-emulations,
-that is, MMc-UTM emulating itself emulating a Turing machine\mod[.<,]
-\mod[The  shortest one takes<that take] \new/$981\,682\,311$ steps,
-that is,\wen/ about a billion\mod[.<($10^9$) steps each]
-\new/And MMc-UTM emulating itself emulating "TM1022" on a blank tape
- takes $8\,857\,405\,567$ steps, which are nearly nine billions.\wen/
-\mod[Therefore<, so then], depending on your machine, it could take a long time to complete.
+that is, MMc-UTM emulating itself emulating a Turing machine\mod[:<,]
+\new/\beginpoints
+\point Binary "TM101" on a blank tape takes $3$ steps,
+ MMc-UTM emulating it takes $1221$ steps, and
+ MMc-UTM emulating itself emulating it takes
+ $1\,698\,832\,903$ steps.
+\point And "TM1022" on a blank tape takes $7$ steps,
+ MMc-UTM emulating it takes $7397$ steps, and
+ MMc-UTM emulating itself emulating it takes
+ $8\,857\,405\,567$ steps.
+\endpoints
+Together, both auto-emulations take more than ten billion steps.\wen/
+\mod[Therefore<, so then], depending on your machine,
+it could take a long time to complete.
 Then you can examine the resulting output file ".../UTM/test/MMc.out".
 
 Function "MM.TM2MMc(tm)" encodes Turing machine "tm",

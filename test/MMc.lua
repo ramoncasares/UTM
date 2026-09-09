@@ -315,25 +315,6 @@ NOP2:compute()
 NOPx = mac:new()
 NOPx:compute()
 
---[[
--- Another corner case: MM.UTMc emulating itself
--- First emulating itself emulating a simple binary Turing machine
-tm11 = mac:new"A0B1> B0H1<"
-pr11 = MM.TM2MMc(tm11)
-tm11:compute(true)
-MM.UTMc:tape(pr11)
-MM.UTMc:compute()
-MM.UTMc:tape(pr11)
-pr11c,st11cdic,sy11cdic,mv11cdic = MM.TM2MM(MM.UTMc)
-MM.UTMc:tape( pr11c )
-io.stderr:write("Be patient! MMc-UTM auto-emulation can take some time.\n");
-io.stderr:write("   It will take  981 682 311 steps.\n");
-starttime = os.clock()
-MM.UTMc:compute()
-print(string.format("  elapsed time: %.2fs", os.clock() - starttime))
-print(sy11cdic)
-]]
-
 -- Another corner case: MM.UTMc emulating itself
 -- First emulating itself emulating binary TM101 on a blank tape
 -- cs101 = "A0B1> B0C0> C0H1<"
@@ -341,12 +322,12 @@ MM.UTMc:tape( MM.TM2MMc(mac:new(cs101)) )
 pr101c,st101cdic,sy101cdic,mv101cdic = MM.TM2MM(MM.UTMc)
 MM.UTMc:tape(pr101c)
 io.stderr:write("Be patient! MMc-UTM auto-emulation can take some time.\n");
-io.stderr:write("   It will take  X 981 682 311 steps.\n");
+io.stderr:write("   TM101 will take 1 698 832 903 steps.\n");
 starttime = os.clock()
 MM.UTMc:compute()
 print(string.format("  elapsed time: %.2fs", os.clock() - starttime))
 print(sy101cdic)
-
+-- 100000001 > 1000 0000 1... > 1 0 1
 
 -- Finally, MM.UTMc emulating itself emulating TM1022 on a blank tape
 -- cs1022 = "A0B1> A1A1< B0C2> B1H0< B2A2< C0B2<"
@@ -354,10 +335,13 @@ MM.UTMc:tape( MM.TM2MMc(mac:new(cs1022)) )
 pr1022c,st1022cdic,sy1022cdic,mv1022cdic = MM.TM2MM(MM.UTMc)
 MM.UTMc:tape(pr1022c)
 io.stderr:write("Be patient! MMc-UTM auto-emulation can take some time.\n");
-io.stderr:write("   It will take 8 857 405 567 steps.\n");
+io.stderr:write("   TM1022 will take 8 857 405 567 steps.\n");
 starttime = os.clock()
 MM.UTMc:compute()
 print(string.format("  elapsed time: %.2fs", os.clock() - starttime))
 print(sy1022cdic)
+-- 1000 0000 0000 0000 1000 1000 1000 1...
+-- 1    0    0    0    1    1    1    1
+-- 1         0         2         2
 
 -- end test/MMc.lua
