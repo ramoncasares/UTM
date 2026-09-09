@@ -518,8 +518,9 @@ Lua 5.4.7  Copyright (C) 1994-2024 Lua.org, PUC-Rio
 111   |A22|->|2B2|->|22B0|->|2C20|->|C210|->|C0110|->|H01110|
 \endcode
 And we can continue.
-Calling "compute" without arguments, it returns the tape
-and, instead of the steps, the number of steps \new/executed\wen/.
+Calling \new/Lua function "tm:compute()"\wen/ without arguments,
+it returns the tape and, instead of the steps,
+the number of steps \new/executed\wen/.
 \new/Function "compute" resets the Turing machine to the initial situation,
 so it starts from the initial state and
 scanning the leftmost non-{\em blank} square, if any,
@@ -550,8 +551,8 @@ or to a transition "{st,sy}" (a state and symbol "table"),
  if the current state is "st" and the scanned symbol is "sy".\wen/
 For more details on these and other functions,
 you can examine the source code,
-which is in directory ".../UTM/lua".
-\new/\begincode
+which is in directory ".../UTM/lua".\new/%
+\begincode
 > TMS2:tape("")
 0
 > TMS2:steps(10)
@@ -2967,7 +2968,7 @@ You can use again the Turing machine interpreter to test MMc-UTM.
 .../UTM/test$ export LUA_PATH="../lua/?.lua"
 .../UTM/test$ lua -i < MMc.lua > MMc.out
 \endcode
-Test suite "test/MMc.lua" includes two auto-emulations,
+\new/Warning:\wen/ Test suite "test/MMc.lua" includes two auto-emulations,
 that is, MMc-UTM emulating itself emulating a Turing machine\mod[:<,]
 \new/\beginpoints
 \point Binary "TM101" on a blank tape takes $3$ steps,
