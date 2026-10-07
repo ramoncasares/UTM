@@ -166,8 +166,8 @@ and uses a straightforward encoding.
 We conclude, in section \refsc{Conclusion},
 with a short summary.
 
-
 \vfil\break
+
 
 \section{Computing}
 
@@ -731,7 +731,7 @@ We can verify it using the interpreter.
 
 \subsection{Turing completeness}
 
-\leavevmode
+\dest
 \define|Turing-completeness|Turing completeness|computing
  can express computing completely|
 is a property of computing, namely,
@@ -742,6 +742,7 @@ titled {\sl The universal computing machine}:
 “It is possible to invent a single machine
 which can be used to compute any computable sequence.”
 
+\dest
 In modern terms, a \define|universal Turing machine||a
  Turing machine $\cal U$ that can emulate any Turing machine|
 $\cal U$ is a Turing machine that can emulate
@@ -1730,6 +1731,7 @@ returning the corresponding Turing machine.
 
 \section{Binary Turing completeness theorem}
 
+\dest
 Whenever it halts,
 MMr-UTM returns the very same binary string that
 the emulated binary Turing machine ${\cal P}_2$ computes. And,
@@ -1952,7 +1954,6 @@ initially, the leftmost non-{\em blank} square:
 \smallskip\continuepar
 \hbox{\qquad\tt\=YMMY0000X000001101X001000100X010010111X011011000X011100110X100001110Y}
 
-
 \vfill\break
 
 \openin\situations=../test/pr1022.out
@@ -2107,7 +2108,6 @@ It starts on the leftmost "X", and from there shifts to the right
  it does not print [the direction of motion] but just remembers it.
 \endcitation
 
-
 \MT:
 \MTbeginfig(12cm,7.5cm,0pt);
 \MTresetpa;
@@ -2152,7 +2152,6 @@ It starts on the leftmost "X", and from there shifts to the right
 
 \MTendfig;
 
-
 It copies the instruction from the {\em program} to the {\em index},
 both the next state and the symbol to write.
 State "q21" moves to the right till
@@ -2182,8 +2181,8 @@ the situation is as follows.
 \nextsituation
 %\tape{q35}{YMMYABB\=AXAAAAABBABX001000100X010010111X011011000X011100110X100001110Y}
 
-
 \vfill\break
+
 
 \labeled{MMc-Move}\subsubsection{Move}
 
@@ -2193,7 +2192,6 @@ these marked bits will be found among all the "0"'s and "1"'s
 on the {\em tape}.
 In the process, the "M"'s and "N"'s are changed to "S"'s,
 so they will be the target when writing.
-
 
 \MT:
 \MTbeginfig(12cm,6cm,0pt);
@@ -2320,8 +2318,8 @@ it finds a "Y", the situation is as follows.
 \nextsituation
 %\tape{q41}{YM\=TYABBAXAAAAABBABX001000100X010010111X011011000X011100110X100001110Y}
 
-
 \vfill\break
+
 
 \labeled{MMc-Shift}\subsubsection{Shift}
 
@@ -2420,8 +2418,8 @@ the situation is as follows.
 \nextsituation
 %\tape{q51}{Y\=TTAAYABBAXAAAAABBABX001000100X010010111X011011000X011100110X100001110Y}
 
-
 \vfill\break
+
 
 \labeled{MMc-Write}\subsubsection{Write}
 
@@ -2506,8 +2504,8 @@ the situation is as follows.
 \nextsituation
 %\tape{q61}{Y\=10AAYABSSXAAAAABBABX001000100X010010111X011011000X011100110X100001110Y}
 
-
 \vfill\break
+
 
 \labeled{MMc-Read}\subsubsection{Read}
 
@@ -2592,6 +2590,7 @@ This is a valid initial situation, save for the scanned square,
 which is not the leftmost "Y".
 
 \vfill\break
+
 
 \labeled{MMc-Clean}\subsubsection{Clean}
 
@@ -3019,6 +3018,7 @@ and then the function returns
 
 \section{Turing completeness theorem}
 
+\dest
 Whenever it halts,
 MMc-UTM returns, simply encoded, the same string that
 the emulated Turing machine $\cal P$ computes. And,
@@ -3065,7 +3065,6 @@ Since MMc-UTM, in the place of $\cal U$, satisfies the equation,
 then we have shown that the theorem is {\sc true}.
 \QED
 
-
 Therefore,
 MMc-UTM proves constructively
  the theorem of Turing completeness, and
@@ -3081,7 +3080,6 @@ the {\em theorem of bidirectionality}\define*|bidirectionality theorem||a
 In particular, a singly infinite tape universal Turing machine,
 such as MMc-UTM, can emulate Turing machines that work on tapes that
 are infinite in both directions.
-
 
 \dest
 The language \mod[implemented by<of] a universal Turing machine
@@ -3100,7 +3098,6 @@ MMc-UTM is a 9-symbol 44-state Turing machine that is universal,
 and then, even if $\cal P$ is a $\gamma$-symbol $\phi$-state
 Turing machine such that $\gamma > 9$ and $\phi > 44$,
 it can be emulated by MMc-UTM.
-
 
 
 \vfil\break

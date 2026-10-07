@@ -2,6 +2,8 @@
 
 \input RCstyle
 
+\MTfigures
+
 \input doubleco
 \darkcolors
 
@@ -12,6 +14,7 @@
 \ifnum\count255<`Z\advance\count255 1
 \repeat
 
+\catcode`\@=11
 
 % define#1|#2|#3|#4|
 %    #1 if empty write {\em #2}, else (if is *) do not write
@@ -20,26 +23,24 @@
 %    #4 its definition goes to macro \^^06#1
 
 \catcode`\^^06=12
-\def\define#1|#2|#3|#4|{\def\1{#1}\def\3{#3}\ifx\3\empty \def\3{#2}\fi
+\def\define#1|#2|#3|#4|{\leavevmode
+ \def\1{#1}\def\3{#3}\ifx\3\empty \def\3{#2}\fi
  \expandafter\gdef\csname ^^06#2\endcsname{#4}%
  \lbl{#2}{\3}\ndx{#2}{D}\ifx\1\empty {\em\3}\fi}
 
  \def\TMndxline#1#2#3#4#5{\def\2{#2}%
   \ifx\2\D\par \hangindent20pt\noindent
-   {\em\ref{#1}}\quad(\refsc{#1})\quad\ignorespaces
-  \csname^^06#1\endcsname\ignorespaces\else\ignorespaces\fi}
+   {\em\ref{#1}}\quad(\refsc{#1})\quad
+  \csname^^06#1\endcsname\fi\ignorespaces}
 
 \def\definitions{\par\begingroup
  \everypar{}\parno=0\def\secid{}\noindent\dest
  {\fonttwo Definitions\toc1{Definitions}\lbl{Definitions}{Definitions}}
  \par\def\D{D}\let\ndxline=\TMndxline
- \input auxiliar.abc
+ \ifMTf@le \input auxiliar.abc \fi
  \par \endgroup}
 
-
 \chardef\diffchar=`!
-
-\catcode`\@=11
 
 \newcount\sssecno \sssecno=0
 
@@ -150,7 +151,7 @@
 
 \def\label#1{\leavevmode\dest\lbl{#1}{label}\ignorespaces}
 
-\MTfigures
+%%\MTfigures
 
 \def\MTbeginfig{\begingroup \catcode`\"=12 \MTbeginchar}
 \def\MTendfig;{\MTendchar; \endgroup}
