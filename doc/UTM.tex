@@ -31,7 +31,7 @@ the theorem of Turing completeness.
 \endabstract
 
 \beginnote
-This is \DOI{10.6084/m9.figshare.32261133}\new/.v4\wen/,
+This is \DOI{10.6084/m9.figshare.32261133}.v4,
 version {\tt\version}.\\
 \copyright\ 2026 Ramón Casares; licensed as {\tt cc-by}.\\
 Any comments on it to
@@ -294,7 +294,7 @@ the movements $\Delta$, and the table $\Pi$.
  $\Phi$ has to be finite, and
  the {\em initial} state, let us call it $\M A$, has to be in it,
  so $\M A \in\Phi$ and $|\Phi| \ge 1$.
-\point The set of \define|ordinary symbols||\new/finite and\wen/ non-empty set
+\point The set of \define|ordinary symbols||finite and non-empty set
  of non-{\em blank} symbols, $\bar\Gamma$|
  $\bar\Gamma$ has to be finite and not empty. The set of
  \define|symbols||tape’s set of symbols,
@@ -371,7 +371,7 @@ Should it no halt, we would write $\TM P<d> = \infty$ instead,
 expressing that function $\cal P$ is not defined
 for argument $\frak d$.
 
-\dest\new/\wen/
+\dest
 We use \define|meta-symbol *|meta-symbol {\tt *}|any other symbol in index,
  and the same symbol in instruction|
  $\notin \Gamma$ to denote {\em any other symbol}.
@@ -518,13 +518,13 @@ Lua 5.4.7  Copyright (C) 1994-2024 Lua.org, PUC-Rio
 111   |A22|->|2B2|->|22B0|->|2C20|->|C210|->|C0110|->|H01110|
 \endcode
 And we can continue.
-Calling \new/Lua function "tm:compute()"\wen/ without arguments,
+Calling Lua function "tm:compute()" without arguments,
 it returns the tape and, instead of the steps,
-the number of steps \new/executed\wen/.
-\new/Function "compute" resets the Turing machine to the initial situation,
+the number of steps executed.
+Function "compute" resets the Turing machine to the initial situation,
 so it starts from the initial state and
 scanning the leftmost non-{\em blank} square, if any,
-but it does not change the tape.\wen/
+but it does not change the tape.
 \begincode
 > TMS2:compute()
 112   5
@@ -533,7 +533,7 @@ but it does not change the tape.\wen/
 > TMS2:compute()
 122   5
 \endcode
-\new/Function "compute" will not return
+Function "compute" will not return
 if the corresponding computation does not halt,
 but we can play safe calling function "steps", which always returns.
 \label{steps}Function "tm:steps(n,...)"\ runs Turing machine "tm"
@@ -548,10 +548,10 @@ either to a state "s" (a "string"),
  and then the function returns if the current state is "s",
 or to a transition "{st,sy}" (a state and symbol "table"),
  and then it returns
- if the current state is "st" and the scanned symbol is "sy".\wen/
+ if the current state is "st" and the scanned symbol is "sy".
 For more details on these and other functions,
 you can examine the source code,
-which is in directory ".../UTM/lua".\new/%
+which is in directory ".../UTM/lua".
 \begincode
 > TMS2:tape("")
 0
@@ -563,7 +563,7 @@ which is in directory ".../UTM/lua".\new/%
 000000000000000000000000000000[A]0   10
 > os.exit()
 \endcode
-\wen/
+
 
 \vfil\break
 
@@ -1078,8 +1078,8 @@ MY000X0000111X0101001X1001110Y
 > MM.UTMo:steps(900)
 1YA1SXM000111X0101001X1001110Y000000000[q45]0   900
 \endcode
-\new/In \refsc{steps}, we saw
-that function\wen/ "tm:steps(n)" runs Turing machine "tm"
+In \refsc{steps}, we saw
+that function "tm:steps(n)" runs Turing machine "tm"
 until it computes "n" steps or until it halts,
 and returns the situation and the number of steps executed.
 Notice that MMo-UTM will not halt,
@@ -1377,7 +1377,7 @@ These are the first lines of file "MMr-UTM.csv".
 
 \labeled{MMr-Shift}\subsubsection{Shift}
 
-Our \mod[main<last] requirement for MMr-UTM is to avoid the
+Our main requirement for MMr-UTM is to avoid the
 singly infinite tape limitation of MMo-UTM.
 Minsky makes two proposals, see \refsc{Unidirectionality},
 but we will implement a simpler solution in MMr-UTM:
@@ -1464,8 +1464,8 @@ that is, when all ${\cal P}_2$ transtions are halting ones,
 see \refsc{Empty table}.
 The cleaning task is simple:
  after state "q16", or "q13" or "q14", has erased the rightmost "Y",
- state \mod["q71"<"q01"] moves to the left blanking the {\em program}
-and the {\em index}, and then state \mod["q72"<"q02"] tidies up the {\em tape}
+ state "q71" moves to the left blanking the {\em program}
+and the {\em index}, and then state "q72" tidies up the {\em tape}
 and halts after erasing the leftmost~"Y".
 Having added the symbol "N" simplifies this task,
 since now the read symbol has not been overwritten.
@@ -1506,7 +1506,7 @@ since now the read symbol has not been overwritten.
 
 \par\kern-12pt\vbox to0pt{\kern12pt\hbox to 0pt{\kern3.5cm\box\MTbox\hss}\vss}
 \listline{../csv/MMr-UTM.csv}{16}
-\new/\wen/\listline{../csv/MMr-UTM.csv}{20}
+\listline{../csv/MMr-UTM.csv}{20}
 \listline{../csv/MMr-UTM.csv}{25}
 \pfile{../csv/MMr-UTM.csv}
 -- clean
@@ -1522,17 +1522,17 @@ This is the patch that
  transforms "MMo-UTM.csv" into "MMr-UTM.csv".
 It was produced this way: "diff MMo-UTM.csv MMr-UTM.csv > MMo2MMr.patch".
 \doublecolumns
-\new/\wen/\file{../csv/MMo2MMr.patch}
+\file{../csv/MMo2MMr.patch}
 \singlecolumn
 
 In the patch we can see the three sections that implement
 \refx{Start}{MMr-Start}, \refx{Shift}{MMr-Shift},
  and \refx{Clean}{MMr-Clean},
 links to the new sections
- (going to states \mod["q71"<"q01"], "q54", and "q51"),
+ (going to states "q71", "q54", and "q51"),
 and then those that deal with symbol "N".
 Compared with MMo-UTM, MMr-UTM uses one additional symbol ("N")
-and seven states more ("q00", "q51"--"q54", and \mod["q71"<"q01"]--\mod["q72"<"q02"]).
+and seven states more ("q00", "q51"--"q54", and "q71"--"q72").
 
 MMr-UTM is a 9-symbol 31-state Turing machine.
 One of the 31 states is the halting state \M{q99}.
@@ -1724,7 +1724,7 @@ returning the corresponding Turing machine.
 \MTendfig;
 
 \dest
-\new/\wen/\centerline{\define*|MMrDiagram|MMr-UTM|MMo-UTM
+\centerline{\define*|MMrDiagram|MMr-UTM|MMo-UTM
  revised, see \refsc{MMr-UTM}|\box\MTbox}
 
 \vfil\break
@@ -2075,13 +2075,13 @@ If an instruction is found,
 then it goes to state "q21" to copy the instruction
  from the {\em program} into de {\em index}, see \refsc{MMc-Copy}.
 If no instruction is found,
-then it goes to state \mod["q71"<"q01"] to finish, see \refsc{MMc-Clean};
+then it goes to state "q71" to finish, see \refsc{MMc-Clean};
  as done also for MMr-UTM, see \refsc{MMr-Clean},
- we have added two transitions to state \mod["q71"<"q01"],
+ we have added two transitions to state "q71",
 one from "q13" and the other form "q14",
  in order to deal with empty tables.
 \par\kern-12pt\vbox to0pt{\kern24pt\hbox to 0pt{\kern4cm\box\MTbox\hss}\vss}
-\new/\wen/\pfile{../csv/MMc-UTM.csv}
+\pfile{../csv/MMc-UTM.csv}
 -- locate
 -- copy
 
@@ -2165,7 +2165,7 @@ State "q24" (and "q25") moves to the right till
 it changes it to "A" (to "B"), and goes to state "q26".
 State "q26" moves to the leftmost "X", which marks the beginning
 of the {\em program}, and goes to state "q21" to copy the next bit.
-If in state "q24" (or "q25") there \mod[is<are] not any unwritten bit
+If in state "q24" (or "q25") there is not any unwritten bit
  in the {\em index}, then it is the movement,
 so it goes to state "q31" to emulate the left movement
 (or to "q35" to emulate the right movement), see \refsc{MMc-Move}.
@@ -2603,7 +2603,7 @@ and tidying up the {\em tape}.
 This is the situation.
 
 \skipsituation{7}
-\new/\wen/\nextsituation
+\nextsituation
 %\tape{q71}{YNM001111Y11BAXAAAAABBABXAABAAABAAXABAABABBBXABBABBAAAXABBBAABBAXBA000111\=00}
 
 \MT:
@@ -2644,13 +2644,13 @@ Since MMc-UTM detects a {\em halt} instruction when the whole {\em program}
 has been inspected without finding any instruction,
 then cleaning starts when, in state "q16", or "q13" or "q14",
 the rightmost symbol "Y" is read, which is erased.
-Next it goes to state \mod["q71"<"q01"], which erases
+Next it goes to state "q71", which erases
 everything until the middle "Y", that is,
 it blanks the {\em program} and the {\em index}.
-And then it goes to state \mod["q72"<"q02"], which tidies up the {\em tape},
+And then it goes to state "q72", which tidies up the {\em tape},
 and it finally halts after erasing the leftmost "Y".
 \par\kern0pt\vbox to0pt{\kern-15pt\hbox to 0pt{\kern3.75cm\box\MTbox\hss}\vss}
-\new/\wen/\pfile{../csv/MMc-UTM.csv}
+\pfile{../csv/MMc-UTM.csv}
 -- clean
 -- end
 
@@ -2701,14 +2701,14 @@ In the next page, you can find the complete diagram of MMc-UTM.
 \+ Sub-machines &
  \refx{Locate}{MMc-Locate} (\M{q1n}) and
  \refx{Copy}{MMc-Copy} (\M{q2n}),
- with \del/\refx{Start}{MMc-Start} and\led/\refx{Clean}{MMc-Clean} (\mod[\M{q7n}<\M{q0n}]),
- & use \mod[14<15] states,\cr
+ with \refx{Clean}{MMc-Clean} (\M{q7n}),
+ & use 14 states,\cr
 \+& \refx{Move}{MMc-Move} (\M{q3n}) and
  \refx{Shift}{MMc-Shift} (\M{q4n}) & use 15 states,\cr
 \+& \refx{Write}{MMc-Write} (\M{q5n}) and
  \refx{Read}{MMc-Read} (\M{q6n}) & use 13 states,\cr
 \continuepar
-which, adding \new/the initial state \M{q00} and\wen/ the halting state \M{q99},
+which, adding the initial state \M{q00} and the halting state \M{q99},
 make 44 states.
 
 \vfill\break
@@ -2943,7 +2943,7 @@ make 44 states.
 \MTendfig;
 
 \dest
-\new/\wen/\centerline{\define*|MMcDiagram|MMc-UTM|universal Turing
+\centerline{\define*|MMcDiagram|MMc-UTM|universal Turing
  machine based on MMo-UTM, see \refsc{MMc-UTM}|\box\MTbox}
 
 \vfill\break
@@ -2959,7 +2959,7 @@ It takes MMc-UTM 7397 steps to emulate the 7 steps of "TM1022",
 or of "TM1022b", on a blank tape.
 The last line shows the halting situation.
 \medskip
-\new/\wen/\input ../test/pr1022.out
+\input ../test/pr1022.out
 \medskip
 
 You can use again the Turing machine interpreter to test MMc-UTM.
@@ -2967,9 +2967,9 @@ You can use again the Turing machine interpreter to test MMc-UTM.
 .../UTM/test$ export LUA_PATH="../lua/?.lua"
 .../UTM/test$ lua -i < MMc.lua > MMc.out
 \endcode
-\new/Warning:\wen/ Test suite "test/MMc.lua" includes two auto-emulations,
-that is, MMc-UTM emulating itself emulating a Turing machine\mod[:<,]
-\new/\beginpoints
+Warning: Test suite "test/MMc.lua" includes two auto-emulations,
+that is, MMc-UTM emulating itself emulating a Turing machine:
+\beginpoints
 \point Binary "TM101" on a blank tape takes $3$ steps,
  MMc-UTM emulating it takes $1221$ steps, and
  MMc-UTM emulating itself emulating it takes
@@ -2979,8 +2979,8 @@ that is, MMc-UTM emulating itself emulating a Turing machine\mod[:<,]
  MMc-UTM emulating itself emulating it takes
  $8\,857\,405\,567$ steps.
 \endpoints
-Together, both auto-emulations take more than ten billion steps.\wen/
-\mod[Therefore<, so then], depending on your machine,
+Together, both auto-emulations take more than ten billion steps.
+Therefore, depending on your machine,
 it could take a long time to complete.
 Then you can examine the resulting output file ".../UTM/test/MMc.out".
 
@@ -3001,17 +3001,6 @@ Function "MM.recode(s,dic,rpat,fpat,rsep,fsep)" takes
  coded fields into records, using "fsep" as separator,
  and the resulting records into a string,
  using "rsep" as separator.
-
-\del/Function "tm:steps(n,...)"\ executes steps
- until some condition is met.
-If Turing machine "tm" halts, then the function returns.
-It also returns after having executed "n" steps.
-Each of the other arguments ("...")\ refers either
-to a state ("s", a "string"),
-and then the function returns if the current state is "s",
-or  to a transition ("{st,sy}", a state and symbol "table"),
-and then the function returns
- if the current state is "st" and the scanned symbol is "sy".\led/
 
 
 \vfill\break
@@ -3082,12 +3071,12 @@ such as MMc-UTM, can emulate Turing machines that work on tapes that
 are infinite in both directions.
 
 \dest
-The language \mod[implemented by<of] a universal Turing machine
+The language implemented by a universal Turing machine
 $\cal L_U$ is a \define|Turing complete language||the language
- of a universal Turing machine, $\cal L_U$|\mod[.<because]
-\new/In a Turing complete language,\wen/
+ of a universal Turing machine, $\cal L_U$|.
+In a Turing complete language,
 every Turing machine and every computation
-can be meaningfully expressed\del/<in it\led/;
+can be meaningfully expressed;
 program $\frak p$ means Turing machine $\cal P$,
 and sentence $\frak p|\vec d$ means computation $\TM P<d>$.
 
